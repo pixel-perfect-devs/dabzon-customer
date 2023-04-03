@@ -14,7 +14,7 @@ const Index = (props) => {
           width={70}
           height={70}
         />
-        <p className='m-1 text-center sm:m-2  text-sm' >{props.items}</p>
+        <p className='m-1 text-center sm:m-2  text-sm' >{props.items.data.title}</p>
       </div>
     </div>
   )
