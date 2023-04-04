@@ -46,3 +46,11 @@ export async function getServerSideProps() {
     props: {shopbycategoryData: resJSON.data}
   }
 }
+  
+// this code will check whether connection between frontend, backend, database is working fine
+// to use this just paste these three lines in getServer function
+// if output is  " Connected to Database " then everything is working fine
+
+// await fetch("http://localhost:3000/api/checkconnection")
+// .then((res)=>res.json())
+// .then((data)=>console.log(data.msg));
