@@ -11,7 +11,7 @@ import FAQ from '../components/LandingPageComponents/FAQ/index'
 import BestFeedback from '../components/LandingPageComponents/BestFeedback/index'
 import BlogComponents from '../components/BlogComponents/index'
 
-export default function Home() {
+export default function Home({shopbycategoryData}) {
   return (
     <>
       <Head>
@@ -24,7 +24,7 @@ export default function Home() {
         <NavBar />
         {/* <OfferCarousel/> */}
         <OtherSupport />
-        <ShopByCategory />
+        <ShopByCategory data={shopbycategoryData}/>
         <TopOffers />
         <ShopByBrand />
         <TopSellingBatteries title="Top Selling Batteries" />
@@ -36,3 +36,21 @@ export default function Home() {
     </>
   )
 }
+
+export async function getServerSideProps() {
+  // this api is on dabzon-admin
+  //if any confusion just "!! console.log(resJSON) !!"
+  const res=await fetch("http://localhost:3000/api/homepage/shopbycategory");
+  const resJSON=await res.json();
+  return {
+    props: {shopbycategoryData: resJSON.data}
+  }
+}
+  
+// this code will check whether connection between frontend, backend, database is working fine
+// to use this just paste these three lines in getServer function
+// if output is  " Connected to Database " then everything is working fine
+
+// await fetch("http://localhost:3000/api/checkconnection")
+// .then((res)=>res.json())
+// .then((data)=>console.log(data.msg));
