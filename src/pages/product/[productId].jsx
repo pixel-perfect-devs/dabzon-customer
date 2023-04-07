@@ -14,18 +14,6 @@ const ProductDetailsPage = () => {
   const { productId } = router.query;
   // fetch details from the productId and remove the hard coded item
 
-  const [productDetails, setProductDetails] = React.useState(null);
-
-  const fetchProductDetails = async (productId) => {
-    // const res = await fetch(`http://localhost:1337/api/all-products?filters[productId][$in]=${productId}&populate=*`);
-    // const data = await res.json();
-    // if (data.data.length) setProductDetails(data.data[0].attributes);
-  }  
-
-  useEffect(() => {
-    fetchProductDetails(productId);
-  }, [productId])
-
   let item = {
     id: 2,
     name: "Exide Inva Tubular Battery",
@@ -56,13 +44,8 @@ const ProductDetailsPage = () => {
   return (
     <div className='ProductDetailsPage'>
       <NavBar />
-      {
-        productDetails ?
-          <Productdetailsview productDetails={productDetails} item={item} />
-          :
-          <p className="text-center text-2xl">Loading...</p>
-      }
-      <TopSellingBatteries title="Recommended for you" />
+      <Productdetailsview productId={productId} item={item} />
+      {/* <TopSellingBatteries title="Recommended for you" /> */}
       <FooterComponents />
     </div>
   )

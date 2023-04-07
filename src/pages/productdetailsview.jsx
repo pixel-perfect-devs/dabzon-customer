@@ -345,7 +345,7 @@ const Productdetailsview = ({ title }) => {
         <p className="text-gray-900 lg:text-4xl sm:text-3xl  text-2xl font-bold
         mb-5 text-center">Recommended for you</p>
         <div className='flex flex-wrap justify-center gap-6 my-4'>
-          {[0, 0, 0, 0, 0, 0, 0, 0].map((it, idx) => <TopSellingBatteriesCard key={idx} id={idx} />)}
+          {/* {[0, 0, 0, 0, 0, 0, 0, 0].map((it, idx) => <TopSellingBatteriesCard key={idx} id={idx} />)} */}
         </div>
         {/* <div className='flex justify-center flex-wrap mx-7'>
       <div className="m-4">
