@@ -234,7 +234,7 @@ const Productdetailsview = ({ capacityData }) => {
                     name="statelist"
                     form="stateform"
                   >
-                    <option key={index} value={item}>{item}</option>
+                    <option key={index} value={item.capacity}>{item.capacity}</option>
                   </select>
                 )
               }) :
