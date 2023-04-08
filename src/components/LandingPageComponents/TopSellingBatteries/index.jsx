@@ -26,8 +26,8 @@ const Index = ({title}) => {
         </div>
         <div className='flex flex-wrap justify-center gap-6 my-4'>
           {
-            topSellingProducts.length > 0 ? 
-            topSellingProducts.map((item, idx) => <TopSellingBatteriesCard key={idx} item={item.attributes} />)
+            [0,0,0,0].length > 0 ? 
+            [0,0,0,0].map((item, idx) => <TopSellingBatteriesCard key={idx} item={item.attributes} />)
             :
             <p className="text-gray-500 text-sm">No products found</p>
           }
