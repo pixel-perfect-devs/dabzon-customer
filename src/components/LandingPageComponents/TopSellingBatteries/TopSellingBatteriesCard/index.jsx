@@ -45,8 +45,8 @@ const Card = ({item}) => {
   return (
     <div className="singleProductCard cursor-pointer border-2 border-gray-200 shadow-md w-[270px] rounded-xl ">
 
-      <div className="singleProductCard__image__container bg-gray-200 rounded-t-xl relative">
-        <div className="image__text__icon flex justify-between pt-4 px-4">
+      <div className="singleProductCard__image__container bg-gray-200 rounded-t-xl relative w-[268px] h-[250px]">
+        <div className="image__text__icon flex justify-between py-4 px-4">
           <p className="cursor-pointer image__text border-2 text-green-500 border-green-500 rounded-full text-center px-3 py-[7px] text-sm">
             {item.tags[0]}
           </p>
@@ -59,10 +59,13 @@ const Card = ({item}) => {
             </svg>
           </button>
         </div >
-        <Image onClick={() => router.push(`/product/${item._id}`)} className="pb-2 w-60 m-auto" loading="lazy" src={item.image1} width={290} height={290} alt="Image is loading..." />
-        <p className="discount border border-white px-3 py-1 bg-red-500 rounded-3xl absolute left-1 bottom-1 text-[10px] md:text-xs">{ item.withExchangeDiscount }% OFF</p>
+        <Image onClick={() => router.push(`/product/${item._id}`)} className="pb-2 m-auto w-auto h-auto" loading="lazy" src={item.image1} width={100} height={100} alt="Image is loading..." />
+        {
+          item.fakeDiscount 
+          ? <p className="discount border border-white px-3 py-1 bg-red-500 rounded-3xl absolute left-1 bottom-1 text-[10px] md:text-xs">{ item.fakeDiscount}% OFF</p>
+          : null
+        }        
       </div>
-      {/* Math.round((item.price - item.defaultOriginalPrice) / item.productShowPrice * 100) */}
 
       <div className="singleProductCard__descripion">
         <div className="singleProductCard__title p-3 space-x-2 truncate text-xs md:text-sm">
@@ -70,10 +73,10 @@ const Card = ({item}) => {
           <span className="text-gray-500  ">{item.productShortDescription}</span>
         </div>
 
-        <div className="singleProductCard__price border-gray-200 pb-1">
+        <div className="singleProductCard__price border-gray-200 pb-1 flex justify-between items-center pr-3">
           <span className="text-[#10b981] text-lg md:text-2xl p-3 font-semibold">₹{item.price}</span>
           {/* showprive below */}
-          <span className="text-gray-500 text-sm md:text-lg line-through">₹{item.price}</span>
+          <span className="text-gray-500 text-sm md:text-lg line-through">₹{Math.round((+item.price)*100 / (+item.fakeDiscount))}</span>
         </div>
 
         <div className="singleProductCard__capacity__and__item">
@@ -92,7 +95,7 @@ const Card = ({item}) => {
         </div>
 
         <div className="singleProductCard__without__old__battery flex justify-between mx-3 my-1">
-          <span className="text-gray-900 text-xs md:text-sm">With Exchange</span><span className="text-[#10b981] text-sm md:text-lg">₹{item.withExchangeDiscount}</span>
+          <span className="text-gray-900 text-xs md:text-sm">With Exchange</span><span className="text-[#10b981] text-sm md:text-lg">₹{item.exchangeAmount}</span>
           {/* todo */}
         </div>
 

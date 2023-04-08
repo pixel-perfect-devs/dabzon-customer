@@ -16,43 +16,63 @@ const Productdetailsview = ({ productId }) => {
 
     const [productDetails, setProductDetails] = React.useState(null);
 
-    const [mainImage, setMainImage] = React.useState(productDetails?.image1);
-    const [capacityValue, setCapacityValue] = React.useState(productDetails);
-    const [originalPrice, setOriginalPrice] = React.useState(productDetails?.price);
+    const [mainImage, setMainImage] = React.useState(null);
+    // const [originalPrice, setOriginalPrice] = React.useState(productDetails?.price);
 
-    const [ cartItem, setCartItem ] = React.useState({
+    const [cartItem, setCartItem] = React.useState({
         productId: "",
         productName: "",
         productImage: "",
         productPrice: "",
+        productWithExchange: 0,
+        productWithTrolley: 0,
+        productCouponCode: "",
         productCapacity: "",
-        productQuantity: 1,
-        productDeliveryCity: "",        
+        productDeliveryCity: "",
+        productDeliveryCityPrice: "",
+        productBrand: "",
+        productCategory: "",
+        productCapacityArray: [],
     });
 
     const fetchProductDetails = async (productId) => {
         if (!productId) return;
         const response = await fetch(`/api/${productId}`);
-        const data = await response.json();
-        setProductDetails(data.allData);
-        setMainImage(data.allData.image1);
-        // setCartItem(prev => prev = { ...prev, productDeliveryCity:  })
+        const { productData, capacityData } = await response.json();
+        console.log(productData)
+        setProductDetails(productData.allData);
+        setMainImage(productData.allData.image1);
+
+        setCartItem(prev => prev = {
+            ...prev,
+            productId: productData.allData._id,
+            productName: productData.allData.productName,
+            productImage: productData.allData.image1,
+            productPrice: productData.allData.price,
+            productWithExchange: productData.allData.withExchange,
+            productWithTrolley: productData.allData.withTrolley,
+            productCapacity: productData.allData?.productCapacity,
+            productBrand: productData.allData.productBrand,
+            productCategory: productData.allData.productCategory,
+            productCapacityArray: capacityData.allData,
+        })
     }
-
-    useEffect(() => {
-        fetchProductDetails(productId);
-    }, [productId])
-
-    console.log(productDetails)
 
     const buyNow = (e) => {
         e.preventDefault();
         console.log("buy now");
     }
+
     const addToCart = (e) => {
         e.preventDefault();
-        console.log("add to cart");
+        if(cartItem.productDeliveryCity === "")return alert("Please select your city");
+        delete cartItem.productCapacityArray
+        console.log("add to cart", cartItem);
     }
+
+    useEffect(() => {
+        fetchProductDetails(productId);
+    }, [productId])
 
     return (
         <div className="ProductDetailsPage my-8">
@@ -75,7 +95,7 @@ const Productdetailsview = ({ productId }) => {
                                     </p>
                                 </div>
                                 <Image className="p-4 w-auto h-auto mx-auto" loading="lazy" src={mainImage} width={450} height={280} alt="Image is loading..." />
-                                <div className={`absolute bottom-0 left-0 flex justify-center items-center w-[6.5rem] h-[30px] ${productDetails.stock > 0 ? 'border-green-500 text-green-500' : 'border-rose-500 text-rose-500'} bg-gray-50 border rounded-full ml-4 mb-4`}>
+                                <div className={`absolute bottom-0 left-0 flex justify-center items-center w-[6.5rem] h-[30px] ${+productDetails.stock > 0 ? 'border-green-500 text-green-500' : 'border-rose-500 text-rose-500'} bg-gray-50 border rounded-full ml-4 mb-4`}>
                                     <p className="flex text-xs">
                                         {productDetails.stock > 0 ? "In Stock" : "Out of Stock"}
                                     </p>
@@ -123,16 +143,15 @@ const Productdetailsview = ({ productId }) => {
                             <div className="ProductPrice mx-2 flex items-center justify-center sm:justify-start">
                                 <span className="text-[#10b981] text-2xl">₹{productDetails.price} </span>
                                 <span className="text-gray-500 text-base line-through mx-3">
-                                    ₹{productDetails.price}
-                                    {/* todo */}
+                                    ₹{Math.round((+productDetails.price) * 100 / (+productDetails.fakeDiscount))}
                                 </span>
-                                <span className="text-rose-500 font-semibold text-lg">{Math.round((productDetails.productShowPrice - originalPrice) / productDetails.productShowPrice * 100)} %OFF</span>
+                                <span className="text-rose-500 font-semibold text-lg">{productDetails.fakeDiscount} %OFF</span>
                             </div>
 
                             <div className="ExchangePrice__container flex flex-wrap sm:justify-start  justify-center">
                                 <div className="withExchangePrice__container">
-                                    <input className="hidden" id="withExchangePrice" type="radio" name="exchange" />
-                                    <label className="withExchangePrice__container box-border m-2 border-gray-200 bg-gray-50 border h-16 w-60 flex items-center rounded-xl hover:border-green-500  text-left cursor-pointer" htmlFor="withExchangePrice">
+                                    <input onChange={() => console.log("clicked exchange")} className="hidden" id="withExchangePrice" type="radio" name="exchange" />
+                                    <label onClick={() => setCartItem(prev => prev = { ...prev, productWithExchange: exchangeAmount })} className="radio withExchangePrice__container box-border m-2 border-gray-200 bg-gray-50 border h-16 w-60 flex items-center rounded-xl hover:border-green-500  text-left cursor-pointer" htmlFor="withExchangePrice">
                                         <Image
                                             className="mx-4 "
                                             loading="lazy"
@@ -143,13 +162,13 @@ const Productdetailsview = ({ productId }) => {
                                         />
                                         <div className="withExchangePrice flex flex-col">
                                             <p className=" text-sm text-gray-700">WITH EXCHANGE</p>
-                                            <p className="  text-xs text-gray-700">₹{productDetails.withExchangeDiscount}</p>
+                                            <p className="  text-xs text-gray-700">₹{productDetails.exchangeAmount}</p>
                                         </div>
                                     </label>
                                 </div>
                                 <div className="withoutExchangePrice__container">
-                                    <input className="hidden" id="withoutExchangePrice" type="radio" name="exchange" defaultChecked />
-                                    <label className="withoutExchangePrice__container box-border m-2 border-gray-200 bg-gray-50 border h-16 w-60 flex items-center rounded-xl hover:border-green-500  text-left cursor-pointer" htmlFor="withoutExchangePrice">
+                                    <input onChange={() => console.log("clicked exchange")} className="hidden" id="withoutExchangePrice" type="radio" name="exchange" checked />
+                                    <label onClick={() => setCartItem(prev => prev = { ...prev, productWithExchange: 0 })} className="withoutExchangePrice__container radio box-border m-2 border-gray-200 bg-gray-50 border h-16 w-60 flex items-center rounded-xl hover:border-green-500  text-left cursor-pointer" htmlFor="withoutExchangePrice">
                                         <Image
                                             className="mx-4 "
                                             loading="lazy"
@@ -159,7 +178,7 @@ const Productdetailsview = ({ productId }) => {
                                             height={30}
                                         />
                                         <div className="withExchangePrice flex flex-col">
-                                            <p className=" text-sm text-gray-700">WITHOut EXCHANGE</p>
+                                            <p className=" text-sm text-gray-700">WITHOUT EXCHANGE</p>
                                             <p className="  text-xs text-gray-700">₹{productDetails.price}</p>
                                         </div>
                                     </label>
@@ -168,8 +187,8 @@ const Productdetailsview = ({ productId }) => {
 
                             <div className="TrolleyPrice__container flex flex-wrap sm:justify-start  justify-center">
                                 <div className="withTrolleyPrice__container">
-                                    <input className="hidden" id="withTrolleyPrice" type="radio" name="trolley" defaultChecked />
-                                    <label className="withExchangePrice__container box-border m-2 border-gray-200 bg-gray-50 border h-16 w-60 flex items-center rounded-xl hover:border-green-500  text-left cursor-pointer" htmlFor="withTrolleyPrice">
+                                    <input onChange={() => console.log("clicked trolley")} className="hidden" id="withTrolleyPrice" type="radio" name="trolley" />
+                                    <label onClick={() => setCartItem(prev => prev = { ...prev, productWithTrolley: trolleyPrice })} className="withExchangePrice__container radio box-border m-2 border-gray-200 bg-gray-50 border h-16 w-60 flex items-center rounded-xl hover:border-green-500 text-left cursor-pointer" htmlFor="withTrolleyPrice">
                                         <Image
                                             className="mx-4 "
                                             loading="lazy"
@@ -179,14 +198,14 @@ const Productdetailsview = ({ productId }) => {
                                             height={30}
                                         />
                                         <div className="withExchangePrice flex flex-col">
-                                            <p className=" text-sm text-gray-700">WITH Trolley</p>
-                                            <p className="  text-xs text-gray-700">₹{productDetails.trolleyPrice}</p>
+                                            <p className=" text-sm text-gray-700">With Trolley</p>
+                                            <p className=" text-xs text-gray-700">₹{productDetails.trolleyPrice}</p>
                                         </div>
                                     </label>
                                 </div>
                                 <div className="withoutTrolleyPrice__container">
-                                    <input className="hidden" id="withoutTrolleyPrice" type="radio" name="trolley" />
-                                    <label className="withoutTrolleyPrice__container box-border m-2 border-gray-200 bg-gray-50 border h-16 w-60 flex items-center rounded-xl hover:border-green-500  text-left cursor-pointer" htmlFor="withoutTrolleyPrice">
+                                    <input onChange={() => console.log("clicked trolley")} className="hidden" id="withoutTrolleyPrice" type="radio" name="trolley" checked />
+                                    <label onClick={() => setCartItem(prev => prev = { ...prev, productWithTrolley: 0 })} className="withoutTrolleyPrice__container radio box-border m-2 border-gray-200 bg-gray-50 border h-16 w-60 flex items-center rounded-xl hover:border-green-500  text-left cursor-pointer" htmlFor="withoutTrolleyPrice" >
                                         <Image
                                             className="mx-4 "
                                             loading="lazy"
@@ -196,14 +215,14 @@ const Productdetailsview = ({ productId }) => {
                                             height={30}
                                         />
                                         <div className="withTrolleyPrice flex flex-col">
-                                            <p className=" text-sm text-gray-700">WITHOut EXCHANGE</p>
+                                            <p className=" text-sm text-gray-700">Without Trolley</p>
                                             <p className="  text-xs text-gray-700">₹{productDetails.price}</p>
                                         </div>
                                     </label>
                                 </div>
                             </div>
                             {/* todo */}
-                            <div className="couponCode__container flex items-center justify-center sm:justify-start mx-2">
+                            <div className="couponCode__container flex items-center justify-center sm:justify-start mx-2 !mb-4">
                                 <Image
                                     className="w-8 h-8"
                                     loading="lazy"
@@ -212,22 +231,17 @@ const Productdetailsview = ({ productId }) => {
                                     width={30}
                                     height={30}
                                 />
-                                <div className="flex flex-col w-40 mx-3">
-                                    <p className="text-gray-700 text-base">de50</p>
-                                    <p className="text-gray-700 text-[13px]  border-l-emerald-50 leading-0">
-                                        Use this coupon to get flat 50% OFF on selected items T&C apply
-                                    </p>
+                                <div className="flex items-center w-40 mx-3">
+                                    <div className="inputcontianer relative">
+                                        <input type="text" name="searchCoupon" id="searchCoupon" className="bg-gray-50 border border-green-500 rounded-full py-1 px-3 outline-none" />
+                                        <p className="couponResult text-sm text-green-500 absolute -bottom-5 left-0">Coupon applied</p>
+                                    </div>
+                                    <button type="submit" className="border border-green-500 rounded-full py-1 px-3 mx-3 hover:bg-[#10b981] focus-within:bg-[#10b981] hover:text-white focus-within:text-white bg-gray-50 text-sm shadow-md ">Apply</button>
                                 </div>
-                                {/* <div className="flex flex-col w-40 mx-3">
-                                        <p className="text-gray-700 text-base">{item.couponCode}</p>
-                                        <p className="text-gray-700 text-[13px]  border-l-emerald-50 leading-0">
-                                            Use this coupon to get flat {item.couponCodeDiscountPercentage}% OFF on selected items T&C apply
-                                        </p>
-                                    </div> */}
                             </div>
                             <div className="capacity__replacements flex flex-wrap justify-center sm:justify-start " >
                                 <div className="capacity__dropdown box-border m-2 border-gray-200 bg-gray-50  border h-16 w-40 rounded-xl">
-                                    {/* <ProductCapacityDropDown capacityValue={capacityValue} setCapacityValue={setCapacityValue} data={item.capacity} /> */}
+                                    <ProductCapacityDropDown cartItem={cartItem} capacityArray={cartItem.productCapacityArray} />
                                 </div>
                                 <div className="warranty box-border m-2 border-gray-200 bg-gray-50  border h-16 w-40 flex items-center rounded-xl">
                                     <Image
@@ -278,7 +292,7 @@ const Productdetailsview = ({ productId }) => {
                                     <p className="text-gray-900 text-lg sm:text-xl text-center">
                                         Select your city
                                     </p>
-                                    {/* <CheckDeliveryAvaibility  /> */}
+                                    <CheckDeliveryAvaibility cityArray={productDetails.city} cartItem={cartItem} setCartItem={setCartItem} />
                                 </div>
 
                                 <div className="share__products space-y-2 my-3 sm:mx-8 mx-2">
@@ -353,11 +367,6 @@ const Productdetailsview = ({ productId }) => {
                         <p className="sm:text-[2rem]  text-[1.3rem] font-semibold">Description</p>
                         <p className="text-sm sm:text-base">{productDetails.productDescription}</p>
                     </div>
-                    {/* // ! todo */}
-                    <div className="Product__note mx-4 sm:mx-16 my-8">
-                        <p className="sm:text-[2rem]  text-[1.3rem] font-semibold" >Note</p>
-                        <p className="text-sm sm:text-base">product notes here</p>
-                    </div>
                     <div className="Product__features mx-4 sm:mx-16 my-8">
                         <p className="sm:text-[2rem]  text-[1.3rem] font-semibold" >Features</p>
                         {
@@ -375,10 +384,10 @@ const Productdetailsview = ({ productId }) => {
                             )
                         }
                     </div>
-                </div>
+                </div >
                 : <p className="text-center text-sm">Loading...</p>
             }
-        </div>
+        </div >
     );
 };
 
