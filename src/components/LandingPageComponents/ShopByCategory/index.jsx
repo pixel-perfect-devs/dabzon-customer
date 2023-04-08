@@ -15,9 +15,11 @@ const Index = ({ data }) => {
             <Link href='/all/allCategories' className="text-green-500 font-medium text-sm">view all</Link>
           </div>
           <div className="flex overflow-x-scroll">
-            {showdata.map((item, index) => {
+            {showdata.length!==0 ? showdata?.map((item, index) => {
               return <CategoryCard key={index} item={item} />;
-            })}
+            }):
+              null
+            }
           </div>
         </div>
       </div>
