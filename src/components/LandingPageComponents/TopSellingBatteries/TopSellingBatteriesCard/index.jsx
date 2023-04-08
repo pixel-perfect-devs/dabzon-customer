@@ -6,35 +6,36 @@ import top_offers from "../../../../../public/top_offers.png"
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 
-const Card = () => {
+const Card = ({item}) => {
 
   // items to be fetched from props
-  let item = {
-    id: 2,
-    name: "Exide Inva Tubular Battery",
-    defaultOriginalPrice: 5000,
-    tag: "Tubular",
-    image1: battery,
-    image2: top_offers,
-    image3: offerCarousel_image,
-    showPrice: 6000, // increase price by 10%
-    withExchange: 4500,
-    withoutExchange: 5000,
-    withTrolley: 6500,
-    withoutTrolley: 5000,
-    couponCode: { "EXIDE10": 10, "edii93": 33 },
-    capacity: { "100Ah": 8000, "150Ah": 8000, "200Ah": 7000 },
-    warranty: "3 years",
-    replacement: "10 days",
-    rating: 4.5,
-    defaultDeliveryCity: 'bangaluru',
-    deliveryCity: { "patna": 5000, "mumbai": 4000, "delhi": 8000 },
-    inStock: 10,
-    productDescription: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas porro nulla animi totam, sapiente, eius aliquam quidem maiores corporis cupiditate sit error cumque nisi eum ad culpa! Eius sed, est, iusto veritatis adipisci officiis quos recusandae rerum quod, corrupti distinctio!",
-    productNote: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas porro nulla animi totam, sapiente, eius aliquam quidem maiores corporis cupiditate sit err',
-    features: ['advance tubular battery single water indicater', 'high resistance to heat makes the battery perfect for indian wearher conditions.'],
-    specification: { 'Net Weight': '20.5 kg', 'Battery Layout': 'left', 'Capacity': '47 kg', 'Technology': 'Advance tubular', 'Modal': 'Luminous INVAHOMZ IHST1500', }
-  }
+  // let item = {
+  //   id: 2,
+  //   name: "Exide Inva Tubular Battery",
+  //   defaultOriginalPrice: 5000,
+  //   tag: "Tubular",
+  //   image1: battery,
+  //   image2: top_offers,
+  //   image3: offerCarousel_image,
+  //   showPrice: 6000, // increase price by 10%
+  //   withExchange: 4500,
+  //   withoutExchange: 5000,
+  //   withTrolley: 6500,
+  //   withoutTrolley: 5000,
+  //   couponCode: { "EXIDE10": 10, "edii93": 33 },
+  //   capacity: { "100Ah": 8000, "150Ah": 8000, "200Ah": 7000 },
+  //   warranty: "3 years",
+  //   replacement: "10 days",
+  //   rating: 4.5,
+  //   defaultDeliveryCity: 'bangaluru',
+  //   deliveryCity: { "patna": 5000, "mumbai": 4000, "delhi": 8000 },
+  //   inStock: 10,
+  //   productDescription: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas porro nulla animi totam, sapiente, eius aliquam quidem maiores corporis cupiditate sit error cumque nisi eum ad culpa! Eius sed, est, iusto veritatis adipisci officiis quos recusandae rerum quod, corrupti distinctio!",
+  //   productNote: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas porro nulla animi totam, sapiente, eius aliquam quidem maiores corporis cupiditate sit err',
+  //   features: ['advance tubular battery single water indicater', 'high resistance to heat makes the battery perfect for indian wearher conditions.'],
+  //   specification: { 'Net Weight': '20.5 kg', 'Battery Layout': 'left', 'Capacity': '47 kg', 'Technology': 'Advance tubular', 'Modal': 'Luminous INVAHOMZ IHST1500', }
+  // }
+  console.log(item)
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -47,7 +48,7 @@ const Card = () => {
       <div className="singleProductCard__image__container bg-gray-200 rounded-t-xl relative">
         <div className="image__text__icon flex justify-between pt-4 px-4">
           <p className="cursor-pointer image__text border-2 text-green-500 border-green-500 rounded-full text-center px-3 py-[7px] text-sm">
-            {item.productTag}
+            {item.tags[0]}
           </p>
           <button className="group rounded-full w-10 h-10 bg-gray-100 p-0 border-0 inline-flex items-center justify-center text-gray-900 ml-4 focus:text-red-600 hover:text-red-600">
             <svg className="block group-hover:hidden group-focus:hidden" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -58,9 +59,10 @@ const Card = () => {
             </svg>
           </button>
         </div >
-        <Image onClick={() => router.push(`/product/${item.productId}`)} className="pb-2 w-60 m-auto" loading="lazy" src={battery} width={290} height={290} alt="Image is loading..." />
-        <p className="discount border border-white px-3 py-1 bg-red-500 rounded-3xl absolute left-1 bottom-1 text-[10px] md:text-xs">{ Math.round((item.productShowPrice - item.defaultOriginalPrice) / item.productShowPrice * 100)}% OFF</p>
+        <Image onClick={() => router.push(`/product/${item._id}`)} className="pb-2 w-60 m-auto" loading="lazy" src={item.image1} width={290} height={290} alt="Image is loading..." />
+        <p className="discount border border-white px-3 py-1 bg-red-500 rounded-3xl absolute left-1 bottom-1 text-[10px] md:text-xs">{ item.withExchangeDiscount }% OFF</p>
       </div>
+      {/* Math.round((item.price - item.defaultOriginalPrice) / item.productShowPrice * 100) */}
 
       <div className="singleProductCard__descripion">
         <div className="singleProductCard__title p-3 space-x-2 truncate text-xs md:text-sm">
@@ -69,27 +71,29 @@ const Card = () => {
         </div>
 
         <div className="singleProductCard__price border-gray-200 pb-1">
-          <span className="text-[#10b981] text-lg md:text-2xl p-3 font-semibold">₹{item.defaultOriginalPrice}</span>
-          <span className="text-gray-500 text-sm md:text-lg line-through">₹{item.productShowPrice}</span>
+          <span className="text-[#10b981] text-lg md:text-2xl p-3 font-semibold">₹{item.price}</span>
+          {/* showprive below */}
+          <span className="text-gray-500 text-sm md:text-lg line-through">₹{item.price}</span>
         </div>
 
         <div className="singleProductCard__capacity__and__item">
-          <div className="flex justify-between mx-3 border-t-2 py-2">
+          <div className="flex gap-1 justify-between mx-3 border-t-2 py-2 flex-wrap">
             <p>
-              {/* <span className="text-[#19d194] text-sm mr-1">Capacity:</span><span className="text-gray-900 text-xs">{Object.entries(item.productCapacityPrice)[0][0]} : {Object.entries(item.productCapacityPrice)[0][1]}</span> */}
+              <span className="text-[#19d194] text-sm mr-1">Capacity:</span><span className="text-gray-900 text-xs truncate">{item.productCapacity}</span>
             </p>
             <p>
-              <span className="text-[#19d194] text-sm mr-1">Warranty:</span><span className="text-gray-900 text-xs">{item.productWarranty}</span>
+              <span className="text-[#19d194] text-sm mr-1">Warranty:</span><span className="text-gray-900 text-xs truncate">{item.warranty}</span>
             </p>
           </div>
         </div>
 
         <div className="singleProductCard__with__trolly flex justify-between mx-3 my-1">
-          <span className="text-gray-900 text-xs md:text-sm">With Trolly</span><span className="text-[#10b981] text-sm md:text-lg">₹{item.productWithTrolley}</span>
+          <span className="text-gray-900 text-xs md:text-sm">With Trolly</span><span className="text-[#10b981] text-sm md:text-lg">₹{item.trolleyPrice}</span>
         </div>
 
         <div className="singleProductCard__without__old__battery flex justify-between mx-3 my-1">
-          <span className="text-gray-900 text-xs md:text-sm">With Exchange</span><span className="text-[#10b981] text-sm md:text-lg">₹{item.productWithoutTrolley}</span>
+          <span className="text-gray-900 text-xs md:text-sm">With Exchange</span><span className="text-[#10b981] text-sm md:text-lg">₹{item.withExchangeDiscount}</span>
+          {/* todo */}
         </div>
 
         <div className="flex justify-between mx-3 my-4">
