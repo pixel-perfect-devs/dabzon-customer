@@ -8,7 +8,9 @@ const Profile = () => {
       <NavBar />
       {/* my profile customer */}
       <h1>Profile</h1>
-      <FooterComponents />
+      <div className="footer hidden sm:block">
+        <FooterComponents />
+      </div>
     </div>
   )
 }

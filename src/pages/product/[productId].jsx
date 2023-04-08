@@ -14,7 +14,9 @@ const ProductDetailsPage = () => {
       <NavBar />
       <Productdetailsview productId={productId} />
       {/* <TopSellingBatteries title="Recommended for you" /> */}
-      <FooterComponents />
+      <div className="footer hidden sm:block">
+        <FooterComponents />
+      </div>
     </div>
   )
 }

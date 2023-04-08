@@ -101,7 +101,9 @@ const BlogDetailsPage = ({ item }) => {
                 </div>
             </div>
             <BlogComponents source='home' blogHeading="You may also like..." />
-            <FooterComponents />
+            <div className="footer hidden sm:block">
+                <FooterComponents />
+            </div>F
         </div>
     )
 }

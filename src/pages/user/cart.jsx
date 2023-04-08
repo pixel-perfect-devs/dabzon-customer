@@ -34,8 +34,10 @@ const Cart = () => {
           </div>
       }
       {/* recommend for you section */}
-      <TopSellingBatteries title="Recommeded for you" />
-      <FooterComponents />
+      {/* <TopSellingBatteries title="Recommeded for you" /> */}
+      <div className="footer hidden sm:block">
+        <FooterComponents />
+      </div>
     </div>
   )
 }
