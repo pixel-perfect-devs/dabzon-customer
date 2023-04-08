@@ -2,7 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import monogram from '../../../../../public/monogram.png'
 
-const Index = (props) => {
+const Index = ({item}) => {
 
   return (
     <div className='flex cursor-pointer'>
@@ -14,7 +14,7 @@ const Index = (props) => {
           width={70}
           height={70}
         />
-        <p className='m-1 text-center sm:m-2  text-sm' >{props.items.data.title}</p>
+        <p className='m-1 text-center sm:m-2  text-sm' >{item.title}</p>
       </div>
     </div>
   )

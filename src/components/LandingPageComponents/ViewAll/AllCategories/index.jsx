@@ -4,18 +4,18 @@ import CategoryCard from '../../ShopByCategory/CategoryCard/index'
 const Index = () => {
 
   // fetch data from api and remove the hard coded data
-  let data = [
-    "Car Batteries",
-    "Bike Batteries",
-    "Bike Batteries",
-    "Bike Batteries",
-    "Bike Batteries",
-    "Bike Batteries",
-    "Heavy Engine Batteries",
-    "Inverter Batteries",
-    "Roller Batteries",
-    "Tractor Batteries",
-  ];
+  let data=[
+      {"title":"Car Batteries"},
+      {"title":"Bike Batteries"},
+      {"title":"Bike Batteries"},
+      {"title":"Bike Batteries"},
+      {"title":"Bike Batteries"},
+      {"title":"Bike Btteries"},
+      {"title":"Heavy Engine Batteries"},
+      {"title":"Inverter Batteries"},
+      {"title":"Roller Batteries"},
+      {"title":" Batteries"},
+  ]
 
   return (
     <div className='all__categories my-8'>
@@ -24,8 +24,8 @@ const Index = () => {
           <p className="text-gray-900 text-xl sm:text-2xl font-bold">All Category</p>
         </div>
         <div className="flex flex-wrap">
-          {data.map((post, index) => {
-            return <CategoryCard key={index} items={post} />;
+          {data.map((item, index) => {
+            return <CategoryCard key={index} item={item} />;
           })}
         </div>
       </div>

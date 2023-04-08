@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import CategoryCard from "./CategoryCard/index";
 const Index = ({ data }) => {
   const [showdata, setShowData] = useState([]);
+  console.log(data);
   useEffect(() => {
     setShowData(data)
   }, [data]);
@@ -14,8 +15,8 @@ const Index = ({ data }) => {
             <Link href='/all/allCategories' className="text-green-500 font-medium text-sm">view all</Link>
           </div>
           <div className="flex overflow-x-scroll">
-            {showdata.map((post, index) => {
-              return <CategoryCard key={index} items={post} />;
+            {showdata.map((item, index) => {
+              return <CategoryCard key={index} item={item} />;
             })}
           </div>
         </div>
