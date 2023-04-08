@@ -1,7 +1,7 @@
 import React from "react";
 import NavBar from "../../src/components/NavBar/index";
 import Footer from "../../src/components/FooterComponents/index";
-
+import { useEffect, useState } from "react";
 import battery from "../../public/battery.png";
 import capacity from "../../public/productdetailsview/capacity.png";
 import coupon from "../../public/productdetailsview/coupon.png";
@@ -12,7 +12,12 @@ import with_exchange from "../../public/productdetailsview/with_exchange.png";
 import without_exchange from "../../public/productdetailsview/without_exchange.png";
 import TopSellingBatteriesCard from "../../src/components/LandingPageComponents/TopSellingBatteries/TopSellingBatteriesCard/index";
 import Image from "next/image";
-const Productdetailsview = ({ title }) => {
+
+const Productdetailsview = ({ capacityData }) => {
+  const [capacity, setCapacity] = useState([]);
+  useEffect(() => {
+    setCapacity(capacityData);
+  }, [capacityData]);
   return (
     <div>
       <NavBar />
@@ -220,17 +225,23 @@ const Productdetailsview = ({ title }) => {
               <p className="text-gray-900 text-lg sm:text-xl text-center">
                 Check Delivery Avaibility
               </p>
-              <select
-                className="rounded-full w-60 h-10 bg-gray-200 text-center "
-                id="states"
-                name="statelist"
-                form="stateform"
-              >
-                <option value="volvo">Kolkata</option>
-                <option value="saab">Banglore</option>
-                <option value="opel">Delhi</option>
-                <option value="audi">Mumbai</option>
-              </select>
+              {/* bhai yaha error aarha hai jara dekh lena */}
+              {capacity.length !== 0 ? capacity.map((item, index) => {
+                return (
+                  <select
+                    className="rounded-full w-60 h-10 bg-gray-200 text-center "
+                    id="states"
+                    name="statelist"
+                    form="stateform"
+                  >
+                    <option key={index} value={item}>{item}</option>
+                  </select>
+                )
+              }) :
+                <div>
+
+                </div>
+              }
             </div>
 
             <div className=" sm:space-y-6 space-y-2 my-3 sm:mx-8 mx-2">
@@ -345,7 +356,7 @@ const Productdetailsview = ({ title }) => {
         <p className="text-gray-900 lg:text-4xl sm:text-3xl  text-2xl font-bold
         mb-5 text-center">Recommended for you</p>
         <div className='flex flex-wrap justify-center gap-6 my-4'>
-          {[0, 0, 0, 0, 0, 0, 0, 0].map((it, idx) => <TopSellingBatteriesCard key={idx} id={idx} />)}
+          {/* {[0, 0, 0, 0, 0, 0, 0, 0].map((it, idx) => <TopSellingBatteriesCard key={idx} id={idx} />)} */}
         </div>
         {/* <div className='flex justify-center flex-wrap mx-7'>
       <div className="m-4">
@@ -382,3 +393,17 @@ const Productdetailsview = ({ title }) => {
 };
 
 export default Productdetailsview;
+
+export async function getServerSideProps() {
+  const res = await fetch("http://localhost:3000/api/capacity/get", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ "brand": "Excide", "category": "Car Battery" })
+  });
+  const resJSON = await res.json();
+  return {
+    props: { capacityData: resJSON }
+  }
+}
