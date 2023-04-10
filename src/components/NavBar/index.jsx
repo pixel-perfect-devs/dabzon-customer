@@ -4,17 +4,22 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import MobileNavBar from './MobileNavBar/index';
 import avatar from '../../../public/avatar.png'
+import logo from '../../../public/logo.svg'
+import { useSelector } from 'react-redux';
 
 function NavBar() {
 
     const router = useRouter();
     const [navbar, setNavbar] = useState(false);
     const [login, setLogin] = useState(1);
+    const { cart } = useSelector(state => state.cart);
 
     return (
-        <div className='Navbar relative inline-block w-full bg-[#10b981] md:bg-white'>
-            <nav className="backdrop-blur-md z-10 py-0 flex justify-between gap-3 max-w-7xl  items-center my-6 mx-auto px-[3vw] flex-wrap">
-                <Link href='/' className="logo inline-block bg-[#10b981] text-white px-7 pt-3 pb-2.5 font-normal rounded-full">logo</Link>
+        <div className='Navbar sticky top-0 z-10 inline-block w-full bg-[#10b981] md:bg-white'>
+            <nav className="backdrop-blur-md z-10 py-0 flex justify-between gap-3 max-w-7xl  items-center my-4 mx-auto px-[3vw] flex-wrap">
+                <Link href='/' className="logo inline-block bg-[#10b981] text-white p-1 font-normal rounded-full">
+                    <Image width={50} height={50} className="" src={logo} alt="logo" />
+                </Link>
                 <div className="search__container md:flex flex-row gap-3 bg-[#f3f4f6] rounded-3xl px-8 py-2 hidden">
                     <svg className='sm:w-5' xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
@@ -41,10 +46,11 @@ function NavBar() {
                                 <Image className='w-10 rounded-full' src={avatar} alt="avatar" width={1000} height={1000} />
                             </button>
                     }
-                    <Link href='/user/cart' className="cart__icon my-auto ">
+                    <Link href='/user/cart' className="cart__icon my-auto relative">
                         <svg className='sm:w-5' xmlns="http://www.w3.org/2000/svg" fill="#10b981" viewBox="0 0 16 16">
                             <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
                         </svg>
+                        <span className={`absolute -top-2 -right-2 bg-green-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs ${cart.length < 1 && 'hidden'} `}>{cart.length}</span>
                     </Link>
                 </div>
 
