@@ -6,38 +6,46 @@ import { useSelector } from 'react-redux'
 
 const Index = () => {
 
-    const cartState = useSelector((state) => state.cart);
-
+  const { cart } = useSelector((state) => state.cart);
+  console.log(cart);
   return (
     <div className="cart__full flex items-center justify-center lg:justify-between flex-wrap">
 
       <div className="cart__item__container my-8 space-y-3 sm:space-y-6">
         {
-          [0, 0, 0, 0].map((i, ind) => {
+          cart.map((i, ind) => {
             return (
               <div key={ind} className="cart__item bg-white flex p-2 m-2 sm:p-8 rounded-xl gap-2 sm:gap-5 items-center ">
                 <div className="image__container w-24 h-24 p-3 sm:w-48 sm:h-48 bg-[#f3f4f6] rounded-xl grid place-items-center box-border object-contain">
-                  <Image src={cart_item_bg} alt='cart_item_bg' width={100} height={100} className='' />
+                  <Image src={i.productImage} alt='cart_item_bg' width={100} height={100} className='' />
                 </div>
                 <div className="item__text__container space-y-1 sm:space-y-2 text-xs sm:text-sm">
-                  <p className="item__title text-base sm:text-lg font-semibold">Luminous power 2089 watt inverter battery</p>
+                  <p className="item__title text-base sm:text-lg font-semibold">{i.productName}</p>
 
                   <div className="item__exchange__trolley flex gap-1 sm:gap-6 ">
-                    <p className="exchnage flex gap-1 sm:gap-2 items-center">
-                      <span className="exchange__icon bg-[#f43f5e] p-2 sm:p-3 rounded-full">
-                        <svg className='w-2 sm:w-4' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill='white'>
-                          <path d="M438.6 150.6c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.7 96 32 96C14.3 96 0 110.3 0 128s14.3 32 32 32l306.7 0-41.4 41.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l96-96zm-333.3 352c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 416 416 416c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0 41.4-41.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96z" /></svg>
-                      </span>
-                      <span className="exchange__text uppercase text-xs">With exchange</span>
-                    </p>
-                    <p className="trolley flex gap-1 sm:gap-2 items-center">
-                      <span className="exchange__icon bg-[#10b981] p-2 sm:p-3 rounded-full">
-                        <svg className='w-3 sm:w-5' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" fill='white'>
-                          <path d="M0 32C0 14.3 14.3 0 32 0H48c44.2 0 80 35.8 80 80V368c0 8.8 7.2 16 16 16H608c17.7 0 32 14.3 32 32s-14.3 32-32 32H541.3c1.8 5 2.7 10.4 2.7 16c0 26.5-21.5 48-48 48s-48-21.5-48-48c0-5.6 1-11 2.7-16H253.3c1.8 5 2.7 10.4 2.7 16c0 26.5-21.5 48-48 48s-48-21.5-48-48c0-5.6 1-11 2.7-16H144c-44.2 0-80-35.8-80-80V80c0-8.8-7.2-16-16-16H32C14.3 64 0 49.7 0 32zM432 96V56c0-4.4-3.6-8-8-8H344c-4.4 0-8 3.6-8 8V96h96zM288 96V56c0-30.9 25.1-56 56-56h80c30.9 0 56 25.1 56 56V96 320H288V96zM512 320V96h16c26.5 0 48 21.5 48 48V272c0 26.5-21.5 48-48 48H512zM240 96h16V320H240c-26.5 0-48-21.5-48-48V144c0-26.5 21.5-48 48-48z" />
-                        </svg>
-                      </span>
-                      <span className="exchange__text uppercase text-xs">With trolley</span>
-                    </p>
+                    {
+                      i?.productWithExchange
+                        ? <p className="exchnage flex gap-1 sm:gap-2 items-center">
+                          <span className="exchange__icon bg-[#f43f5e] p-2 sm:p-3 rounded-full">
+                            <svg className='w-2 sm:w-4' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill='white'>
+                              <path d="M438.6 150.6c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.7 96 32 96C14.3 96 0 110.3 0 128s14.3 32 32 32l306.7 0-41.4 41.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l96-96zm-333.3 352c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 416 416 416c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0 41.4-41.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96z" /></svg>
+                          </span>
+                          <span className="exchange__text uppercase text-xs">With exchange</span>
+                        </p>
+                        : null
+                    }
+                    {
+                      i?.productWithTrolley
+                        ? <p className="trolley flex gap-1 sm:gap-2 items-center">
+                          <span className="exchange__icon bg-[#10b981] p-2 sm:p-3 rounded-full">
+                            <svg className='w-3 sm:w-5' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" fill='white'>
+                              <path d="M0 32C0 14.3 14.3 0 32 0H48c44.2 0 80 35.8 80 80V368c0 8.8 7.2 16 16 16H608c17.7 0 32 14.3 32 32s-14.3 32-32 32H541.3c1.8 5 2.7 10.4 2.7 16c0 26.5-21.5 48-48 48s-48-21.5-48-48c0-5.6 1-11 2.7-16H253.3c1.8 5 2.7 10.4 2.7 16c0 26.5-21.5 48-48 48s-48-21.5-48-48c0-5.6 1-11 2.7-16H144c-44.2 0-80-35.8-80-80V80c0-8.8-7.2-16-16-16H32C14.3 64 0 49.7 0 32zM432 96V56c0-4.4-3.6-8-8-8H344c-4.4 0-8 3.6-8 8V96h96zM288 96V56c0-30.9 25.1-56 56-56h80c30.9 0 56 25.1 56 56V96 320H288V96zM512 320V96h16c26.5 0 48 21.5 48 48V272c0 26.5-21.5 48-48 48H512zM240 96h16V320H240c-26.5 0-48-21.5-48-48V144c0-26.5 21.5-48 48-48z" />
+                            </svg>
+                          </span>
+                          <span className="exchange__text uppercase text-xs">With trolley</span>
+                        </p>
+                        : null
+                    }
                   </div>
 
                   <div className="item__item__count bg-[#f3f4f6] space-x-5 flex w-min py-1 px-2 sm:py-2 sm:px-4 font-semibold items-center rounded-lg" >
@@ -53,7 +61,7 @@ const Index = () => {
                           <path d="M4 3.06h2.726c1.22 0 2.12.575 2.325 1.724H4v1.051h5.051C8.855 7.001 8 7.558 6.788 7.558H4v1.317L8.437 14h2.11L6.095 8.884h.855c2.316-.018 3.465-1.476 3.688-3.049H12V4.784h-1.345c-.08-.778-.357-1.335-.793-1.732H12V2H4v1.06Z" />
                         </svg>
                       </span>
-                      <span className="price__text text-sm">100</span>
+                      <span className="price__text text-sm">{i.productPrice}</span>
                     </p>
                     <p className="discounted__price flex items-center line-through">
                       <span className="icon">
@@ -61,9 +69,9 @@ const Index = () => {
                           <path d="M4 3.06h2.726c1.22 0 2.12.575 2.325 1.724H4v1.051h5.051C8.855 7.001 8 7.558 6.788 7.558H4v1.317L8.437 14h2.11L6.095 8.884h.855c2.316-.018 3.465-1.476 3.688-3.049H12V4.784h-1.345c-.08-.778-.357-1.335-.793-1.732H12V2H4v1.06Z" />
                         </svg>
                       </span>
-                      <span className="price__text text-sm text-gray-500">100</span>
+                      <span className="price__text text-sm text-gray-500">{Math.round((i?.productDeliveryCityPrice ? + i.productDeliveryCityPrice : + i.productPrice) * 100 / (+i.productFakeDiscount))}</span>
                     </p>
-                    <span className="discounted__price text-[#7f1d1d] font-semibold text-sm sm:text-lg">80% OFF</span>
+                    <span className="discounted__price text-[#7f1d1d] font-semibold text-sm sm:text-lg">{i.productFakeDiscount}% OFF</span>
                   </div>
 
                 </div>

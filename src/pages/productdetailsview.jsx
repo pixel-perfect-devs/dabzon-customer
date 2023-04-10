@@ -14,10 +14,7 @@ import TopSellingBatteriesCard from "../../src/components/LandingPageComponents/
 import Image from "next/image";
 
 const Productdetailsview = ({ capacityData }) => {
-  const [capacity, setCapacity] = useState([]);
-  useEffect(() => {
-    setCapacity(capacityData);
-  }, [capacityData]);
+  console.log(capacityData)
   return (
     <div>
       <NavBar />
@@ -226,22 +223,20 @@ const Productdetailsview = ({ capacityData }) => {
                 Check Delivery Avaibility
               </p>
               {/* bhai yaha error aarha hai jara dekh lena */}
-              {capacity.length !== 0 ? capacity.map((item, index) => {
-                return (
-                  <select
-                    className="rounded-full w-60 h-10 bg-gray-200 text-center "
-                    id="states"
-                    name="statelist"
-                    form="stateform"
-                  >
-                    <option key={index} value={item}>{item}</option>
-                  </select>
-                )
-              }) :
-                <div>
-
-                </div>
-              }
+              <select
+                className="rounded-full w-60 h-10 bg-gray-200 text-center "
+                id="states"
+                name="statelist"
+                form="stateform"
+              >
+                {
+                  capacityData?.map((item, index) => {
+                    return (
+                      <option key={index} value={item.productId}>{item.capacity}</option>
+                    )
+                  })
+                }
+              </select>
             </div>
 
             <div className=" sm:space-y-6 space-y-2 my-3 sm:mx-8 mx-2">
@@ -404,6 +399,6 @@ export async function getServerSideProps() {
   });
   const resJSON = await res.json();
   return {
-    props: { capacityData: resJSON }
+    props: { capacityData: resJSON.allData }
   }
 }

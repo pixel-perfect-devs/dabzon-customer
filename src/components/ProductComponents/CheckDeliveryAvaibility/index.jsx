@@ -6,12 +6,12 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function Index({ deliveryAvailabilityCity, setDeliveryAvailabilityCity, data, defaultDeliveryCity }) {
+export default function Index({ cityArray, cartItem, setCartItem, setCouponCode }) {
     return (
         <Menu as="div" className="delivery__city__drop__down relative ">
             <Menu.Button className="flex items-center justify-between w-full px-6 border border-gray-600 hover:text-gray-600 focus:text-gray-600 py-2 rounded-full gap-3 text-gray-600 ">
                 <ChevronDownIcon className="-mr-1 h-5 w-5" aria-hidden="true" />
-                <p>{deliveryAvailabilityCity ? deliveryAvailabilityCity : defaultDeliveryCity}</p>
+                <p>{cartItem.productDeliveryCity ? cartItem.productDeliveryCity : "Choose your option"}</p>
             </Menu.Button>
 
             <Transition
@@ -26,14 +26,23 @@ export default function Index({ deliveryAvailabilityCity, setDeliveryAvailabilit
                 <Menu.Items className="absolute top-12 left-0 z-10 mt-2 w-52 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="py-1">
                         {
-                            data.map((item, index) => <Menu.Item key={index} onClick={() => setDeliveryAvailabilityCity(prev => prev=item)}>
+                            cityArray.map((item, index) => <Menu.Item key={index} onClick={() =>{
+                                 setCartItem(prev => prev = { ...prev, productDeliveryCity: item.cityName, productDeliveryCityPrice: item.cityValue })
+                                 setCouponCode({
+                                    couponCode: "",
+                                    couponDiscount: 0,
+                                    couponResult: "",
+                                    couponState: false,
+                                    payingPriceAfterCoupon: 0,
+                                })
+                                 }}>
                                 {({ active }) => (
                                     <p className={classNames(
                                         active ? 'cursor-pointer text-green-500' : 'text-gray-800',
                                         'block px-4 py-2 text-base'
                                     )}
                                     >
-                                        {item}
+                                        {item.cityName}
                                     </p>
                                 )}
                             </Menu.Item>

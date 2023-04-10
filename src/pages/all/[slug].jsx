@@ -25,8 +25,10 @@ const Index = () => {
     return (
         <div className='dynamic__route__viewall'>
             <NavBar />
-            { viewall(slug) }
-            <FooterComponents />
+            {viewall(slug)}
+            <div className="footer hidden sm:block">
+                <FooterComponents />
+            </div>
         </div>
     )
 }

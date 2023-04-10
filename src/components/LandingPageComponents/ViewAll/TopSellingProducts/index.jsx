@@ -20,9 +20,9 @@ const Index = () => {
         </div>
         <div className='flex flex-wrap justify-center gap-6 my-4'>
           {
-            topSellingProducts
+            topSellingProducts.length > 0
               ? topSellingProducts.map((item, idx) => <TopSellingBatteriesCard key={idx} item={item} />)
-              : <p className="text-gray-500 text-sm">No products found</p>
+              : <p className="text-gray-800 text-sm">No products found</p>
           }
         </div>
       </div>

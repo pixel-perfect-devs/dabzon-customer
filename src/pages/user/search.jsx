@@ -8,7 +8,9 @@ const Search = () => {
     <div className='Search'>
       <NavBar />
       <SearchComponent />
-      <FooterComponents />
+      <div className="footer hidden sm:block">
+        <FooterComponents />
+      </div>
     </div>
   )
 }
