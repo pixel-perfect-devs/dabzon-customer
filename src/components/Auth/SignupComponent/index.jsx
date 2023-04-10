@@ -1,9 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import signup_bg from "../../../../public/auth/signup_bg.svg";
 import Link from "next/link";
 
 const Index = () => {
+  const [userData, setUserData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: ""
+  })
+  const [message, setMessage] = useState("");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    //validating
+    const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    const paswdRegexp = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
+
+    if (/^[a-zA-Z]/.test(userData.name)) {
+      if (emailRegexp.test(userData.email)) {
+        if (paswdRegexp.test(userData.password)) {
+          if (userData.password === userData.confirmPassword) {
+            console.log("good");
+            setMessage("")
+          }
+          else {
+            setMessage("passwrod and confirm password should be same");
+          }
+        }
+        else {
+          setMessage("Enter a password between 7 to 15 characters which contain at least one numeric digit and a special character")
+        }
+      }
+      else {
+        setMessage("Enter correct email");
+      }
+    }
+    else {
+      setMessage("Enter Name Correctly")
+    }
+  }
   return (
     <div className="flex items-center justify-evenly min-h-screen bg-gray-100 flex-wrap py-16">
       <Image className="m-2 hidden md:block" src={signup_bg} alt="Image is loading..."
@@ -20,6 +57,9 @@ const Index = () => {
           </p>
         </div>
         <div className="customer__info space-y-2 text-base ">
+          <div>
+            <p className="max-w-[300px] text-[#f71a06ef] text-[1rem] flex">{message}</p>
+          </div>
           <div className="customer__name flex flex-col">
             <label
               className="text-gray-900 "
@@ -28,11 +68,13 @@ const Index = () => {
               Your Name
             </label>
             <input
+              onChange={(e) => setUserData((prev) => prev = { ...prev, name: e.target.value })}
               className="border-gray-300 border rounded-md p-2 outline-0 bg-transparent w-[300px] "
               type="text"
               id="name"
               name="name"
               placeholder="Enter your name"
+              required
             />
           </div>
           <div className=" customer__email flex flex-col ">
@@ -43,25 +85,32 @@ const Index = () => {
               Your Email
             </label>
             <input
+              onChange={(e) => setUserData((prev) => prev = { ...prev, email: e.target.value })}
               className="border-gray-300 border rounded-md p-2 outline-0  bg-transparent w-[300px] "
               type="email"
               id="email"
               name="email"
               placeholder="Enter your email..."
+              required
             />
           </div>
           <div className="customer__password flex flex-col space-y-2">
             <label className="text-gray-900 " htmlFor="password" >Your password</label>
-            <input className="border-gray-300 border rounded-md p-2 outline-0 bg-transparent w-[300px] " type="password" id="password"
+            <input
+              onChange={(e) => setUserData((prev) => prev = { ...prev, password: e.target.value })}
+              className="border-gray-300 border rounded-md p-2 outline-0 bg-transparent w-[300px] " type="password" id="password"
               name="password"
               placeholder="Enter your password"
+              required
             />
             <input
+              onChange={(e) => setUserData((prev) => prev = { ...prev, confirmPassword: e.target.value })}
               className="border-gray-300 border rounded-md p-2 outline-0 bg-transparent w-[300px]"
               type="password"
               id="cpassword"
               name="cpassword"
               placeholder="Confirm Password"
+              required
             />
 
             <div className=" text-[#6b707a]">
@@ -79,7 +128,7 @@ const Index = () => {
         </div>
 
         <div className="buttons__container flex flex-col items-center">
-          <button className="bg-[#10B981] text-white w-56 rounded-full h-9 mt-5 shadow-2xl"
+          <button onClick={(e) => handleSubmit(e)} className="bg-[#10B981] text-white w-56 rounded-full h-9 mt-5 shadow-2xl"
             type="button"
           >
             Create

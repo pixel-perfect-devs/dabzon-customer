@@ -42,6 +42,7 @@ const Productdetailsview = ({ productId }) => {
         productCategory: "",
         productCapacityArray: [],
         productFakeDiscount: 0,
+        quantity:0,
     });
 
     const fetchProductDetails = async (productId) => {
@@ -64,6 +65,7 @@ const Productdetailsview = ({ productId }) => {
             productCapacityArray: capacityData.allData,
             productCouponCodeArray: productData.allData.coupons,
             productFakeDiscount: productData.allData.fakeDiscount,
+            quantity: 1
         })
     }
 
@@ -76,7 +78,7 @@ const Productdetailsview = ({ productId }) => {
         e.preventDefault();
         if (cartItem.productDeliveryCity === "") return alert("Please select your city");
         let copyCartItem = { ...cartItem, productCouponCode: couponCode.couponCode, productCouponCodeDiscount: couponCode.couponDiscount, productPayingPriceAfterCoupon: couponCode.payingPriceAfterCoupon };
-
+        
         delete copyCartItem.productCapacityArray;
         delete copyCartItem.productCouponCodeArray;
 
