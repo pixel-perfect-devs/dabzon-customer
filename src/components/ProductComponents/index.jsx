@@ -11,63 +11,103 @@ import with_exchange from "../../../public/productdetailsview/with_exchange.png"
 import without_exchange from "../../../public/productdetailsview/without_exchange.png";
 import Image from "next/image";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteFromCart, setCart } from "@/reduxStore/Slices/Cart/CartSlice";
 
 const Productdetailsview = ({ productId }) => {
 
+    const dispatch = useDispatch();
+    const { cart } = useSelector(state => state.cart);
     const [productDetails, setProductDetails] = React.useState(null);
-
     const [mainImage, setMainImage] = React.useState(null);
-    // const [originalPrice, setOriginalPrice] = React.useState(productDetails?.price);
-
+    const [couponCode, setCouponCode] = React.useState({
+        couponCode: "",
+        couponDiscount: 0,
+        couponResult: "",
+        couponState: false,
+        payingPriceAfterCoupon: 0,
+    });
     const [cartItem, setCartItem] = React.useState({
         productId: "",
         productName: "",
         productImage: "",
-        productPrice: "",
+        productPrice: 0,
         productWithExchange: 0,
         productWithTrolley: 0,
-        productCouponCode: "",
+        productCouponCodeArray: [],
         productCapacity: "",
         productDeliveryCity: "",
-        productDeliveryCityPrice: "",
+        productDeliveryCityPrice: 0,
         productBrand: "",
         productCategory: "",
         productCapacityArray: [],
+        productFakeDiscount: 0,
     });
 
     const fetchProductDetails = async (productId) => {
         if (!productId) return;
         const response = await fetch(`/api/${productId}`);
         const { productData, capacityData } = await response.json();
-        console.log(productData)
+        // console.log(productData)
         setProductDetails(productData.allData);
         setMainImage(productData.allData.image1);
-
         setCartItem(prev => prev = {
             ...prev,
+            _id: productData.allData._id,
             productId: productData.allData._id,
             productName: productData.allData.productName,
             productImage: productData.allData.image1,
             productPrice: productData.allData.price,
-            productWithExchange: productData.allData.withExchange,
-            productWithTrolley: productData.allData.withTrolley,
             productCapacity: productData.allData?.productCapacity,
             productBrand: productData.allData.productBrand,
             productCategory: productData.allData.productCategory,
             productCapacityArray: capacityData.allData,
+            productCouponCodeArray: productData.allData.coupons,
+            productFakeDiscount: productData.allData.fakeDiscount,
         })
     }
 
     const buyNow = (e) => {
         e.preventDefault();
-        console.log("buy now");
+        console.log("cart", cart);
     }
 
     const addToCart = (e) => {
         e.preventDefault();
-        if(cartItem.productDeliveryCity === "")return alert("Please select your city");
-        delete cartItem.productCapacityArray
-        console.log("add to cart", cartItem);
+        if (cartItem.productDeliveryCity === "") return alert("Please select your city");
+        let copyCartItem = { ...cartItem, productCouponCode: couponCode.couponCode, productCouponCodeDiscount: couponCode.couponDiscount, productPayingPriceAfterCoupon: couponCode.payingPriceAfterCoupon };
+
+        delete copyCartItem.productCapacityArray;
+        delete copyCartItem.productCouponCodeArray;
+
+        dispatch(setCart(copyCartItem));
+    }
+
+    const handleRemoveFromCart = (e, id) => {
+        e.preventDefault();
+        dispatch(deleteFromCart(id))
+    }
+
+    const applyCoupon = (e) => {
+        e.preventDefault();
+        for (let i = 0; i < cartItem.productCouponCodeArray.length; i++) {
+            if (!couponCode.couponState && cartItem.productCouponCodeArray[i] === couponCode.couponCode) {
+                let afterSplitArray = couponCode.couponCode.match(/[a-zA-Z]+|[0-9]+/g);
+                let discountPercent = Number(afterSplitArray[1]);
+                setCouponCode(prev => prev = {
+                    ...prev,
+                    couponDiscount: discountPercent,
+                    couponResult: "Valid",
+                    couponState: true,
+                    payingPriceAfterCoupon: cartItem.productDeliveryCityPrice
+                        ? +cartItem.productDeliveryCityPrice - ((+cartItem.productDeliveryCityPrice) * (discountPercent / 100))
+                        : +cartItem.productPrice - ((+cartItem.productPrice) * (discountPercent / 100))
+                });
+                return;
+            } else {
+                setCouponCode(prev => prev = { ...prev, couponResult: "Invalid" });
+            }
+        }
     }
 
     useEffect(() => {
@@ -134,24 +174,24 @@ const Productdetailsview = ({ productId }) => {
                                 </button>
                             </div>
                         </div>
-                        <form onSubmit={(e) => addToCart(e)} className="Product__text__specification flex flex-col sm:space-y-2 space-y-1">
+                        <form className="Product__text__specification flex flex-col sm:space-y-2 space-y-1">
                             <div className="flex justify-center sm:justify-start">
                                 <p className="sm:text-[2rem]  text-[1.3rem] text-gray-900 mx-2 sm:text-left text-center" >
                                     {productDetails.productName}
                                 </p>
                             </div>
                             <div className="ProductPrice mx-2 flex items-center justify-center sm:justify-start">
-                                <span className="text-[#10b981] text-2xl">₹{productDetails.price} </span>
+                                <span className="text-[#10b981] text-2xl">₹{cartItem.productDeliveryCityPrice ? cartItem.productDeliveryCityPrice : productDetails.price} </span>
                                 <span className="text-gray-500 text-base line-through mx-3">
-                                    ₹{Math.round((+productDetails.price) * 100 / (+productDetails.fakeDiscount))}
+                                    ₹{Math.round((cartItem.productDeliveryCityPrice ? +cartItem.productDeliveryCityPrice : +productDetails.price) * 100 / (+productDetails.fakeDiscount))}
                                 </span>
                                 <span className="text-rose-500 font-semibold text-lg">{productDetails.fakeDiscount} %OFF</span>
                             </div>
 
                             <div className="ExchangePrice__container flex flex-wrap sm:justify-start  justify-center">
                                 <div className="withExchangePrice__container">
-                                    <input onChange={() => console.log("clicked exchange")} className="hidden" id="withExchangePrice" type="radio" name="exchange" />
-                                    <label onClick={() => setCartItem(prev => prev = { ...prev, productWithExchange: exchangeAmount })} className="radio withExchangePrice__container box-border m-2 border-gray-200 bg-gray-50 border h-16 w-60 flex items-center rounded-xl hover:border-green-500  text-left cursor-pointer" htmlFor="withExchangePrice">
+                                    <input onChange={() => setCartItem(prev => prev = { ...prev, productWithExchange: productDetails.exchangeAmount })} className="hidden" id="withExchangePrice" type="radio" name="exchange" checked={cartItem.productWithExchange ? true : false} />
+                                    <label className="radio withExchangePrice__container box-border m-2 border-gray-200 bg-gray-50 border h-16 w-60 flex items-center rounded-xl hover:shadow-md  text-left cursor-pointer" htmlFor="withExchangePrice">
                                         <Image
                                             className="mx-4 "
                                             loading="lazy"
@@ -167,8 +207,8 @@ const Productdetailsview = ({ productId }) => {
                                     </label>
                                 </div>
                                 <div className="withoutExchangePrice__container">
-                                    <input onChange={() => console.log("clicked exchange")} className="hidden" id="withoutExchangePrice" type="radio" name="exchange" checked />
-                                    <label onClick={() => setCartItem(prev => prev = { ...prev, productWithExchange: 0 })} className="withoutExchangePrice__container radio box-border m-2 border-gray-200 bg-gray-50 border h-16 w-60 flex items-center rounded-xl hover:border-green-500  text-left cursor-pointer" htmlFor="withoutExchangePrice">
+                                    <input onChange={() => setCartItem(prev => prev = { ...prev, productWithExchange: 0 })} className="hidden" id="withoutExchangePrice" type="radio" name="exchange" checked={cartItem.productWithExchange ? false : true} />
+                                    <label className="withoutExchangePrice__container radio box-border m-2 border-gray-200 bg-gray-50 border h-16 w-60 flex items-center rounded-xl hover:shadow-md  text-left cursor-pointer" htmlFor="withoutExchangePrice">
                                         <Image
                                             className="mx-4 "
                                             loading="lazy"
@@ -187,8 +227,8 @@ const Productdetailsview = ({ productId }) => {
 
                             <div className="TrolleyPrice__container flex flex-wrap sm:justify-start  justify-center">
                                 <div className="withTrolleyPrice__container">
-                                    <input onChange={() => console.log("clicked trolley")} className="hidden" id="withTrolleyPrice" type="radio" name="trolley" />
-                                    <label onClick={() => setCartItem(prev => prev = { ...prev, productWithTrolley: trolleyPrice })} className="withExchangePrice__container radio box-border m-2 border-gray-200 bg-gray-50 border h-16 w-60 flex items-center rounded-xl hover:border-green-500 text-left cursor-pointer" htmlFor="withTrolleyPrice">
+                                    <input onChange={() => setCartItem(prev => prev = { ...prev, productWithTrolley: productDetails.trolleyPrice })} className="hidden" id="withTrolleyPrice" type="radio" name="trolley" checked={cartItem.productWithTrolley ? true : false} />
+                                    <label className="withExchangePrice__container radio box-border m-2 border-gray-200 bg-gray-50 border h-16 w-60 flex items-center rounded-xl hover:shadow-md text-left cursor-pointer" htmlFor="withTrolleyPrice">
                                         <Image
                                             className="mx-4 "
                                             loading="lazy"
@@ -204,8 +244,8 @@ const Productdetailsview = ({ productId }) => {
                                     </label>
                                 </div>
                                 <div className="withoutTrolleyPrice__container">
-                                    <input onChange={() => console.log("clicked trolley")} className="hidden" id="withoutTrolleyPrice" type="radio" name="trolley" checked />
-                                    <label onClick={() => setCartItem(prev => prev = { ...prev, productWithTrolley: 0 })} className="withoutTrolleyPrice__container radio box-border m-2 border-gray-200 bg-gray-50 border h-16 w-60 flex items-center rounded-xl hover:border-green-500  text-left cursor-pointer" htmlFor="withoutTrolleyPrice" >
+                                    <input onChange={() => setCartItem(prev => prev = { ...prev, productWithTrolley: 0 })} className="hidden" id="withoutTrolleyPrice" type="radio" name="trolley" checked={cartItem.productWithTrolley ? false : true} />
+                                    <label className="withoutTrolleyPrice__container radio box-border m-2 border-gray-200 bg-gray-50 border h-16 w-60 flex items-center rounded-xl hover:shadow-md  text-left cursor-pointer" htmlFor="withoutTrolleyPrice" >
                                         <Image
                                             className="mx-4 "
                                             loading="lazy"
@@ -221,22 +261,21 @@ const Productdetailsview = ({ productId }) => {
                                     </label>
                                 </div>
                             </div>
-                            {/* todo */}
+
                             <div className="couponCode__container flex items-center justify-center sm:justify-start mx-2 !mb-4">
-                                <Image
-                                    className="w-8 h-8"
-                                    loading="lazy"
-                                    src={coupon}
-                                    alt="Image is loading..."
-                                    width={30}
-                                    height={30}
-                                />
+                                <Image className="w-8 h-8" loading="lazy" src={coupon} alt="Image is loading..." width={30} height={30} />
                                 <div className="flex items-center w-40 mx-3">
                                     <div className="inputcontianer relative">
-                                        <input type="text" name="searchCoupon" id="searchCoupon" className="bg-gray-50 border border-green-500 rounded-full py-1 px-3 outline-none" />
-                                        <p className="couponResult text-sm text-green-500 absolute -bottom-5 left-0">Coupon applied</p>
+                                        <input onChange={(e) => setCouponCode(prev => prev = { ...prev, couponCode: e.target.value.toUpperCase() })} type="text" name="searchCoupon" id="searchCoupon" className="bg-gray-50 border border-green-500 rounded-full py-1 px-3 outline-none" value={couponCode.couponCode.toUpperCase()} />
+                                        {
+                                            couponCode.couponResult === "Invalid"
+                                                ? <p className="couponResult text-sm text-red-500 absolute -bottom-5 left-0">Invalid or already used Coupon</p>
+                                                : couponCode.couponResult === "Valid"
+                                                    ? <p className="couponResult text-xs text-green-500 absolute -bottom-8 left-0"> Coupon applied, you just have to pay ₹{couponCode.payingPriceAfterCoupon} </p>
+                                                    : null
+                                        }
                                     </div>
-                                    <button type="submit" className="border border-green-500 rounded-full py-1 px-3 mx-3 hover:bg-[#10b981] focus-within:bg-[#10b981] hover:text-white focus-within:text-white bg-gray-50 text-sm shadow-md ">Apply</button>
+                                    <button onClick={(e) => applyCoupon(e)} type="button" className="border border-green-500 rounded-full py-1 px-3 mx-3 hover:bg-[#10b981] focus-within:bg-[#10b981] hover:text-white focus-within:text-white bg-gray-50 text-sm shadow-md ">Apply</button>
                                 </div>
                             </div>
                             <div className="capacity__replacements flex flex-wrap justify-center sm:justify-start " >
@@ -292,7 +331,7 @@ const Productdetailsview = ({ productId }) => {
                                     <p className="text-gray-900 text-lg sm:text-xl text-center">
                                         Select your city
                                     </p>
-                                    <CheckDeliveryAvaibility cityArray={productDetails.city} cartItem={cartItem} setCartItem={setCartItem} />
+                                    <CheckDeliveryAvaibility cityArray={productDetails.city} cartItem={cartItem} setCartItem={setCartItem} setCouponCode={setCouponCode} />
                                 </div>
 
                                 <div className="share__products space-y-2 my-3 sm:mx-8 mx-2">
@@ -356,9 +395,12 @@ const Productdetailsview = ({ productId }) => {
                                 <button onClick={(e) => buyNow(e)} className=" text-[#10b981] hover:text-gray-50  bg-gray-50 border hover:bg-[#10b981] border-[#10b981] rounded-full w-28 h-9 mx-2">
                                     Buy Now
                                 </button>
-                                <button type="submit" className=" text-[#10b981] hover:text-gray-50  bg-gray-50 border hover:bg-[#10b981] border-[#10b981] rounded-full w-28 h-9 mx-2">
-                                    Add to cart
-                                </button>
+                                {cart.find((item) => item._id === productDetails._id) !== undefined
+                                    ? <button onClick={(e) => handleRemoveFromCart(e, productDetails._id)} className="text-xs hover:bg-red-600 focus:bg-red-500 hover:text-white focus:text-white md:text-sm border-red-500 border text-red-500 rounded-full px-4 py-[6px]">Remove</button>
+                                    : <button onClick={(e) => addToCart(e)} type="submit" className=" text-[#10b981] hover:text-gray-50  bg-gray-50 border hover:bg-[#10b981] border-[#10b981] rounded-full w-28 h-9 mx-2">
+                                        Add to cart
+                                    </button>
+                                }
                             </div>
                         </form>
                     </div>

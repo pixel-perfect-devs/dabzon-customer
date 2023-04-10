@@ -4,43 +4,45 @@ import battery from "../../../../../public/battery.png"
 import offerCarousel_image from "../../../../../public/offerCarousel_image.png"
 import top_offers from "../../../../../public/top_offers.png"
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setCart, deleteFromCart } from "@/reduxStore/Slices/Cart/CartSlice";
 
-const Card = ({item}) => {
-
-  // items to be fetched from props
-  // let item = {
-  //   id: 2,
-  //   name: "Exide Inva Tubular Battery",
-  //   defaultOriginalPrice: 5000,
-  //   tag: "Tubular",
-  //   image1: battery,
-  //   image2: top_offers,
-  //   image3: offerCarousel_image,
-  //   showPrice: 6000, // increase price by 10%
-  //   withExchange: 4500,
-  //   withoutExchange: 5000,
-  //   withTrolley: 6500,
-  //   withoutTrolley: 5000,
-  //   couponCode: { "EXIDE10": 10, "edii93": 33 },
-  //   capacity: { "100Ah": 8000, "150Ah": 8000, "200Ah": 7000 },
-  //   warranty: "3 years",
-  //   replacement: "10 days",
-  //   rating: 4.5,
-  //   defaultDeliveryCity: 'bangaluru',
-  //   deliveryCity: { "patna": 5000, "mumbai": 4000, "delhi": 8000 },
-  //   inStock: 10,
-  //   productDescription: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas porro nulla animi totam, sapiente, eius aliquam quidem maiores corporis cupiditate sit error cumque nisi eum ad culpa! Eius sed, est, iusto veritatis adipisci officiis quos recusandae rerum quod, corrupti distinctio!",
-  //   productNote: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas porro nulla animi totam, sapiente, eius aliquam quidem maiores corporis cupiditate sit err',
-  //   features: ['advance tubular battery single water indicater', 'high resistance to heat makes the battery perfect for indian wearher conditions.'],
-  //   specification: { 'Net Weight': '20.5 kg', 'Battery Layout': 'left', 'Capacity': '47 kg', 'Technology': 'Advance tubular', 'Modal': 'Luminous INVAHOMZ IHST1500', }
-  // }
-  console.log(item)
+const Card = ({ item }) => {
 
   const dispatch = useDispatch();
   const router = useRouter();
+  const { cart } = useSelector(state => state.cart);
 
-  const handleAddToCart = () => {}
+  const handleAddToCart = (e, item) => {
+    let cartItem = {
+      productBrand: item.productBrand,
+      productCapacity: item.productCapacity,
+      productCategory: item.productCategory,
+      productCouponCode: null,
+      productCouponCodeDiscount: null,
+      productDeliveryCity: null,
+      productDeliveryCityPrice: null,
+      productFakeDiscount: item.fakeDiscount,
+      productId: null,
+      productImage: item.image1,
+      productName: item.productName,
+      productPayingPriceAfterCoupon: null,
+      productPrice: item.price,
+      productWithExchange: null,
+      productWithTrolley: null,
+      _id: item._id,
+    }
+    dispatch(setCart(cartItem))
+  }
+
+  const handleBuyNow = (e) => {
+    console.log(cart)
+  }
+
+  const handleRemoveFromCart = (e, id) => {
+    e.preventDefault();
+    dispatch(deleteFromCart(id))
+  }
 
   return (
     <div className="singleProductCard cursor-pointer border-2 border-gray-200 shadow-md w-[270px] rounded-xl ">
@@ -61,10 +63,10 @@ const Card = ({item}) => {
         </div >
         <Image onClick={() => router.push(`/product/${item._id}`)} className="pb-2 m-auto w-auto h-auto" loading="lazy" src={item.image1} width={100} height={100} alt="Image is loading..." />
         {
-          item.fakeDiscount 
-          ? <p className="discount border border-white px-3 py-1 bg-red-500 rounded-3xl absolute left-1 bottom-1 text-[10px] md:text-xs">{ item.fakeDiscount}% OFF</p>
-          : null
-        }        
+          item.fakeDiscount
+            ? <p className="discount border border-white px-3 py-1 bg-red-500 rounded-3xl absolute left-1 bottom-1 text-[10px] md:text-xs">{item.fakeDiscount}% OFF</p>
+            : null
+        }
       </div>
 
       <div className="singleProductCard__descripion">
@@ -76,7 +78,7 @@ const Card = ({item}) => {
         <div className="singleProductCard__price border-gray-200 pb-1 flex justify-between items-center pr-3">
           <span className="text-[#10b981] text-lg md:text-2xl p-3 font-semibold">₹{item.price}</span>
           {/* showprive below */}
-          <span className="text-gray-500 text-sm md:text-lg line-through">₹{Math.round((+item.price)*100 / (+item.fakeDiscount))}</span>
+          <span className="text-gray-500 text-sm md:text-lg line-through">₹{Math.round((+item.price) * 100 / (+item.fakeDiscount))}</span>
         </div>
 
         <div className="singleProductCard__capacity__and__item">
@@ -100,8 +102,18 @@ const Card = ({item}) => {
         </div>
 
         <div className="flex justify-between mx-3 my-4">
-          <button className="text-xs hover:bg-[#10b981] focus:bg-[#10b981] hover:text-white focus:text-white md:text-sm border-green-500 border-2 text-[#10b981] rounded-full px-4 py-[6px]">Buy now</button>
-          <button onClick={() => handleAddToCart()} className="text-xs hover:bg-[#10b981] focus:bg-[#10b981] hover:text-white focus:text-white md:text-sm border-green-500 border-2 text-[#10b981] rounded-full px-4 py-[6px]">Add to cart</button>
+          {
+            // todo add to cart button
+            cart.find((cart__item) => cart__item._id === item._id) !== undefined
+              ? <>
+                <button onClick={(e) => handleBuyNow(e, item)} className="text-xs hover:bg-[#10b981] focus:bg-[#10b981] hover:text-white focus:text-white md:text-sm border-green-500 border text-[#10b981] rounded-full px-4 py-[6px]">Buy now</button>
+                <button onClick={(e) => handleRemoveFromCart(e, item._id)} className="text-xs hover:bg-red-600 focus:bg-red-500 hover:text-white focus:text-white md:text-sm border-red-500 border text-red-500 rounded-full px-4 py-[6px]">Remove</button>
+              </>
+              : <>
+                <button onClick={(e) => handleBuyNow(e, item)} className="text-xs hover:bg-[#10b981] focus:bg-[#10b981] hover:text-white focus:text-white md:text-sm border-green-500 border-2 text-[#10b981] rounded-full px-4 py-[6px]">Buy now</button>
+                <button onClick={(e) => handleAddToCart(e, item)} className="text-xs hover:bg-[#10b981] focus:bg-[#10b981] hover:text-white focus:text-white md:text-sm border-green-500 border-2 text-[#10b981] rounded-full px-4 py-[6px]">Add to cart</button>
+              </>
+          }
         </div>
       </div>
 

@@ -12,7 +12,7 @@ function classNames(...classes) {
 export default function Index({ cartItem, capacityArray }) {
 
     const router = useRouter();
-    console.log("capacityArray ", capacityArray)
+    // console.log("capacityArray ", capacityArray)
     return (
         <Menu as="div" className="capacity__drop__down relative border border-green-600 hover:text-green-600 focus:text-green-600 px-4 py-2 rounded-xl flex items-center gap-3 text-green-600 ">
             <Menu.Button className="flex items-center gap-2">
