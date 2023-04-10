@@ -1,22 +1,63 @@
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect } from 'react'
 import cart_item_bg from '../../../../public/cart_item_bg.png'
 import payment__image from '../../../../public/razorpay.png'
 import { useSelector } from 'react-redux'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 const Index = () => {
 
   const { cart } = useSelector((state) => state.cart);
-  console.log(cart);
+  const router = useRouter();
+  const [cartArray, setCartArray] = useState([]);
+
+  useEffect(() => {
+    setCartArray(cart);
+  }, [cart])
+
+  const handleCartItemClick = (e, _id) => {
+    e.preventDefault();
+    router.replace("/product/" + _id)
+  }
+
+  const handlePlus = (e, index) => {
+    e.preventDefault();
+    const prevQuantity = cartArray[index].quantity;
+    setCartArray(
+      cartArray.map((item, i) =>
+        i === index
+          ? { ...item, quantity: prevQuantity + 1 }
+          : item
+      )
+    )
+  }
+
+  const handleMinus = (e, index) => {
+    e.preventDefault();
+    const prevQuantity = cartArray[index].quantity;
+    if (prevQuantity > 1) {
+      setCartArray(
+        cartArray.map((item, i) =>
+          i === index
+            ? { ...item, quantity: prevQuantity - 1, }
+            : item
+        )
+      )
+    }
+    else {
+      alert("Quantity can't be 0");
+    }
+  }
   return (
     <div className="cart__full flex items-center justify-center lg:justify-between flex-wrap">
 
       <div className="cart__item__container my-8 space-y-3 sm:space-y-6">
         {
-          cart.map((i, ind) => {
+          cartArray.length !== 0 ? cartArray?.map((i, ind) => {
             return (
               <div key={ind} className="cart__item bg-white flex p-2 m-2 sm:p-8 rounded-xl gap-2 sm:gap-5 items-center ">
-                <div className="image__container w-24 h-24 p-3 sm:w-48 sm:h-48 bg-[#f3f4f6] rounded-xl grid place-items-center box-border object-contain">
+                <div onClick={(e) => handleCartItemClick(e, i._id)} className="image__container w-24 h-24 p-3 sm:w-48 sm:h-48 bg-[#f3f4f6] rounded-xl grid place-items-center box-border object-contain">
                   <Image src={i.productImage} alt='cart_item_bg' width={100} height={100} className='' />
                 </div>
                 <div className="item__text__container space-y-1 sm:space-y-2 text-xs sm:text-sm">
@@ -49,9 +90,9 @@ const Index = () => {
                   </div>
 
                   <div className="item__item__count bg-[#f3f4f6] space-x-5 flex w-min py-1 px-2 sm:py-2 sm:px-4 font-semibold items-center rounded-lg" >
-                    <span className="count__increment cursor-pointer text-lg sm:text-2xl">+</span>
-                    <span className="count__text text-sm sm:text-xl">1</span>
-                    <span className="count__decrement cursor-pointer text-lg sm:text-2xl">-</span>
+                    <span onClick={(e) => handlePlus(e, ind)} className="count__increment cursor-pointer text-lg sm:text-2xl">+</span>
+                    <span className="count__text text-sm sm:text-xl">{i.quantity}</span>
+                    <span onClick={(e) => handleMinus(e, ind)} className="count__decrement cursor-pointer text-lg sm:text-2xl">-</span>
                   </div>
 
                   <div className="item__price__discount flex gap-1 sm:gap-2">
@@ -77,7 +118,8 @@ const Index = () => {
                 </div>
               </div>
             )
-          })
+          }) :
+            null
         }
       </div>
       <div className="cart__utility space-y-10 my-8">
