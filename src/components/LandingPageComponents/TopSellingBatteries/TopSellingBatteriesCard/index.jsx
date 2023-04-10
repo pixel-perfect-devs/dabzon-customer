@@ -31,6 +31,7 @@ const Card = ({ item }) => {
       productWithExchange: null,
       productWithTrolley: null,
       _id: item._id,
+      quantity: 1,
     }
     dispatch(setCart(cartItem))
   }

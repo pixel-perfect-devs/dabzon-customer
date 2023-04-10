@@ -10,7 +10,6 @@ import TopSellingBatteries from "../components/LandingPageComponents/TopSellingB
 import FAQ from "../components/LandingPageComponents/FAQ/index";
 import BestFeedback from "../components/LandingPageComponents/BestFeedback/index";
 import BlogComponents from "../components/BlogComponents/index";
-import { useEffect } from "react";
 
 export default function Home({ shopbycategoryData, showTopSellingProductsData }) {
 
@@ -56,7 +55,7 @@ export async function getServerSideProps(context) {
   
   return {
     props: { 
-      shopbycategoryData: value[0].data,
+      shopbycategoryData: value[0].allData,
       showTopSellingProductsData: value[1].data
      },
   };
