@@ -11,9 +11,8 @@ const Index = () => {
     confirmPassword: ""
   })
   const [message, setMessage] = useState("");
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-
     //validating
     const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     const paswdRegexp = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
@@ -22,8 +21,20 @@ const Index = () => {
       if (emailRegexp.test(userData.email)) {
         if (paswdRegexp.test(userData.password)) {
           if (userData.password === userData.confirmPassword) {
-            console.log("good");
-            setMessage("")
+              // if entered data is correct
+              setMessage("")
+              delete userData.confirmPassword;
+              const res= await fetch(`${process.env.NEXT_PUBLIC_CUSTOMER_HOST}/api/user/signup`,{
+                method: "POST",
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+              });
+              const data=await res.json();
+              if(data.msg === "user is already present"){
+                alert("you are already resgistered");
+              }
           }
           else {
             setMessage("passwrod and confirm password should be same");

@@ -2,18 +2,37 @@ import Image from 'next/image'
 import React from 'react'
 import Link from 'next/link'
 import login_bg from '../../../../public/auth/login_bg.svg'
+import { useState } from 'react'
 
 const Index = () => {
+  const [userData, setUserData] = useState({email: '', password: '' })
+  const handleSubmit = async(e) =>{
+    e.preventDefault();
+    const res= await fetch(`${process.env.NEXT_PUBLIC_CUSTOMER_HOST}/api/user/login`,{
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    });
+    const data = await res.json();
+    if(data.msg === "wrong email or password"){
+      alert("wrong email or password");
+    }
+    else{
+      console.log(data.body);
+    }
+  }
   return (
     <section className="flex items-center justify-evenly min-h-screen bg-gray-100 flex-wrap py-16">
       <Image width={445} height={445} src={login_bg} className="m-2 hidden md:block" alt="Sample image" />
       <div className="flex flex-col items-center justify-center min-w-[300px] space-y-8 ">
         <div className="customer__heading ">
           <p className="font-semibold text-2xl text-gray-900">
-            Create Account
+            Welcome Back!!!
           </p>
           <p className="text-[#111827] text-base opacity-60">
-            Create an account to continue
+            Login to continue
           </p>
         </div>
         <div className="customer__info space-y-2 text-base ">
@@ -25,6 +44,7 @@ const Index = () => {
               Your Email
             </label>
             <input
+              onChange={(e) => setUserData((prev) => prev = { ...prev, email: e.target.value })}
               className="border-gray-300 border rounded-md p-2 outline-0  bg-transparent w-[300px] "
               type="email"
               id="email"
@@ -34,7 +54,7 @@ const Index = () => {
           </div>
           <div className="customer__password flex flex-col space-y-2">
             <label className="text-gray-900 " htmlFor="password" >Your password</label>
-            <input className="border-gray-300 border rounded-md p-2 outline-0 bg-transparent w-[300px] " type="password" id="password"
+            <input onChange={(e) => setUserData((prev) => prev = { ...prev, password: e.target.value })} className="border-gray-300 border rounded-md p-2 outline-0 bg-transparent w-[300px] " type="password" id="password"
               name="password"
               placeholder="Enter your password"
             />
@@ -46,7 +66,7 @@ const Index = () => {
                 </Link>
               </span> |
               <span className=" text-xs cursor-pointer">
-                <Link href='/auth/signup' > Sign Up
+                <Link href='/auth/signup' > Signup
                 </Link>
               </span>
             </div>
@@ -54,10 +74,10 @@ const Index = () => {
         </div>
 
         <div className="buttons__container flex flex-col items-center">
-          <button className="bg-[#10B981] text-white w-56 rounded-full h-9 mt-5 shadow-2xl"
+          <button onClick={(e)=> handleSubmit(e)} className="bg-[#10B981] text-white w-56 rounded-full h-9 mt-5 shadow-2xl"
             type="button"
           >
-            Create
+            Login
           </button>
           <p className="opacity-60 text-[0.8rem] my-[1rem]">OR</p>
           <div className="flex gap-3">
