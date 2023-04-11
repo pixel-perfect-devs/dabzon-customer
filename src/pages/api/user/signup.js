@@ -7,13 +7,13 @@ export default async function handler(req, res) {
             const db = await client.db("dabzon");
             const collection = await db.collection("user");
             //check if user already exist by email
-            const response1 = await collection.findOne({email:userData.email},{active:1,_id:0});
-            if(response1.active === true){
+            const response1 = await collection.findOne({"email":userData.email},{"active":1,"_id":0});
+            if(response1 && response1.active === true){
                 return res.status(200).json({ msg: "user is already present"});
             }
             else{
                 // if not present the create
-                userData[active]=true;
+                userData['active']=true;
                 const response2 = await collection.insertOne(userData);
                 if(response2.acknowledged){
                     return res.status(200).json({ msg: "user is created"});  

@@ -21,7 +21,7 @@ export default function Home({ shopbycategoryData, showTopSellingProductsData })
     };
     if('geolocation' in navigator) {    // if location allowed
         // Retrieve latitude & longitude coordinates from `navigator.geolocation` Web API
-        navigator.geolocation.getCurrentPosition( async({ coords,error,options }) => {
+        navigator.geolocation.getCurrentPosition( async({ coords }) => {
             const { latitude, longitude } =  coords;
             // this api gives location details from latitude and longitude
             console.log(coords);
