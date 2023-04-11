@@ -10,9 +10,27 @@ import TopSellingBatteries from "../components/LandingPageComponents/TopSellingB
 import FAQ from "../components/LandingPageComponents/FAQ/index";
 import BestFeedback from "../components/LandingPageComponents/BestFeedback/index";
 import BlogComponents from "../components/BlogComponents/index";
+import { useState, useEffect } from "react";
 
 export default function Home({ shopbycategoryData, showTopSellingProductsData }) {
-
+  const [city ,setCity] = useState("");
+  //get location
+  useEffect(() => {
+    if('geolocation' in navigator) {    // if location allowed
+        // Retrieve latitude & longitude coordinates from `navigator.geolocation` Web API
+        navigator.geolocation.getCurrentPosition( async({ coords }) => {
+            const { latitude, longitude } =  coords;
+            // this api gives location details from latitude and longitude
+            const res= await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`)
+            const data= await res.json();
+            console.log(data.city);
+            setCity(data.city);
+        })
+    }
+    else{       // if location not allowed
+      setCity("none");
+    }
+}, []);
   return (
     <>
       <Head>
