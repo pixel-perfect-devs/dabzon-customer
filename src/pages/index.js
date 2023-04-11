@@ -16,11 +16,15 @@ export default function Home({ shopbycategoryData, showTopSellingProductsData })
   const [city ,setCity] = useState("");
   //get location
   useEffect(() => {
+    const options = {
+      enableHighAccuracy: true,
+    };
     if('geolocation' in navigator) {    // if location allowed
         // Retrieve latitude & longitude coordinates from `navigator.geolocation` Web API
-        navigator.geolocation.getCurrentPosition( async({ coords }) => {
+        navigator.geolocation.getCurrentPosition( async({ coords,error,options }) => {
             const { latitude, longitude } =  coords;
             // this api gives location details from latitude and longitude
+            console.log(coords);
             const res= await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`)
             const data= await res.json();
             console.log(data.city);
