@@ -2,24 +2,37 @@ import Image from 'next/image'
 import React, { useEffect } from 'react'
 import cart_item_bg from '../../../../public/cart_item_bg.png'
 import payment__image from '../../../../public/razorpay.png'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import deleteCartItem from "../../../../public/icons/deleteCartItem.svg"
+import { deleteFromCart } from '@/reduxStore/Slices/Cart/CartSlice'
+import { handleCheckOut } from '@/helperFunction/checkout/cartcheckout'
 
-const Index = () => {
+const Index = ({ paymentsuccess, setPaymentsuccess }) => {
 
+  const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.cart);
   const router = useRouter();
   const [cartArray, setCartArray] = useState([]);
+  const [amount, setAmount] = useState(100);
 
   useEffect(() => {
     setCartArray(cart);
   }, [cart])
 
-  const handleCartItemClick = (e, _id) => {
-    e.preventDefault();
-    router.replace("/product/" + _id)
-  }
+  // razorpay payment gateway
+  useEffect(() => {
+    const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      document.body.appendChild(script);
+      script.onload = () => {
+        console.log("razorpay script loaded");
+      }
+      script.onerror = () => {
+        console.log("razorpay script not loaded");
+      }
+  }, []);
 
   const handlePlus = (e, index) => {
     e.preventDefault();
@@ -49,16 +62,23 @@ const Index = () => {
       alert("Quantity can't be 0");
     }
   }
+
+  console.log(cartArray);
+
   return (
-    <div className="cart__full flex items-center justify-center lg:justify-between flex-wrap">
+    <div className="cart__full flex items-start justify-center lg:justify-between flex-wrap">
 
       <div className="cart__item__container my-8 space-y-3 sm:space-y-6">
         {
           cartArray.length !== 0 ? cartArray?.map((i, ind) => {
             return (
-              <div key={ind} className="cart__item bg-white flex p-2 m-2 sm:p-8 rounded-xl gap-2 sm:gap-5 items-center ">
-                <div onClick={(e) => handleCartItemClick(e, i._id)} className="image__container w-24 h-24 p-3 sm:w-48 sm:h-48 bg-[#f3f4f6] rounded-xl grid place-items-center box-border object-contain">
-                  <Image src={i.productImage} alt='cart_item_bg' width={100} height={100} className='' />
+              // <p key={ind} className="">helo cart</p>
+              <div key={ind} className="cart__item bg-white flex p-2 m-2 sm:p-8 rounded-xl gap-2 sm:gap-5 items-center relative ">
+                <span onClick={() => dispatch(deleteFromCart(i._id))} className="cart__item__remove__icon p-2 absolute top-3 right-3 cursor-pointer bg-gray-100 hover:bg-red-200 rounded-full">
+                  <Image className='' src={deleteCartItem} alt='deleteCartItem' width={20} height={20} />
+                </span>
+                <div onClick={() => router.replace(`/product/${i._id}`)} className="image__container w-24 h-24 p-3 sm:w-48 sm:h-48 bg-[#f3f4f6] rounded-xl grid place-items-center box-border object-contain">
+                  <Image src={i.productImage} alt='cart_item_bg' width={100} height={100} className='w-auto h-auto' />
                 </div>
                 <div className="item__text__container space-y-1 sm:space-y-2 text-xs sm:text-sm">
                   <p className="item__title text-base sm:text-lg font-semibold">{i.productName}</p>
@@ -123,52 +143,16 @@ const Index = () => {
         }
       </div>
       <div className="cart__utility space-y-10 my-8">
-        <div className="cart__offers space-y-2 flex flex-col">
+        {/* <div className="cart__offers space-y-2 flex flex-col">
           <p className="offers__heading font-semibold text-xl mb-3">Offers</p>
           <input type="search" className="offer__search bg-[#e5e7eb] px-5 py-2 rounded-full" placeholder='Enter coupon code' />
           <p className="coupon__result text-green-600 text-xs">Offer Applied</p>
           <button className="offer__apply bg-[#10b981] py-2 px-5 rounded-full w-min text-white">Apply</button>
-        </div>
+        </div> */}
         <div className="choose__address space-y-2 flex flex-col ">
           <p className="offers__heading font-semibold text-xl mb-3">Choose Address</p>
           <div className="flex flex-col space-y-3">
 
-            <button className="hover:border-green-500 focus:border-green-400 border px-3 py-2 flex gap-3 bg-white rounded-xl items-start">
-              <span className="address__icon p-3 rounded-full bg-[#6366f1]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-truck" viewBox="0 0 16 16">
-                  <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                </svg>
-              </span>
-              <div className="address__text w-44 text-left">
-                <p className="name">sumit kumar</p>
-                <p className="address text-gray-500 text-sm">Lorem ipsum dolor sit amet, consectetur </p>
-                <p className="phone text-gray-500 text-sm">8494986495</p>
-              </div>
-            </button>
-            <button className="hover:border-green-500 focus:border-green-400 border px-3 py-2 flex gap-3 bg-white rounded-xl items-start">
-              <span className="address__icon p-3 rounded-full bg-[#6366f1]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-truck" viewBox="0 0 16 16">
-                  <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                </svg>
-              </span>
-              <div className="address__text w-44 text-left">
-                <p className="name">sumit kumar</p>
-                <p className="address text-gray-500 text-sm">Lorem ipsum dolor sit amet, consectetur </p>
-                <p className="phone text-gray-500 text-sm">8494986495</p>
-              </div>
-            </button>
-            <button className="hover:border-green-500 focus:border-green-400 border px-3 py-2 flex gap-3 bg-white rounded-xl items-start">
-              <span className="address__icon p-3 rounded-full bg-[#6366f1]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-truck" viewBox="0 0 16 16">
-                  <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                </svg>
-              </span>
-              <div className="address__text w-44 text-left">
-                <p className="name">sumit kumar</p>
-                <p className="address text-gray-500 text-sm">Lorem ipsum dolor sit amet, consectetur </p>
-                <p className="phone text-gray-500 text-sm">8494986495</p>
-              </div>
-            </button>
             <button className="hover:border-green-500 focus:border-green-400 border px-3 py-2 flex gap-3 bg-white rounded-xl items-start">
               <span className="address__icon p-3 rounded-full bg-[#6366f1]">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-truck" viewBox="0 0 16 16">
@@ -189,7 +173,7 @@ const Index = () => {
           </button>
         </div>
         <div className="total__amount space-y-2 flex flex-col ">
-          <p className="offers__heading font-semibold text-xl mb-3">Choose Address</p>
+          <p className="offers__heading font-semibold text-xl mb-3">Total Amount</p>
           <div className="amount__container space-y-1">
             <p className="shipping__amount flex justify-between">
               <span className="text">Shipping</span>
@@ -210,11 +194,11 @@ const Index = () => {
           </div>
         </div>
         <div className="pay_now space-y-2 flex flex-col">
-          <p className="offers__heading font-semibold text-xl mb-3">Pay Now</p>
+          <p className="offers__heading font-semibold text-xl ">Pay Now</p>
           <div className="payment__image__container border border-green-500 px-3 py-2 rounded-lg grid place-items-center">
             <Image src={payment__image} alt="payment__image" width={200} height={150} className='' />
           </div>
-          <button className="offer__apply bg-[#10b981] py-2 px-5 rounded-full w-min text-white">Checkout</button>
+          <button onClick={(e) => handleCheckOut(e, paymentsuccess, setPaymentsuccess, amount, cartArray)} className="offer__apply bg-[#10b981] py-2 px-5 rounded-full w-max text-white">Pay Now</button>
         </div>
       </div>
     </div>

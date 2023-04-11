@@ -47,24 +47,23 @@ const Productdetailsview = ({ productId }) => {
 
     const fetchProductDetails = async (productId) => {
         if (!productId) return;
-        const response = await fetch(`/api/${productId}`);
+        const response = await fetch(`/api/product/${productId}`);
         const { productData, capacityData } = await response.json();
-        // console.log(productData)
-        setProductDetails(productData.allData);
-        setMainImage(productData.allData.image1);
+        setProductDetails(productData);
+        setMainImage(productData.image1);
         setCartItem(prev => prev = {
             ...prev,
-            _id: productData.allData._id,
-            productId: productData.allData._id,
-            productName: productData.allData.productName,
-            productImage: productData.allData.image1,
-            productPrice: productData.allData.price,
-            productCapacity: productData.allData?.productCapacity,
-            productBrand: productData.allData.productBrand,
-            productCategory: productData.allData.productCategory,
-            productCapacityArray: capacityData.allData,
-            productCouponCodeArray: productData.allData.coupons,
-            productFakeDiscount: productData.allData.fakeDiscount,
+            _id: productData._id,
+            productId: productData._id,
+            productName: productData.productName,
+            productImage: productData.image1,
+            productPrice: productData.price,
+            productCapacity: productData.productCapacity,
+            productBrand: productData.productBrand,
+            productCategory: productData.productCategory,
+            productCapacityArray: capacityData,
+            productCouponCodeArray: productData.coupons,
+            productFakeDiscount: productData.fakeDiscount,
             quantity: 1
         })
     }
