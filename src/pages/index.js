@@ -45,16 +45,16 @@ export async function getServerSideProps(context) {
   // this api is on dabzon-admin
   //if any confusion just "!! console.log(resJSON) !!"
   const value = await Promise.all([
-    fetch("http://localhost:3000/api/homepage/shopbycategory").then((res) =>
+    fetch("http://localhost:3001/api/landingpage/shopbycategory").then((res) =>
       res.json()
     ),
-    fetch("http://localhost:3000/api/homepage/showtopsellingproducts").then(
+    fetch("http://localhost:3001/api/landingpage/showtopsellingproducts").then(
       (res) => res.json()
     ),
   ])
   
   return {
-    props: { 
+    props: {
       shopbycategoryData: value[0].allData,
       showTopSellingProductsData: value[1].data
      },

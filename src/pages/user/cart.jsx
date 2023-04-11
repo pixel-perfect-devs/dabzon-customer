@@ -11,7 +11,10 @@ const Cart = () => {
 
   const [paymentsuccess, setPaymentsuccess] = React.useState(false);
   const dispatch = useDispatch();
-  const { cart } = useSelector((state) => state.cart);
+  // const { cart } = useSelector((state) => state.cart);
+
+  // ! todo remove this after checkout is done
+  const cart = ["hello", 'hey'];
 
   return (
     <div className='cart__page '>
@@ -27,7 +30,7 @@ const Cart = () => {
               {
                 cart.length > 0
                   ?
-                  <FullCart />
+                  <FullCart paymentsuccess={paymentsuccess} setPaymentsuccess={setPaymentsuccess} />
                   :
                   <EmptyCart />
               }

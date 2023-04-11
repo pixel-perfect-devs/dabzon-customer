@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import MobileNavBar from './MobileNavBar/index';
 import avatar from '../../../public/avatar.png'
-import logo from '../../../public/logo.svg'
+import logo from '../../../public/icons/logo.svg'
 import { useSelector } from 'react-redux';
 
 function NavBar() {

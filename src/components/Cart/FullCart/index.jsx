@@ -7,17 +7,32 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import deleteCartItem from "../../../../public/icons/deleteCartItem.svg"
 import { deleteFromCart } from '@/reduxStore/Slices/Cart/CartSlice'
+import { handleCheckOut } from '@/helperFunction/checkout/cartcheckout'
 
-const Index = () => {
+const Index = ({ paymentsuccess, setPaymentsuccess }) => {
 
   const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.cart);
   const router = useRouter();
   const [cartArray, setCartArray] = useState([]);
+  const [amount, setAmount] = useState(100);
 
   useEffect(() => {
     setCartArray(cart);
   }, [cart])
+
+  // razorpay payment gateway
+  useEffect(() => {
+    const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      document.body.appendChild(script);
+      script.onload = () => {
+        console.log("razorpay script loaded");
+      }
+      script.onerror = () => {
+        console.log("razorpay script not loaded");
+      }
+  }, []);
 
   const handlePlus = (e, index) => {
     e.preventDefault();
@@ -47,6 +62,9 @@ const Index = () => {
       alert("Quantity can't be 0");
     }
   }
+
+  console.log(cartArray);
+
   return (
     <div className="cart__full flex items-start justify-center lg:justify-between flex-wrap">
 
@@ -54,12 +72,13 @@ const Index = () => {
         {
           cartArray.length !== 0 ? cartArray?.map((i, ind) => {
             return (
+              // <p key={ind} className="">helo cart</p>
               <div key={ind} className="cart__item bg-white flex p-2 m-2 sm:p-8 rounded-xl gap-2 sm:gap-5 items-center relative ">
                 <span onClick={() => dispatch(deleteFromCart(i._id))} className="cart__item__remove__icon p-2 absolute top-3 right-3 cursor-pointer bg-gray-100 hover:bg-red-200 rounded-full">
                   <Image className='' src={deleteCartItem} alt='deleteCartItem' width={20} height={20} />
                 </span>
                 <div onClick={() => router.replace(`/product/${i._id}`)} className="image__container w-24 h-24 p-3 sm:w-48 sm:h-48 bg-[#f3f4f6] rounded-xl grid place-items-center box-border object-contain">
-                  <Image src={i.productImage} alt='cart_item_bg' width={100} height={100} className='' />
+                  <Image src={i.productImage} alt='cart_item_bg' width={100} height={100} className='w-auto h-auto' />
                 </div>
                 <div className="item__text__container space-y-1 sm:space-y-2 text-xs sm:text-sm">
                   <p className="item__title text-base sm:text-lg font-semibold">{i.productName}</p>
@@ -154,7 +173,7 @@ const Index = () => {
           </button>
         </div>
         <div className="total__amount space-y-2 flex flex-col ">
-          <p className="offers__heading font-semibold text-xl mb-3">Choose Address</p>
+          <p className="offers__heading font-semibold text-xl mb-3">Total Amount</p>
           <div className="amount__container space-y-1">
             <p className="shipping__amount flex justify-between">
               <span className="text">Shipping</span>
@@ -175,11 +194,11 @@ const Index = () => {
           </div>
         </div>
         <div className="pay_now space-y-2 flex flex-col">
-          <p className="offers__heading font-semibold text-xl mb-3">Pay Now</p>
+          <p className="offers__heading font-semibold text-xl ">Pay Now</p>
           <div className="payment__image__container border border-green-500 px-3 py-2 rounded-lg grid place-items-center">
             <Image src={payment__image} alt="payment__image" width={200} height={150} className='' />
           </div>
-          <button className="offer__apply bg-[#10b981] py-2 px-5 rounded-full w-min text-white">Checkout</button>
+          <button onClick={(e) => handleCheckOut(e, paymentsuccess, setPaymentsuccess, amount, cartArray)} className="offer__apply bg-[#10b981] py-2 px-5 rounded-full w-max text-white">Pay Now</button>
         </div>
       </div>
     </div>

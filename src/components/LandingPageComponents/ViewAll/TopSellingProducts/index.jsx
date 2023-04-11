@@ -7,9 +7,9 @@ const Index = () => {
   const [topSellingProducts, setTopSellingProducts] = React.useState([]);
 
   useEffect(() => {
-    fetch('/api/alltopsellingproducts')
+    fetch('/api/product/alltopsellingproducts')
       .then((response) => response.json())
-      .then((data) => setTopSellingProducts(data.data.data));
+      .then((data) => setTopSellingProducts(data.data));
   }, []);
 
   return (
