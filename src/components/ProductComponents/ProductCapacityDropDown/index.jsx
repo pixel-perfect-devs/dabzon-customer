@@ -39,7 +39,7 @@ export default function Index({ cartItem, capacityArray }) {
                             capacityArray.map((item, index) => <Menu.Item key={index} onClick={() => router.push(`/product/${item.productId}`)}>
                                 {({ active }) => (
                                     <p className={classNames(
-                                        active ? 'cursor-pointer text-green-500' : 'text-gray-800',
+                                        active ? 'cursor-pointer text-dabgreen' : 'text-gray-800',
                                         'block px-4 py-2 text-base'
                                     )}
                                     >

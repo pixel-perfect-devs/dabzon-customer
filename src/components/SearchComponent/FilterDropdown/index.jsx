@@ -63,7 +63,7 @@ export default function index() {
                         <Menu.Items>
                             <div className='flex justify-between'>
                                 <button className="reset border border-red-500 -500 font-semibold text-red-500 hover:bg-red-500 hover:text-white focus:bg-red-500 focus:text-white px-6 py-2 my-4 rounded-full">Reset</button>
-                                <button  className="apply border border-green-500 text-green-500 hover:bg-green-500 hover:text-white focus:bg-green-500 focus:text-white font-semibold bg-white px-6 py-2 my-4 rounded-full">Apply</button>
+                                <button  className="apply border border-dabgreen text-dabgreen hover:bg-dabgreen hover:text-white focus:bg-dabgreen focus:text-white font-semibold bg-white px-6 py-2 my-4 rounded-full">Apply</button>
                             </div>
                         </Menu.Items>
                     </div>

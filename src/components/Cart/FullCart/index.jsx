@@ -98,7 +98,7 @@ const Index = ({ paymentsuccess, setPaymentsuccess }) => {
                     {
                       i?.productWithTrolley
                         ? <p className="trolley flex gap-1 sm:gap-2 items-center">
-                          <span className="exchange__icon bg-[#10b981] p-2 sm:p-3 rounded-full">
+                          <span className="exchange__icon bg-dabgreen p-2 sm:p-3 rounded-full">
                             <svg className='w-3 sm:w-5' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" fill='white'>
                               <path d="M0 32C0 14.3 14.3 0 32 0H48c44.2 0 80 35.8 80 80V368c0 8.8 7.2 16 16 16H608c17.7 0 32 14.3 32 32s-14.3 32-32 32H541.3c1.8 5 2.7 10.4 2.7 16c0 26.5-21.5 48-48 48s-48-21.5-48-48c0-5.6 1-11 2.7-16H253.3c1.8 5 2.7 10.4 2.7 16c0 26.5-21.5 48-48 48s-48-21.5-48-48c0-5.6 1-11 2.7-16H144c-44.2 0-80-35.8-80-80V80c0-8.8-7.2-16-16-16H32C14.3 64 0 49.7 0 32zM432 96V56c0-4.4-3.6-8-8-8H344c-4.4 0-8 3.6-8 8V96h96zM288 96V56c0-30.9 25.1-56 56-56h80c30.9 0 56 25.1 56 56V96 320H288V96zM512 320V96h16c26.5 0 48 21.5 48 48V272c0 26.5-21.5 48-48 48H512zM240 96h16V320H240c-26.5 0-48-21.5-48-48V144c0-26.5 21.5-48 48-48z" />
                             </svg>
@@ -147,13 +147,13 @@ const Index = ({ paymentsuccess, setPaymentsuccess }) => {
           <p className="offers__heading font-semibold text-xl mb-3">Offers</p>
           <input type="search" className="offer__search bg-[#e5e7eb] px-5 py-2 rounded-full" placeholder='Enter coupon code' />
           <p className="coupon__result text-green-600 text-xs">Offer Applied</p>
-          <button className="offer__apply bg-[#10b981] py-2 px-5 rounded-full w-min text-white">Apply</button>
+          <button className="offer__apply bg-dabgreen py-2 px-5 rounded-full w-min text-white">Apply</button>
         </div> */}
         <div className="choose__address space-y-2 flex flex-col ">
           <p className="offers__heading font-semibold text-xl mb-3">Choose Address</p>
           <div className="flex flex-col space-y-3">
 
-            <button className="hover:border-green-500 focus:border-green-400 border px-3 py-2 flex gap-3 bg-white rounded-xl items-start">
+            <button className="hover:border-dabgreen focus:border-green-400 border px-3 py-2 flex gap-3 bg-white rounded-xl items-start">
               <span className="address__icon p-3 rounded-full bg-[#6366f1]">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-truck" viewBox="0 0 16 16">
                   <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
@@ -167,7 +167,7 @@ const Index = ({ paymentsuccess, setPaymentsuccess }) => {
             </button>
 
           </div>
-          <button className="offer__apply border-green-500 border py-2 px-6 rounded-full w-min text-green-500 flex gap-2 font-semibold items-center">
+          <button className="offer__apply border-dabgreen border py-2 px-6 rounded-full w-min text-dabgreen flex gap-2 font-semibold items-center">
             <span className="icon text-xl">+</span>
             <span className="icon">ADD</span>
           </button>
@@ -189,16 +189,16 @@ const Index = ({ paymentsuccess, setPaymentsuccess }) => {
             </p>
             <p className="shipping__amount flex justify-between">
               <span className="text font-semibold">Total</span>
-              <span className="shipping__amount__number font-semibold text-green-500">₹65000</span>
+              <span className="shipping__amount__number font-semibold text-dabgreen">₹65000</span>
             </p>
           </div>
         </div>
         <div className="pay_now space-y-2 flex flex-col">
           <p className="offers__heading font-semibold text-xl ">Pay Now</p>
-          <div className="payment__image__container border border-green-500 px-3 py-2 rounded-lg grid place-items-center">
+          <div className="payment__image__container border border-dabgreen px-3 py-2 rounded-lg grid place-items-center">
             <Image src={payment__image} alt="payment__image" width={200} height={150} className='' />
           </div>
-          <button onClick={(e) => handleCheckOut(e, paymentsuccess, setPaymentsuccess, amount, cartArray)} className="offer__apply bg-[#10b981] py-2 px-5 rounded-full w-max text-white">Pay Now</button>
+          <button onClick={(e) => handleCheckOut(e, paymentsuccess, setPaymentsuccess, amount, cartArray)} className="offer__apply bg-dabgreen py-2 px-5 rounded-full w-max text-white">Pay Now</button>
         </div>
       </div>
     </div>

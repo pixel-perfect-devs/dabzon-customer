@@ -53,7 +53,7 @@ const contact = () => {
             </div>
             <div className="buttons__container flex flex-col items-center w-[295px]">
               <button
-                className="bg-[#10B981] text-white w-56 rounded-full h-9 mt-5 shadow-2xl"
+                className="bg-dabgreen text-white w-56 rounded-full h-9 mt-5 shadow-2xl"
                 type="button">
                 Create
               </button>

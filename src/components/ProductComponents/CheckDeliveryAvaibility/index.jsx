@@ -38,7 +38,7 @@ export default function Index({ cityArray, cartItem, setCartItem, setCouponCode 
                                  }}>
                                 {({ active }) => (
                                     <p className={classNames(
-                                        active ? 'cursor-pointer text-green-500' : 'text-gray-800',
+                                        active ? 'cursor-pointer text-dabgreen' : 'text-gray-800',
                                         'block px-4 py-2 text-base'
                                     )}
                                     >

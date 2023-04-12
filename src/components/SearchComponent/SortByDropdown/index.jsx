@@ -34,7 +34,7 @@ export default function Example() {
                             sortByData.map((item, index) => <Menu.Item key={index}>
                                 {({ active }) => (
                                     <p className={classNames(
-                                            active ? 'cursor-pointer text-green-500' : 'text-gray-800',
+                                            active ? 'cursor-pointer text-dabgreen' : 'text-gray-800',
                                             'block px-4 py-2 text-base'
                                         )}
                                     >

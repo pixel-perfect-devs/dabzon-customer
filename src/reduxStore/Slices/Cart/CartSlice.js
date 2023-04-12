@@ -1,4 +1,3 @@
-'use client'
 import { createSlice } from '@reduxjs/toolkit'
 
 export const CartSlice = createSlice({
@@ -11,9 +10,15 @@ export const CartSlice = createSlice({
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
       state.cart.push(action.payload)
+      // save cart to local storage
+      localStorage.setItem('cart', JSON.stringify(state.cart));
+    },
+    setCartFromLocalStorage: (state, action) => {
+      state.cart = action.payload;
     },
     deleteFromCart: (state, action) => {
       state.cart.splice(state.cart.findIndex((cart_item) => cart_item._id === action.payload), 1);
+      localStorage.setItem('cart', JSON.stringify(state.cart));
     },
   },
 })
