@@ -11,11 +11,8 @@ const Cart = () => {
 
   const [paymentsuccess, setPaymentsuccess] = React.useState(false);
   const dispatch = useDispatch();
-  // const { cart } = useSelector((state) => state.cart);
-
-  // ! todo remove this after checkout is done
-  const cart = ["hello", 'hey'];
-
+  const { cart } = useSelector((state) => state.cart);
+  
   return (
     <div className='cart__page '>
       <NavBar />

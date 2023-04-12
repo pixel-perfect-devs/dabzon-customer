@@ -19,7 +19,7 @@ const Index = () => {
       <div className="max-w-7xl mx-auto px-[3vw]">
         <div className="flex justify-between ">
           <p className="text-gray-900 text-xl sm:text-2xl font-bold">Shop by Brand</p>
-          <Link href='/all/allBrands' className="text-green-500 font-medium text-sm">view all</Link>
+          <Link href='/all/allBrands' className="text-dabgreen font-medium text-sm">view all</Link>
         </div>
         <div className=" customScroll flex overflow-x-scroll">
 

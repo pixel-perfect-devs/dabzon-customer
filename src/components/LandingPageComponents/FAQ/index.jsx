@@ -7,8 +7,8 @@ const Index = () => {
   return (
     <div className="faq__section my-8">
       <div className="faq__section__heading">
-        <p className="text-[#10b981] font-semibold text-2xl sm:text-3xl text-center my-3">Frequently asked questions 🤔 </p>
-        <p className="text-[#10b981] text-xl sm:text-lg text-center ">Get Answers to Your Most Pressing FAQs</p>
+        <p className="text-dabgreen font-semibold text-2xl sm:text-3xl text-center my-3">Frequently asked questions 🤔 </p>
+        <p className="text-dabgreen text-xl sm:text-lg text-center ">Get Answers to Your Most Pressing FAQs</p>
       </div>
 
       <div className="flex justify-center md:justify-evenly flex-wrap m-4">

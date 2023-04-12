@@ -16,8 +16,8 @@ const Index = () => {
           <span className="order__id">DABZ44829307jdshv</span>
           </p>
         <div className="container__buttons flex gap-5 sm:gap-0 sm:space-x-8 !my-8 flex-wrap justify-center ">
-          <button className="invoice border-white border-2 rounded-3xl px-5 py-2 hover:text-green-500 hover:bg-gray-300">Download Invoice</button>
-          <button className="order__status border-white border-2 rounded-3xl px-5 py-2 hover:text-green-500 hover:bg-gray-300">Check Order Status</button>
+          <button className="invoice border-white border-2 rounded-3xl px-5 py-2 hover:text-dabgreen hover:bg-gray-300">Download Invoice</button>
+          <button className="order__status border-white border-2 rounded-3xl px-5 py-2 hover:text-dabgreen hover:bg-gray-300">Check Order Status</button>
         </div>
       </div>
     </div>

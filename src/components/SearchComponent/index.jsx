@@ -21,7 +21,7 @@ const index = () => {
           </div>
         </div>
         <div className="searchComponents__filters flex gap-2 text-sm justify-center md:justify-start">
-          <span className="filters__item px-3 py-1 border border-gray-400 bg-green-500 rounded-3xl text-white ">All</span>
+          <span className="filters__item px-3 py-1 border border-gray-400 bg-dabgreen rounded-3xl text-white ">All</span>
           <span className="filters__item px-3 py-1 border border-gray-400 bg-gray-50 rounded-3xl ">{filtersItems[0]}</span>
           <span className="filters__item px-3 py-1 border border-gray-400 bg-gray-50 rounded-3xl ">{filtersItems[1]}</span>
           <span className={`${ filtersItems.length-2 < 1 ? 'hidden' : 'block'} filters__item px-3 py-1 border border-gray-400 bg-gray-50 rounded-3xl `}>+{filtersItems.length-2}</span>

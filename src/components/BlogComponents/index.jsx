@@ -82,7 +82,7 @@ const Index = ({ source, blogHeading }) => {
 
                 <div className="blog__heading flex justify-between ">
                     <p className="text-gray-900 text-xl sm:text-2xl font-bold">{blogHeading}</p>
-                    {source!=='blog' && <Link href='/blogs' className="text-green-500 font-medium text-sm">view all</Link>}
+                    {source!=='blog' && <Link href='/blogs' className="text-dabgreen font-medium text-sm">view all</Link>}
                 </div>
 
                 <div className="blog__item__container px-4 md:px-14 py-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-5 my-4 justify-between">
