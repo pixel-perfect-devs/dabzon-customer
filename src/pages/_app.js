@@ -2,6 +2,7 @@ import '@/styles/globals.css'
 import { store } from '../reduxStore/store'
 import { Provider } from 'react-redux'
 import { useEffect } from 'react'
+import {SessionProvider} from 'next-auth/react'
 
 export default function App({ Component, pageProps }) {
 
@@ -16,8 +17,10 @@ export default function App({ Component, pageProps }) {
   }, [])
 
   return (
-    <Provider store={store}>
-      <Component {...pageProps} />
-    </Provider>
+    <SessionProvider>
+      <Provider store={store}>
+        <Component {...pageProps} />
+      </Provider>
+    </SessionProvider>
   )
 }
