@@ -24,17 +24,20 @@ function NavBar() {
         if (localStorage.getItem('recentSearches')) setRecentSearches(JSON.parse(localStorage.getItem('recentSearches')));
     }, [])
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!searchQuery) return;
         // save recent searches to local storage
-        if(recentSearches.includes(searchQuery)) return;
-        setRecentSearches(prev => prev = [...prev, searchQuery]);
-        localStorage.setItem('recentSearches', JSON.stringify([...recentSearches, searchQuery]));
+        if (!recentSearches.includes(searchQuery)) {
+            setRecentSearches(prev => prev = [...prev, searchQuery]);
+            localStorage.setItem('recentSearches', JSON.stringify([...recentSearches, searchQuery]));
+        }
 
         // todo search the query in the database and show the results then redirect to the search page when the user clicks on the search results
-        
-        console.log(searchQuery);
+        const response = await fetch(`/api/search/${searchQuery}`);
+        const data = await response.json();
+        console.log(data);
+        // console.log(searchQuery);
     }
 
     const handleDeleteRecentSearch = (e, idx) => {
