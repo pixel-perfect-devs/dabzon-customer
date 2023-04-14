@@ -25,5 +25,5 @@ export function getCookie(cname) {
   }
 
   export function deleteCookie() {
-    document.cookie = "studentSession=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "userSession=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   }
