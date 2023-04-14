@@ -73,8 +73,7 @@ const Card = ({ item }) => {
 
         <div className="singleProductCard__price border-gray-200 pb-1 flex justify-start items-center pr-3">
           <span className="text-dabgreen text-lg md:text-2xl p-3 font-semibold">₹{item.price}</span>
-          {/* showprive below */}
-          <span className="text-gray-500 text-sm md:text-lg line-through">₹{Math.round((+item.price) * 100 / (+item.fakeDiscount))}</span>
+          <span className="text-gray-500 text-sm md:text-lg line-through">₹{Math.round((item.price/(1-(item.fakeDiscount/100))))}</span>
         </div>
 
         <div className="singleProductCard__capacity__and__item">
