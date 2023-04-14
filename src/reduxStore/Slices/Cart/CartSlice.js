@@ -17,7 +17,7 @@ export const CartSlice = createSlice({
       state.cart = action.payload;
     },
     deleteFromCart: (state, action) => {
-      state.cart.splice(state.cart.findIndex((cart_item) => cart_item._id === action.payload), 1);
+      state.cart.splice(action.payload, 1);
       localStorage.setItem('cart', JSON.stringify(state.cart));
     },
   },
