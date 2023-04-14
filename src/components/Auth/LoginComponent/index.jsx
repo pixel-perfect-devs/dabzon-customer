@@ -29,7 +29,7 @@ const Index = () => {
  
   const handleGoogleSignin = async() => {
     await signIn("google");
-    setCookie("userSession", session.user.email,1);
+    await setCookie("userSession", session.user.email,1);
   }
 
   return (
