@@ -34,34 +34,34 @@ const Index = ({ paymentsuccess, setPaymentsuccess }) => {
       }
   }, []);
 
-  const handlePlus = (e, index) => {
-    e.preventDefault();
-    const prevQuantity = cartArray[index].quantity;
-    setCartArray(
-      cartArray.map((item, i) =>
-        i === index
-          ? { ...item, quantity: prevQuantity + 1 }
-          : item
-      )
-    )
-  }
+  // const handlePlus = (e, index) => {
+  //   e.preventDefault();
+  //   const prevQuantity = cartArray[index].quantity;
+  //   setCartArray(
+  //     cartArray.map((item, i) =>
+  //       i === index
+  //         ? { ...item, quantity: prevQuantity + 1 }
+  //         : item
+  //     )
+  //   )
+  // }
 
-  const handleMinus = (e, index) => {
-    e.preventDefault();
-    const prevQuantity = cartArray[index].quantity;
-    if (prevQuantity > 1) {
-      setCartArray(
-        cartArray.map((item, i) =>
-          i === index
-            ? { ...item, quantity: prevQuantity - 1, }
-            : item
-        )
-      )
-    }
-    else {
-      alert("Quantity can't be 0");
-    }
-  }
+  // const handleMinus = (e, index) => {
+  //   e.preventDefault();
+  //   const prevQuantity = cartArray[index].quantity;
+  //   if (prevQuantity > 1) {
+  //     setCartArray(
+  //       cartArray.map((item, i) =>
+  //         i === index
+  //           ? { ...item, quantity: prevQuantity - 1, }
+  //           : item
+  //       )
+  //     )
+  //   }
+  //   else {
+  //     alert("Quantity can't be 0");
+  //   }
+  // }
 
   console.log(cartArray);
 
@@ -72,9 +72,8 @@ const Index = ({ paymentsuccess, setPaymentsuccess }) => {
         {
           cartArray.length !== 0 ? cartArray?.map((i, ind) => {
             return (
-              // <p key={ind} className="">helo cart</p>
               <div key={ind} className="cart__item bg-white flex p-2 m-2 sm:p-8 rounded-xl gap-2 sm:gap-5 items-center relative ">
-                <span onClick={() => dispatch(deleteFromCart(i._id))} className="cart__item__remove__icon p-2 absolute top-3 right-3 cursor-pointer bg-gray-100 hover:bg-red-200 rounded-full">
+                <span onClick={() => dispatch(deleteFromCart(ind))} className="cart__item__remove__icon p-2 absolute top-3 right-3 cursor-pointer bg-gray-100 hover:bg-red-200 rounded-full">
                   <Image className='' src={deleteCartItem} alt='deleteCartItem' width={20} height={20} />
                 </span>
                 <div onClick={() => router.replace(`/product/${i._id}`)} className="image__container w-24 h-24 p-3 sm:w-48 sm:h-48 bg-[#f3f4f6] rounded-xl grid place-items-center box-border object-contain">
@@ -85,7 +84,7 @@ const Index = ({ paymentsuccess, setPaymentsuccess }) => {
 
                   <div className="item__exchange__trolley flex gap-1 sm:gap-6 ">
                     {
-                      i?.productWithExchange
+                      i.exchange 
                         ? <p className="exchnage flex gap-1 sm:gap-2 items-center">
                           <span className="exchange__icon bg-[#f43f5e] p-2 sm:p-3 rounded-full">
                             <svg className='w-2 sm:w-4' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill='white'>
@@ -96,7 +95,7 @@ const Index = ({ paymentsuccess, setPaymentsuccess }) => {
                         : null
                     }
                     {
-                      i?.productWithTrolley
+                      i.trolley
                         ? <p className="trolley flex gap-1 sm:gap-2 items-center">
                           <span className="exchange__icon bg-dabgreen p-2 sm:p-3 rounded-full">
                             <svg className='w-3 sm:w-5' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" fill='white'>
@@ -109,11 +108,11 @@ const Index = ({ paymentsuccess, setPaymentsuccess }) => {
                     }
                   </div>
 
-                  <div className="item__item__count bg-[#f3f4f6] space-x-5 flex w-min py-1 px-2 sm:py-2 sm:px-4 font-semibold items-center rounded-lg" >
+                  {/* <div className="item__item__count bg-[#f3f4f6] space-x-5 flex w-min py-1 px-2 sm:py-2 sm:px-4 font-semibold items-center rounded-lg" >
                     <span onClick={(e) => handlePlus(e, ind)} className="count__increment cursor-pointer text-lg sm:text-2xl">+</span>
                     <span className="count__text text-sm sm:text-xl">{i.quantity}</span>
                     <span onClick={(e) => handleMinus(e, ind)} className="count__decrement cursor-pointer text-lg sm:text-2xl">-</span>
-                  </div>
+                  </div> */}
 
                   <div className="item__price__discount flex gap-1 sm:gap-2">
                     <p className="discounted__price font-semibold text-lg flex items-center">

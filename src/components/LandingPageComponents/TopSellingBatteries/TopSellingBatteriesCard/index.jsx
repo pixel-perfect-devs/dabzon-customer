@@ -97,17 +97,14 @@ const Card = ({ item }) => {
         </div>
 
         <div className="flex justify-between mx-3 my-4">
-          {
-            cart.find((cart__item) => cart__item._id === item._id) !== undefined
-              ? <>
-                <button onClick={(e) => handleBuyNow(e, item)} className="text-xs hover:bg-dabgreen focus:bg-dabgreen hover:text-white focus:text-white md:text-sm border-dabgreen border text-dabgreen rounded-full px-4 py-[6px]">Buy now</button>
-                <button onClick={(e) => handleRemoveFromCart(e, item._id)} className="text-xs bg-red-600 focus:bg-red-500 text-white  md:text-sm border-red-500 border rounded-full px-4 py-[6px]">Remove</button>
-              </>
-              : <>
+          {/* { cart.find((cart__item) => cart__item._id === item._id) !== undefined ? <> */}
+                {/* <button onClick={(e) => handleBuyNow(e, item)} className="text-xs hover:bg-dabgreen focus:bg-dabgreen hover:text-white focus:text-white md:text-sm border-dabgreen border text-dabgreen rounded-full px-4 py-[6px]">Buy now</button>
+                <button onClick={(e) => handleRemoveFromCart(e, item._id)} className="text-xs bg-red-600 focus:bg-red-500 text-white  md:text-sm border-red-500 border rounded-full px-4 py-[6px]">Remove</button> */}
+              {/* </> */}
+              {/* : <> */}
                 <button onClick={(e) => handleBuyNow(e, item)} className="text-xs hover:bg-dabgreen focus:bg-dabgreen hover:text-white focus:text-white md:text-sm border-dabgreen border-2 text-dabgreen rounded-full px-4 py-[6px]">Buy now</button>
                 <button onClick={(e) => handleAddToCart(e, item)} className="text-xs bg-dabgreen text-white md:text-sm rounded-full px-4 py-[6px] hover:shadow-lg">Add to cart</button>
-              </>
-          }
+               {/* </> }  */}
         </div>
       </div>
 
