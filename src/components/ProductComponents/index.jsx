@@ -40,12 +40,13 @@ const Productdetailsview = ({ productId }) => {
         productName: "",
         productImage: "",
         productPrice: null,
+        productFakeDiscount: null,
         productWithExchange: null,
         exchange: false,
         productWithTrolley: null,
         trolley: false,
         productCouponCode: "",
-        couponDiscount: 0,
+        couponDiscountPrice: 0,
         productCapacity: "",
         productDeliveryCity: "",
         productDeliveryCityPrice: 0,
@@ -67,6 +68,7 @@ const Productdetailsview = ({ productId }) => {
             productName: productData.productName,
             productImage: productData.image1,
             productPrice: productData.price,
+            productFakeDiscount: productData.fakeDiscount,
             productCapacity: productData.productCapacity,
             productBrand: productData.productBrand,
             productCategory: productData.productCategory,
@@ -84,10 +86,10 @@ const Productdetailsview = ({ productId }) => {
     const addToCart = (e) => {
         e.preventDefault();
         if (productState.productDeliveryCity === "") return alert("Please select your city");
-        let copyproductState = { ...productState, productCouponCode: couponCode.couponCode, productCouponCodeDiscount: couponCode.couponDiscount, productPayingPriceAfterCoupon: couponCode.payingPriceAfterCoupon };
+        let copyproductState = { ...productState, productCouponCode: couponCode.couponCode, productCouponCodeDiscount: couponCode.couponDiscount, couponDiscountPrice: couponCode.payingPriceAfterCoupon };
 
-        delete copyproductState.productCapacityArray;
-        delete copyproductState.productCouponCodeArray;
+        // delete copyproductState.productCapacityArray;
+        // delete copyproductState.productCouponCodeArray;
 
         dispatch(setCart(copyproductState));
     }

@@ -1,37 +1,32 @@
 import Image from 'next/image'
 import React, { useEffect } from 'react'
-import cart_item_bg from '../../../../public/cart_item_bg.png'
 import payment__image from '../../../../public/razorpay.png'
-import { useDispatch, useSelector } from 'react-redux'
-import { useRouter } from 'next/router'
+import { useSelector } from 'react-redux'
 import { useState } from 'react'
-import deleteCartItem from "../../../../public/icons/deleteCartItem.svg"
-import { deleteFromCart } from '@/reduxStore/Slices/Cart/CartSlice'
+import CartItemCard from './CartItemCard'
 import { handleCheckOut } from '@/helperFunction/checkout/cartcheckout'
 
 const Index = ({ paymentsuccess, setPaymentsuccess }) => {
-
-  const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.cart);
-  const router = useRouter();
   const [cartArray, setCartArray] = useState([]);
   const [amount, setAmount] = useState(100);
 
   useEffect(() => {
     setCartArray(cart);
+    setAmount(cart.reduce((acc, item) => acc + (item.productDeliveryCityPrice ? +item.productDeliveryCityPrice : +item.productPrice) - (item.productWithExchange ? +item.productWithExchange : 0) + (item.productWithTrolley ? +item.productWithTrolley : 0) - (item.couponDiscountPrice ? +item.couponDiscountPrice : 0), 0))
   }, [cart])
 
   // razorpay payment gateway
   useEffect(() => {
     const script = document.createElement('script');
-      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-      document.body.appendChild(script);
-      script.onload = () => {
-        console.log("razorpay script loaded");
-      }
-      script.onerror = () => {
-        console.log("razorpay script not loaded");
-      }
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    document.body.appendChild(script);
+    script.onload = () => {
+      console.log("razorpay script loaded");
+    }
+    script.onerror = () => {
+      console.log("razorpay script not loaded");
+    }
   }, []);
 
   // const handlePlus = (e, index) => {
@@ -63,81 +58,24 @@ const Index = ({ paymentsuccess, setPaymentsuccess }) => {
   //   }
   // }
 
-  console.log(cartArray);
+  // console.log(cartArray);
+
+  const handlePayment = (e) => {
+    e.preventDefault();
+    if(cartArray.length === 0) {
+      alert("Cart is empty");
+      return;
+    };
+    // check if user is logged in and address is selected or not then only proceed to payment
+    // handleCheckOut(e, paymentsuccess, setPaymentsuccess, amount, cartArray)
+  }
 
   return (
     <div className="cart__full flex items-start justify-center lg:justify-between flex-wrap">
 
       <div className="cart__item__container my-8 space-y-3 sm:space-y-6">
         {
-          cartArray.length !== 0 ? cartArray?.map((i, ind) => {
-            return (
-              <div key={ind} className="cart__item bg-white flex p-2 m-2 sm:p-8 rounded-xl gap-2 sm:gap-5 items-center relative ">
-                <span onClick={() => dispatch(deleteFromCart(ind))} className="cart__item__remove__icon p-2 absolute top-3 right-3 cursor-pointer bg-gray-100 hover:bg-red-200 rounded-full">
-                  <Image className='' src={deleteCartItem} alt='deleteCartItem' width={20} height={20} />
-                </span>
-                <div onClick={() => router.replace(`/product/${i._id}`)} className="image__container w-24 h-24 p-3 sm:w-48 sm:h-48 bg-[#f3f4f6] rounded-xl grid place-items-center box-border object-contain">
-                  <Image src={i.productImage} alt='cart_item_bg' width={100} height={100} className='w-auto h-auto' />
-                </div>
-                <div className="item__text__container space-y-1 sm:space-y-2 text-xs sm:text-sm">
-                  <p className="item__title text-base sm:text-lg font-semibold">{i.productName}</p>
-
-                  <div className="item__exchange__trolley flex gap-1 sm:gap-6 ">
-                    {
-                      i.exchange 
-                        ? <p className="exchnage flex gap-1 sm:gap-2 items-center">
-                          <span className="exchange__icon bg-[#f43f5e] p-2 sm:p-3 rounded-full">
-                            <svg className='w-2 sm:w-4' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill='white'>
-                              <path d="M438.6 150.6c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.7 96 32 96C14.3 96 0 110.3 0 128s14.3 32 32 32l306.7 0-41.4 41.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l96-96zm-333.3 352c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 416 416 416c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0 41.4-41.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96z" /></svg>
-                          </span>
-                          <span className="exchange__text uppercase text-xs">With exchange</span>
-                        </p>
-                        : null
-                    }
-                    {
-                      i.trolley
-                        ? <p className="trolley flex gap-1 sm:gap-2 items-center">
-                          <span className="exchange__icon bg-dabgreen p-2 sm:p-3 rounded-full">
-                            <svg className='w-3 sm:w-5' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" fill='white'>
-                              <path d="M0 32C0 14.3 14.3 0 32 0H48c44.2 0 80 35.8 80 80V368c0 8.8 7.2 16 16 16H608c17.7 0 32 14.3 32 32s-14.3 32-32 32H541.3c1.8 5 2.7 10.4 2.7 16c0 26.5-21.5 48-48 48s-48-21.5-48-48c0-5.6 1-11 2.7-16H253.3c1.8 5 2.7 10.4 2.7 16c0 26.5-21.5 48-48 48s-48-21.5-48-48c0-5.6 1-11 2.7-16H144c-44.2 0-80-35.8-80-80V80c0-8.8-7.2-16-16-16H32C14.3 64 0 49.7 0 32zM432 96V56c0-4.4-3.6-8-8-8H344c-4.4 0-8 3.6-8 8V96h96zM288 96V56c0-30.9 25.1-56 56-56h80c30.9 0 56 25.1 56 56V96 320H288V96zM512 320V96h16c26.5 0 48 21.5 48 48V272c0 26.5-21.5 48-48 48H512zM240 96h16V320H240c-26.5 0-48-21.5-48-48V144c0-26.5 21.5-48 48-48z" />
-                            </svg>
-                          </span>
-                          <span className="exchange__text uppercase text-xs">With trolley</span>
-                        </p>
-                        : null
-                    }
-                  </div>
-
-                  {/* <div className="item__item__count bg-[#f3f4f6] space-x-5 flex w-min py-1 px-2 sm:py-2 sm:px-4 font-semibold items-center rounded-lg" >
-                    <span onClick={(e) => handlePlus(e, ind)} className="count__increment cursor-pointer text-lg sm:text-2xl">+</span>
-                    <span className="count__text text-sm sm:text-xl">{i.quantity}</span>
-                    <span onClick={(e) => handleMinus(e, ind)} className="count__decrement cursor-pointer text-lg sm:text-2xl">-</span>
-                  </div> */}
-
-                  <div className="item__price__discount flex gap-1 sm:gap-2">
-                    <p className="discounted__price font-semibold text-lg flex items-center">
-                      <span className="icon ">
-                        <svg className='w-3 sm:w-5' xmlns="http://www.w3.org/2000/svg" fill="#10b981" viewBox="0 0 16 16">
-                          <path d="M4 3.06h2.726c1.22 0 2.12.575 2.325 1.724H4v1.051h5.051C8.855 7.001 8 7.558 6.788 7.558H4v1.317L8.437 14h2.11L6.095 8.884h.855c2.316-.018 3.465-1.476 3.688-3.049H12V4.784h-1.345c-.08-.778-.357-1.335-.793-1.732H12V2H4v1.06Z" />
-                        </svg>
-                      </span>
-                      <span className="price__text text-sm">{i.productPrice}</span>
-                    </p>
-                    <p className="discounted__price flex items-center line-through">
-                      <span className="icon">
-                        <svg className='w-3 sm:w-5' xmlns="http://www.w3.org/2000/svg" fill="#6b7280" viewBox="0 0 16 16">
-                          <path d="M4 3.06h2.726c1.22 0 2.12.575 2.325 1.724H4v1.051h5.051C8.855 7.001 8 7.558 6.788 7.558H4v1.317L8.437 14h2.11L6.095 8.884h.855c2.316-.018 3.465-1.476 3.688-3.049H12V4.784h-1.345c-.08-.778-.357-1.335-.793-1.732H12V2H4v1.06Z" />
-                        </svg>
-                      </span>
-                      <span className="price__text text-sm text-gray-500">{Math.round((i?.productDeliveryCityPrice ? + i.productDeliveryCityPrice : + i.productPrice) * 100 / (+i.productFakeDiscount))}</span>
-                    </p>
-                    <span className="discounted__price text-[#7f1d1d] font-semibold text-sm sm:text-lg">{i.productFakeDiscount}% OFF</span>
-                  </div>
-
-                </div>
-              </div>
-            )
-          }) :
+          cartArray.length !== 0 ? cartArray?.map((i, ind, arr) => <CartItemCard item={i} key={ind} ind={ind} />) :
             null
         }
       </div>
@@ -171,33 +109,68 @@ const Index = ({ paymentsuccess, setPaymentsuccess }) => {
             <span className="icon">ADD</span>
           </button>
         </div>
-        <div className="total__amount space-y-2 flex flex-col ">
-          <p className="offers__heading font-semibold text-xl mb-3">Total Amount</p>
+        <div className="total__amount space-y-4 flex flex-col ">
+          <p className="offers__heading font-semibold text-xl ">Total Amount</p>
           <div className="amount__container space-y-1">
+            <p className="products__amount flex justify-between">
+              <span className="text">Products</span>
+              <span className="shipping__amount__number">₹{amount}</span>
+            </p>
             <p className="shipping__amount flex justify-between">
               <span className="text">Shipping</span>
               <span className="shipping__amount__number">FREE</span>
             </p>
-            <p className="discount__amount flex justify-between">
-              <span className="text">Discount</span>
-              <span className="shipping__amount__number">-₹400</span>
-            </p>
-            <p className="shipping__amount flex justify-between">
-              <span className="text">Selling Price</span>
-              <span className="shipping__amount__number">₹6000</span>
-            </p>
-            <p className="shipping__amount flex justify-between">
-              <span className="text font-semibold">Total</span>
-              <span className="shipping__amount__number font-semibold text-dabgreen">₹65000</span>
+            <p className="shipping__amount flex justify-between border-t border-gray-400">
+              <span className="text font-semibold">Total Price</span>
+              <span className="shipping__amount__number font-semibold text-dabgreen">₹{amount}</span>
             </p>
           </div>
         </div>
-        <div className="pay_now space-y-2 flex flex-col">
-          <p className="offers__heading font-semibold text-xl ">Pay Now</p>
-          <div className="payment__image__container border border-dabgreen px-3 py-2 rounded-lg grid place-items-center">
-            <Image src={payment__image} alt="payment__image" width={200} height={150} className='' />
+        <div className="pay_now space-y-5 flex flex-col">
+          <p className="offers__heading font-semibold text-xl ">We accept</p>
+          <div className="payment__image__container flex flex-col flex-wrap gap-2 ">
+            <div className="card flex gap-3 text-sm items-center border border-dabgreen px-3 py-2 rounded-lg">
+              <span className='icon'>
+                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="#10b97e" className="bi bi-credit-card-2-front" viewBox="0 0 16 16" >
+                  <path d="M14 3a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h12zM2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2z" />
+                  <path d="M2 5.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z" />
+                </svg>
+              </span>
+              <p className='text flex flex-col'>
+                <span>Card</span>
+                <span className='text-xs'>Visa, MasterCard, RuPay, and Maestro</span>
+              </p>
+            </div>
+            <div className="upi flex gap-3 text-sm items-center border border-dabgreen px-3 py-2 rounded-lg">
+              <span className='icon'>
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#10b97e" className="bi bi-credit-card-2-front" viewBox="0 0 21 24">
+                  <path d="M9.516 20.254l9.15-8.388-6.1-8.388-1.185 6.516 1.629 2.042-2.359 1.974-1.135 6.244zM12.809.412l8 11a1 1 0 0 1-.133 1.325l-12 11c-.707.648-1.831.027-1.66-.916l1.42-7.805 3.547-3.01-1.986-5.579 1.02-5.606c.157-.865 1.274-1.12 1.792-.41z"></path>
+                  <path d="M5.566 3.479l-3.05 16.775 9.147-8.388-6.097-8.387zM5.809.412l7.997 11a1 1 0 0 1-.133 1.325l-11.997 11c-.706.648-1.831.027-1.66-.916l4-22C4.174-.044 5.292-.299 5.81.412z"></path>
+                </svg>
+              </span>
+              <p className='text flex flex-col'>
+                <span>UPI / QR</span>
+                <span className='text-xs'>GPay, PhonePay, PayTM & More</span>
+              </p>
+            </div>
+            <div className="Netbanking flex gap-3 text-sm items-center border border-dabgreen px-3 py-2 rounded-lg">
+              <span className='icon'>
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#10b97e" className="bi bi-credit-card-2-front" viewBox="0 0 28 25" >
+                  <path d="M4 15a1 1 0 0 1 2 0v5a1 1 0 0 1-2 0v-5zm6 0a1 1 0 0 1 2 0v5a1 1 0 0 1-2 0v-5zm6 0a1 1 0 0 1 2 0v5a1 1 0 0 1-2 0v-5zM1 25a1 1 0 0 1 0-2h20a1 1 0 0 1 0 2H1zm0-13c-.978 0-1.374-1.259-.573-1.82l10-7a1 1 0 0 1 1.146 0l1.426 1L13 9l1 3H1zm3.172-2h8.814l.017-3.378L11 5.221 4.172 10z"></path>
+                  <path d="M20 16a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm0-2a6 6 0 1 0 0-12 6 6 0 0 0 0 12zm3.663-7H27v2h-3.338c-.162 2.156-.85 4.275-2.057 6.352l-1.21-.704c1.084-1.863 1.703-3.744 1.863-5.648H13V7h9.258c-.16-1.904-.78-3.785-1.863-5.648l1.21-.704C22.814 2.725 23.501 4.844 23.663 7zm-4.058 7.648l-1.21.704C17 12.955 16.3 10.502 16.3 8c0-2.501.701-4.955 2.095-7.352l1.21.704C18.332 3.54 17.7 5.754 17.7 8c0 2.246.632 4.46 1.905 6.648z"></path>
+                </svg>
+              </span>
+              <p className='text flex flex-col'>
+                <span>Netbanking</span>
+                <span className='text-xs'>All Indian banks</span>
+              </p>
+            </div>
           </div>
-          <button onClick={(e) => handleCheckOut(e, paymentsuccess, setPaymentsuccess, amount, cartArray)} className="offer__apply bg-dabgreen py-2 px-5 rounded-full w-max text-white">Pay Now</button>
+          <div className="paybutton flex gap-3 items-center">
+            <p className="text-xl">₹{amount}</p>
+            <button onClick={(e) => handlePayment(e)} className="offer__apply bg-dabgreen py-2 px-4 rounded-full w-max text-gray-100 hover:text-white text-sm shadow-md">Pay Now</button>
+          </div>
+          
         </div>
       </div>
     </div>
