@@ -48,40 +48,40 @@ export default function Home({ shopbycategoryData, showTopSellingProductsData })
       </Head>
       <main className="main__page bg-gray-100 ">
         <NavBar />
-        <OfferCarousel/>
+        {/* <OfferCarousel/>
         <OtherSupport />
         <ShopByCategory data={shopbycategoryData} />
         <TopOffers />
         <ShopByBrand />
-        <TopSellingBatteries title="Top Selling Batteries" topSellingProducts={showTopSellingProductsData} />
+        <TopSellingBatteries title="Top Selling Batteries" topSellingProducts={showTopSellingProductsData} /> */}
         <BestFeedback />
-        <BlogComponents source="home" blogHeading="Blogs" />
-        <FAQ />
+        {/* <BlogComponents source="home" blogHeading="Blogs" />
+        <FAQ /> */}
         <FooterComponents />
       </main>
     </>
   );
 }
 
-export async function getServerSideProps(context) {
-  // this api is on dabzon-admin
-  //if any confusion just "!! console.log(resJSON) !!"
-  const value = await Promise.all([
-    fetch("http://localhost:3001/api/landingpage/shopbycategory").then((res) =>
-      res.json()
-    ),
-    fetch("http://localhost:3001/api/landingpage/showtopsellingproducts").then(
-      (res) => res.json()
-    ),
-  ])
+// export async function getServerSideProps(context) {
+//   // this api is on dabzon-admin
+//   //if any confusion just "!! console.log(resJSON) !!"
+//   const value = await Promise.all([
+//     fetch("http://localhost:3001/api/landingpage/shopbycategory").then((res) =>
+//       res.json()
+//     ),
+//     fetch("http://localhost:3001/api/landingpage/showtopsellingproducts").then(
+//       (res) => res.json()
+//     ),
+//   ])
   
-  return {
-    props: {
-      shopbycategoryData: value[0].allData,
-      showTopSellingProductsData: value[1].data
-     },
-  };
-}
+//   return {
+//     props: {
+//       shopbycategoryData: value[0].allData,
+//       showTopSellingProductsData: value[1].data
+//      },
+//   };
+// }
 
 // this code will check whether connection between frontend, backend, database is working fine
 // to use this just paste these three lines in getServer function
