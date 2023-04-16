@@ -1,9 +1,9 @@
 import React from "react";
 import NavBar from "../../components/NavBar/index";
 import FooterComponents from "../../components/FooterComponents/index";
-import contactUs from "../../../public/contactUs.Png";
+import contactUs from "../../../public/contactUs.png";
 import Image from "next/image";
-import Link from "next/link";
+
 const contact = () => {
   return (
     <div className="contact bg-gray-100 ">

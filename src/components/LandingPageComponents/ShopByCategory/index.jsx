@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import CategoryCard from "./CategoryCard/index";
 const Index = ({ data }) => {
   const [showdata, setShowData] = useState([]);
-  // console.log(data);
   useEffect(() => {
     setShowData(data)
   }, [data]);

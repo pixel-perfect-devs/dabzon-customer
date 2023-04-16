@@ -56,7 +56,7 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: #000;
+  background: #fff;
 }
 
 .loader {
@@ -73,7 +73,7 @@ body {
   transform: translate(-50%, -50%);
   width: 8.6956521739rem;
   height: 8.6956521739rem;
-  background: #000;
+  background: #fff;
   border-radius: 50%;
 }
 .loader .box {
@@ -159,11 +159,11 @@ body {
   line-height: 40px;
   text-align: center;
   font-size: 2em;
-  color: #fff;
+  color: #000;
 }
 
 .loader-text {
-  color: #fff;
+  color: #000;
   transform: translateY(-2rem);
   letter-spacing: 6px;
   opacity: 0.2;

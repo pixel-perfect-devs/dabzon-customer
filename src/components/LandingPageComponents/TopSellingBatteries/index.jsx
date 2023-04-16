@@ -2,8 +2,18 @@ import Link from 'next/link'
 import React from 'react'
 import TopSellingBatteriesCard from './TopSellingBatteriesCard/index'
 
-const Index = ({title, topSellingProducts}) => {
+const Index = ({title}) => {
   
+  const [topSellingProducts, setTopSellingProducts] = React.useState([])
+  React.useEffect(() => {    
+    fetch("/api/landingpage/showtopsellingproducts")
+    .then((res) => res.json())
+      .then(data => {
+      setTopSellingProducts(data.data)
+    })
+    .catch(err => console.log(err))
+  }, [])
+
   return (
     <div className='topsellingbatteries my-8'>
       <div className="topsellingbatteries__container max-w-7xl mx-auto px-[3vw]">

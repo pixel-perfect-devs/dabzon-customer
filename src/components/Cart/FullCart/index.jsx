@@ -13,7 +13,7 @@ const Index = ({ paymentsuccess, setPaymentsuccess }) => {
 
   useEffect(() => {
     setCartArray(cart);
-    setAmount(cart.reduce((acc, item) => acc + (item.productDeliveryCityPrice ? +item.productDeliveryCityPrice : +item.productPrice) - (item.productWithExchange ? +item.productWithExchange : 0) + (item.productWithTrolley ? +item.productWithTrolley : 0) - (item.couponDiscountPrice ? +item.couponDiscountPrice : 0), 0))
+    setAmount(cart.reduce((acc, item) => acc + (item.productDeliveryCityPrice ? +item.productDeliveryCityPrice : +item.productPrice) - (item.exchange ? +item.productWithExchange : 0) + (item.trolley ? +item.productWithTrolley : 0) - (item.couponDiscountPrice ? +item.couponDiscountPrice : 0), 0))
   }, [cart])
 
   // razorpay payment gateway

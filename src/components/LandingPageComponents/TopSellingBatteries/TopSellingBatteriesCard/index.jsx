@@ -15,6 +15,7 @@ const Card = ({ item }) => {
   const handleAddToCart = (e, item) => {
     let cartItem = {
       productBrand: item.productBrand,
+      productShortDescription: item.productShortDescription,
       productCapacity: item.productCapacity,
       productCategory: item.productCategory,
       productCouponCode: null,

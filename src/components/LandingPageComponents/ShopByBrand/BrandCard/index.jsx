@@ -9,12 +9,12 @@ const Index = ({brand}) => {
                 <Image
                     className="m-1 sm:m-2  h-10 w-10 sm:h-16 sm:w-16"
                     loading="lazy"
-                    src={amaron}
+                    src={brand.image ? brand.image : amaron}
                     alt="Image is loading..."
                     width={70}
                     height={70}
                 />
-                <p className="m-1 text-center sm:m-2  text-sm">{brand}</p>
+                <p className="m-1 text-center sm:m-2  text-sm">{brand.title}</p>
             </div>
         </div>
     )

@@ -53,7 +53,7 @@ function NavBar({ searchQuery = "", setSearchQuery, searchResults = [], setSearc
 
     return (
         <div className='Navbar sticky top-0 z-30 inline-block w-full bg-dabgreen md:bg-white'>
-            <nav className="backdrop-blur-md z-10 py-0 flex justify-between gap-3 max-w-7xl  items-center my-4 mx-auto px-[3vw] flex-wrap">
+            <nav className="backdrop-blur-md z-10 py-0 flex justify-between gap-3 max-w-7xl  items-center my-1 md:my-3 mx-auto px-[3vw] flex-wrap">
                 <Link href='/' className="logo inline-block bg-dabgreen text-white p-1 font-normal rounded-full">
                     <Image width={50} height={50} className="" src={logo} alt="logo" />
                 </Link>
@@ -62,7 +62,8 @@ function NavBar({ searchQuery = "", setSearchQuery, searchResults = [], setSearc
                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                     </svg>
                     <input ref={search} onChange={(e) => handleSearchProduct(e)} className='border-0 outline-none bg-transparent w-56' type="search" name="search" id="search" placeholder='Search...' value={searchQuery} />
-                    <div className="search__results bg-white rounded-md shadow-md absolute top-[70px] left-0 hidden group-focus-within:block w-full z-20" autoComplete="off">
+                    {/* relevant search results */}
+                    {/* <div className="search__results bg-white rounded-md shadow-md absolute top-[70px] left-0 hidden group-focus-within:block w-full z-20" autoComplete="off">
                         {
                             searchQuery.length === 0
                                 ? null
@@ -70,7 +71,6 @@ function NavBar({ searchQuery = "", setSearchQuery, searchResults = [], setSearc
                                 <div className="search__results my-3 p-3 text-left">
                                     <p className="search__results__title text-sm">Most Relevent Results</p>
                                     <div className="search__results__list flex items-center flex-col gap-2 mt-2">
-                                        {/* loader */}
                                         {
                                             !loading
                                                 ? searchResults.map((it, idx) => {
@@ -93,14 +93,14 @@ function NavBar({ searchQuery = "", setSearchQuery, searchResults = [], setSearc
                                 </div>
                         }
 
-                    </div>
+                    </div> */}
                 </button>
                 <div className="navlinks md:flex gap-4 hidden">
                     <Link href='/'>Home</Link>
+                    <Link href='/all/topSellingProducts'>Products</Link>
                     <Link href='/all/allCategories'>Category</Link>
                     <Link href='/all/allBrands'>Brand</Link>
                     <Link href='/utility/about'>About Us</Link>
-                    <Link href='/utility/contact'>Contact Us</Link>
                 </div>
                 <div className="account__and__carts md:flex space-x-4 hidden">
                     {
@@ -133,7 +133,7 @@ function NavBar({ searchQuery = "", setSearchQuery, searchResults = [], setSearc
                 <Link href='/all/allCategories'>Category</Link>
                 <Link href='/all/allBrands'>Brand</Link>
                 <Link href='/utility/about'>About Us</Link>
-                <Link href='/utility/contact'>Contact Us</Link>
+                <Link href='/user/profile'>Profile</Link>
             </div>
             <MobileNavBar />
         </div>

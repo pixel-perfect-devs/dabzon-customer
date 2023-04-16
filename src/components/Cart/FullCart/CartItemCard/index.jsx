@@ -9,7 +9,7 @@ const Index = ({ item, ind }) => {
     const dispatch = useDispatch();
     const router = useRouter();
     console.log(item)
-    const totalPrice = ( item.productDeliveryCityPrice ? +item.productDeliveryCityPrice: +item.productPrice) - (item.productWithExchange ? +item.productWithExchange : 0) + (item.productWithTrolley ? +item.productWithTrolley : 0) - (item.couponDiscountPrice ? +item.couponDiscountPrice : 0);
+    const totalPrice = (item.productDeliveryCityPrice ? +item.productDeliveryCityPrice : +item.productPrice) - (item.exchange ? +item.productWithExchange : 0) + (item.trolley ? +item.productWithTrolley : 0) - (item.couponDiscountPrice ? +item.couponDiscountPrice : 0);
 
     return (
         <div className="cart__item bg-white flex p-2 m-2 sm:p-8 rounded-xl gap-2 sm:gap-5 items-center relative ">
@@ -21,6 +21,12 @@ const Index = ({ item, ind }) => {
             </div>
             <div className="item__text__container space-y-1 sm:space-y-2 text-xs sm:text-sm w-full">
                 <p className="item__title text-base sm:text-lg font-semibold">{item.productName}</p>
+                <p className="item__title text-xs truncate">{item.productShortDescription}</p>
+                {item.productDeliveryCity
+                    ? <p className="item__title text-xs truncate">Delivery in {item.productDeliveryCity}</p>
+                    : <p className="item__title text-xs text-red-600 ">No city selected</p>
+                }
+
 
                 <div className="item__exchange__trolley flex gap-1 sm:gap-6 ">
                     {
@@ -60,11 +66,11 @@ const Index = ({ item, ind }) => {
                             <span className="price__text text-sm">Price</span>
                         </p>
                         <p className="discounted__price flex items-center gap-2">
-                            <span className="price__text text-xl text-dabgreen"> ₹{item.productDeliveryCityPrice ? +item.productDeliveryCityPrice: +item.productPrice}</span>
-                            <span className="price__text text-sm text-gray-500 line-through"> ₹{Math.round((item.productDeliveryCityPrice ? +item.productDeliveryCityPrice: +item.productPrice) / (1 - (+item.productFakeDiscount / 100)))}</span>
+                            <span className="price__text text-xl text-dabgreen"> ₹{item.productDeliveryCityPrice ? +item.productDeliveryCityPrice : +item.productPrice}</span>
+                            <span className="price__text text-sm text-gray-500 line-through"> ₹{Math.round((item.productDeliveryCityPrice ? +item.productDeliveryCityPrice : +item.productPrice) / (1 - (+item.productFakeDiscount / 100)))}</span>
                         </p>
                     </div>
-                    {item.productWithTrolley && <div className="withtrolley flex justify-between">
+                    {item.trolley && <div className="withtrolley flex justify-between">
                         <p className="discounted__price text-lg flex items-center">
                             <span className="price__text text-sm">Trolley</span>
                         </p>
@@ -81,7 +87,7 @@ const Index = ({ item, ind }) => {
                             <span className="price__text text-xs text-gray-500 ">{item.productCouponCode}</span>
                         </p>
                     </div>}
-                    {item.productWithExchange && <div className="withexchange flex justify-between">
+                    {item.exchange && <div className="withexchange flex justify-between">
                         <p className="discounted__price text-lg flex items-center">
                             <span className="price__text text-sm">With Exchange</span>
                         </p>
