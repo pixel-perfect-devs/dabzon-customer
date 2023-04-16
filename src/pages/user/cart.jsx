@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PaymentSuccess from '../../components/Cart/Payment/PaymentSuccess/index'
 import FullCart from '../../components/Cart/FullCart/index'
 import EmptyCart from '../../components/Cart/EmptyCart/index'
@@ -6,12 +6,20 @@ import FooterComponents from '../../components/FooterComponents/index'
 import NavBar from '../../components/NavBar/index'
 import TopSellingBatteries from '../../components/LandingPageComponents/TopSellingBatteries/index'
 import { useDispatch, useSelector } from 'react-redux'
+import { useRouter } from 'next/router'
+import { getCookie } from '@/cookie'
 
 const Cart = () => {
-
+  const router = useRouter();
   const [paymentsuccess, setPaymentsuccess] = React.useState(false);
   const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.cart);
+
+  useEffect(()=>{
+    if(getCookie("userSession")===''){
+      router.replace("/auth/login?redirect=cart");
+    }
+  },[])
   
   return (
     <div className='cart__page '>

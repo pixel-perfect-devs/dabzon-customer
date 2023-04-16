@@ -7,6 +7,8 @@ import avatar from '../../../public/avatar.png'
 import logo from '../../../public/icons/logo.svg'
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from '../../reduxStore/Slices/Loader/LoaderSlice'
+import { signOut } from 'next-auth/react';
+import { deleteCookie } from '@/cookie';
 
 
 function NavBar({ searchQuery = "", setSearchQuery, searchResults = [], setSearchResults }) {
@@ -45,6 +47,11 @@ function NavBar({ searchQuery = "", setSearchQuery, searchResults = [], setSearc
         e.preventDefault();
         setSearchQuery(searchQuery => searchQuery = e.target.value.toLowerCase());
         debouncedHandleSearch(e.target.value.toLowerCase());
+    }
+
+    const handleSignOut = () => {
+        signOut();
+        deleteCookie("userSession");
     }
 
     useEffect(() => {
@@ -101,6 +108,7 @@ function NavBar({ searchQuery = "", setSearchQuery, searchResults = [], setSearc
                     <Link href='/all/allBrands'>Brand</Link>
                     <Link href='/utility/about'>About Us</Link>
                     <Link href='/utility/contact'>Contact Us</Link>
+                    <div onClick={()=> handleSignOut()}>SignOut</div>
                 </div>
                 <div className="account__and__carts md:flex space-x-4 hidden">
                     {
