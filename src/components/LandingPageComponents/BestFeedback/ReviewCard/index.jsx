@@ -14,7 +14,7 @@ const Index = ({item}) => {
                         <p className='text-gray-900 text-lg md:text-2xl font-semibold'>{item?.name}</p>
                         <p className='stars text-xs'>
                         {
-                            [...Array(item?.rating/2).keys()].map((item, idx) => <span key={idx}>⭐</span>)
+                            // [...Array(+(item?.rating)/2).keys()].map((item, idx) => <span key={idx}>⭐</span>)
                         }
                         </p>
                         <p className='text-gray-400 text-sm break-words'>{item?.comment}</p>

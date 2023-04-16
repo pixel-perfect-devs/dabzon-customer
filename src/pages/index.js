@@ -54,7 +54,7 @@ export default function Home({ shopbycategoryData }) {
         <TopOffers />
         <ShopByBrand />
         <TopSellingBatteries title="Top Selling Batteries" />
-        <BestFeedback />
+        {/* <BestFeedback /> */}
         <BlogComponents source="home" blogHeading="Blogs" />
         <FAQ />
         <FooterComponents />

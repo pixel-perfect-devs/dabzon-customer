@@ -1,7 +1,6 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import FAQ from "../../../../public/FAQ_image.png";
-import { data } from "autoprefixer";
 
 const Index = () => {
   const [faqData, setFaqData] = useState([]);
@@ -11,11 +10,11 @@ const Index = () => {
       try {
         const response = await fetch('/api/landingpage/faq/get');
         const data = await response.json();
-        // console.log(data.allData[0].ques);
-        setFaqData(data.allData);        
+        // console.log(data.allData[0]?.ques);
+        setFaqData(data.allData);
       } catch (error) {
         console.error(error);
-      } finally{
+      } finally {
         setIsLoading(false);
         console.log(faqData[0]);
       }
@@ -48,10 +47,10 @@ const Index = () => {
             />
             <div className="flex flex-col">
               <p className="text-gray-900 text-xl font-bold">
-                {faqData[0].ques}
+                {faqData[0]?.ques}
               </p>
               <p className="text-gray-700 text-base">
-                {faqData[0].ans}
+                {faqData[0]?.ans}
               </p>
             </div>
           </div>
@@ -67,10 +66,10 @@ const Index = () => {
             />
             <div className="flex flex-col">
               <p className="text-gray-900 text-xl font-bold">
-                {faqData[1].ques}
+                {faqData[1]?.ques}
               </p>
               <p className="text-gray-700 text-base">
-                {faqData[1].ans}
+                {faqData[1]?.ans}
               </p>
             </div>
           </div>
@@ -86,10 +85,10 @@ const Index = () => {
             />
             <div className="flex flex-col">
               <p className="text-gray-900 text-xl font-bold">
-              {faqData[2].ques}
+                {faqData[2]?.ques}
               </p>
               <p className="text-gray-700 text-base">
-              {faqData[2].ans}
+                {faqData[2]?.ans}
               </p>
             </div>
           </div>
@@ -109,10 +108,10 @@ const Index = () => {
             />
             <div className="flex flex-col">
               <p className="text-gray-900 text-xl font-bold">
-              {faqData[3].ques}
+                {faqData[3]?.ques}
               </p>
               <p className="text-gray-700 text-base">
-                {faqData[3].ans}
+                {faqData[3]?.ans}
               </p>
             </div>
           </div>
@@ -128,10 +127,10 @@ const Index = () => {
             />
             <div className="flex flex-col">
               <p className="text-gray-900 text-xl font-bold">
-                {faqData[4].ques}
+                {faqData[4]?.ques}
               </p>
               <p className="text-gray-700 text-base">
-                {faqData[4].ans}
+                {faqData[4]?.ans}
               </p>
             </div>
           </div>
@@ -147,18 +146,14 @@ const Index = () => {
             />
             <div className="flex flex-col">
               <p className="text-gray-900 text-xl font-bold">
-                {faqData[5].ques}
+                {faqData[5]?.ques}
               </p>
               <p className="text-gray-700 text-base">
-                {faqData[5].ans}
+                {faqData[5]?.ans}
               </p>
             </div>
           </div>
         </div>
-
-
-
-
       </div>
     </div>
   );
