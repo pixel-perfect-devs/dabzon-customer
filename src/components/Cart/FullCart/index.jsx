@@ -5,13 +5,20 @@ import { useSelector } from 'react-redux'
 import { useState } from 'react'
 import CartItemCard from './CartItemCard'
 import { handleCheckOut } from '@/helperFunction/checkout/cartcheckout'
+import { getCookie } from '@/cookie'
+import { useRouter } from 'next/router'
 
 const Index = ({ paymentsuccess, setPaymentsuccess }) => {
+  const router = useRouter();
   const { cart } = useSelector((state) => state.cart);
   const [cartArray, setCartArray] = useState([]);
   const [amount, setAmount] = useState(100);
 
   useEffect(() => {
+    // checking if user is signed in
+    if(getCookie("userSession") === ''){
+      router.replace("/auth/login?redirect=cart");
+    }
     setCartArray(cart);
     setAmount(cart.reduce((acc, item) => acc + (item.productDeliveryCityPrice ? +item.productDeliveryCityPrice : +item.productPrice) - (item.exchange ? +item.productWithExchange : 0) + (item.trolley ? +item.productWithTrolley : 0) - (item.couponDiscountPrice ? +item.couponDiscountPrice : 0), 0))
   }, [cart])

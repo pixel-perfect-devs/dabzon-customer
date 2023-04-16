@@ -7,6 +7,8 @@ import avatar from '../../../public/avatar.png'
 import logo from '../../../public/icons/logo.svg'
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from '../../reduxStore/Slices/Loader/LoaderSlice'
+import { signOut } from 'next-auth/react';
+import { deleteCookie } from '@/cookie';
 
 
 function NavBar({ searchQuery = "", setSearchQuery, searchResults = [], setSearchResults }) {
@@ -45,6 +47,11 @@ function NavBar({ searchQuery = "", setSearchQuery, searchResults = [], setSearc
         e.preventDefault();
         setSearchQuery(searchQuery => searchQuery = e.target.value.toLowerCase());
         debouncedHandleSearch(e.target.value.toLowerCase());
+    }
+
+    const handleSignOut = () => {
+        signOut();
+        deleteCookie("userSession");
     }
 
     useEffect(() => {

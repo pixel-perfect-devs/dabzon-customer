@@ -1,12 +1,14 @@
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Link from 'next/link'
 import login_bg from '../../../../public/auth/login_bg.svg'
 import { useState } from 'react'
 import { setCookie, getCookie } from '@/cookie'
 import { useSession, signIn, signOut } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
-const Index = () => {
+const Index = ({redirect}) => {
+  const router = useRouter();
   const {data : session} = useSession();
   const [userData, setUserData] = useState({ email: '', password: '' })
   const handleSubmit = async (e) => {
@@ -23,14 +25,21 @@ const Index = () => {
       alert("wrong email or password")
     }
     else{
-      setCookie("userSession", data.body.email,1);
+      await setCookie("userSession", data.body.email,1);
+      await router.replace(`/user/${redirect}`);
     }
   }
  
   const handleGoogleSignin = async() => {
-    await signIn("google");
-    await setCookie("userSession", session.user.email,1);
+    signIn('google');
   }
+
+  useEffect(() => {
+    if(session?.user?.email !== undefined){
+      setCookie("userSession",session.user.email,1);
+      router.replace(`/user/${redirect}`);
+    }
+  } ,[session])
 
   return (
     <section className="flex items-center justify-evenly min-h-screen bg-gray-100 flex-wrap py-16">
