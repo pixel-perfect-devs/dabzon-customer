@@ -46,7 +46,6 @@ const Profile = () => {
           }
         })()}
       </div>
-
       <div className="footer hidden sm:block">
         <FooterComponents />
       </div>

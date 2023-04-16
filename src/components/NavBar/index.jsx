@@ -1,98 +1,94 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import MobileNavBar from './MobileNavBar/index';
 import avatar from '../../../public/avatar.png'
 import logo from '../../../public/icons/logo.svg'
-import recent from '../../../public/icons/recent.svg'
-import recent__close from '../../../public/icons/recent__close.svg'
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLoading } from '../../reduxStore/Slices/Loader/LoaderSlice'
 
-function NavBar() {
+
+function NavBar({ searchQuery = "", setSearchQuery, searchResults = [], setSearchResults }) {
     // idk what to do with this
     const [login, setLogin] = useState(1);
 
+    const search = useRef(null);
     const router = useRouter();
     const [navbar, setNavbar] = useState(false);
-    const [searchQuery, setSearchQuery] = useState("");
+    const dispatch = useDispatch();
     const { cart } = useSelector(state => state.cart);
-    const [recentSearches, setRecentSearches] = useState([]);
+    const { loading } = useSelector(state => state.loading);
 
-    useEffect(() => {
-        if (localStorage.getItem('recentSearches')) setRecentSearches(JSON.parse(localStorage.getItem('recentSearches')));
-    }, [])
+    const debounce = (cb, d) => {
+        let timer;
+        return function (searchQuery) {
+            if (timer) clearTimeout(timer);
+            timer = setTimeout(() => {
+                cb(searchQuery);
+            }, d);
+        };
+    };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!searchQuery) return;
-        // save recent searches to local storage
-        if (!recentSearches.includes(searchQuery)) {
-            setRecentSearches(prev => prev = [...prev, searchQuery]);
-            localStorage.setItem('recentSearches', JSON.stringify([...recentSearches, searchQuery]));
-        }
-
-        // todo search the query in the database and show the results then redirect to the search page when the user clicks on the search results
+    const handleSearch = async (searchQuery) => {
+        if (searchQuery.length === 0) return;
+        dispatch(setLoading(true));
         const response = await fetch(`/api/search/${searchQuery}`);
         const data = await response.json();
-        console.log(data);
-        // console.log(searchQuery);
+        setSearchResults(data.msg);
+        dispatch(setLoading(false));
     }
 
-    const handleDeleteRecentSearch = (e, idx) => {
+    const debouncedHandleSearch = useCallback(debounce(handleSearch, 500), []);
+
+    const handleSearchProduct = (e) => {
         e.preventDefault();
-        const recentSearch = recentSearches.filter((it, index) => index !== idx);
-        setRecentSearches(recentSearch);
-        localStorage.setItem('recentSearches', JSON.stringify(recentSearch));
+        setSearchQuery(searchQuery => searchQuery = e.target.value.toLowerCase());
+        debouncedHandleSearch(e.target.value.toLowerCase());
     }
+
+    useEffect(() => {
+        search.current.focus();
+    }, []);
 
     return (
-        <div className='Navbar sticky top-0 z-10 inline-block w-full bg-dabgreen md:bg-white'>
+        <div className='Navbar sticky top-0 z-20 inline-block w-full bg-dabgreen md:bg-white'>
             <nav className="backdrop-blur-md z-10 py-0 flex justify-between gap-3 max-w-7xl  items-center my-4 mx-auto px-[3vw] flex-wrap">
                 <Link href='/' className="logo inline-block bg-dabgreen text-white p-1 font-normal rounded-full">
                     <Image width={50} height={50} className="" src={logo} alt="logo" />
                 </Link>
-                <button className="group search__container md:flex flex-row gap-3 bg-[#f3f4f6] rounded-3xl px-4 py-2 hidden items-center relative">
+                <button onClick={() => { router.pathname !== '/user/search' && router.push('/user/search')}} className="group search__container md:flex flex-row gap-3 bg-[#f3f4f6] rounded-3xl px-4 py-2 hidden items-center relative">
                     <svg className='sm:w-5' xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                     </svg>
-                    <input onKeyDown={(e) => e.key === 'Enter' ? handleSubmit(e) : null} onChange={(e) => setSearchQuery(e.target.value.toLowerCase())} className='border-0 outline-0 bg-transparent ' type="search" name="search" id="search" placeholder='Search...' />
+                    <input ref={search} onChange={(e) => handleSearchProduct(e)} className='border-0 outline-0 bg-transparent w-56' type="search" name="search" id="search" placeholder='Search...' value={searchQuery} />
                     <div className="recent_search_and__search__results bg-white rounded-md shadow-md absolute top-[70px] left-0 hidden group-focus-within:block w-full z-20" autoComplete="off">
                         {
                             searchQuery.length === 0
-                                ? (recentSearches.length > 0
-                                    ? <div className="recent__searches my-3 p-3 text-left">
-                                        <p className="recent__search flex gap-2 items-center">
-                                            <Image className="icon" src={recent} width={16} height={16} alt="react" />
-                                            <span className="text-sm">Recent Searches</span>
-                                        </p>
-                                        <div className="recent__searches__list flex flex-wrap gap-2 mt-2">
-                                            {
-                                                recentSearches.map((it, idx) => <span key={idx} className="recent__search__item bg-[#f3f4f6] rounded-md px-2 py-1 text-sm flex gap-2 items-center">
-                                                    <span className="text-sm">{it}</span>
-                                                    <Image className="icon" onClick={(e) => handleDeleteRecentSearch(e, idx)} src={recent__close} width={16} height={16} alt="close" />
-                                                </span>)
-                                            }
-                                        </div>
-                                    </div>
-                                    :
-                                    null
-                                )
+                                ? null
                                 :
                                 <div className="search__results my-3 p-3 text-left">
-                                    <p className="search__results__title text-sm">Search Results</p>
-                                    <div className="search__results__list flex flex-col gap-2 mt-2">
-                                        <Link href='/'>
-                                            <p className="search__results__item bg-[#f3f4f6] rounded-md px-2 py-1 text-sm flex gap-2 items-center">
-                                                <span className="text-sm">Samsung</span>
-                                            </p>
-                                        </Link>
-                                        <Link href='/'>
-                                            <p className="search__results__item bg-[#f3f4f6] rounded-md px-2 py-1 text-sm flex gap-2 items-center">
-                                                <span className="text-sm">Samsung</span>
-                                            </p>
-                                        </Link>
+                                    <p className="search__results__title text-sm">Most Relevent Results</p>
+                                    <div className="search__results__list flex items-center flex-col gap-2 mt-2">
+                                        {/* loader */}
+                                        {
+                                            !loading
+                                                ? searchResults.map((it, idx) => {
+                                                    if (idx > 5) return;
+                                                    return (<div key={idx} onClick={(e) => router.push(`/product/${it._id}`)} className="search__results__item bg-[#f3f4f6] rounded-md px-2 py-1 text-sm flex justify-between items-center w-full">
+                                                        <Image width={40} height={40} className="rounded-full bg-white aspect-square" src={it.image1} alt="logo" />
+                                                        <div className="search__results__item__details flex flex-col gap-1">
+                                                            <p className="search__results__item__name text-xs font-medium">{it.productName}</p>
+                                                            <p className="search__results__item__price text-xs font-medium truncate">{it.productShortDescription}</p>
+                                                        </div>
+                                                        <p className="search__results__item__name text-dabgreen text-lg font-semibold">₹{it.price}</p>
+                                                    </div>)
+                                                })
+                                                : <svg className="animate-spin h-6 w-6 mr-3 text-dabgreen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                                                </svg>
+                                        }
                                     </div>
                                 </div>
                         }

@@ -50,7 +50,7 @@ const Card = ({ item }) => {
       <div className="singleProductCard__image__container bg-gray-200 rounded-t-xl relative w-full h-[250px] px-2">
         <div className="image__text__icon flex justify-between py-2 px-4">
           <p className="cursor-pointer image__text border-2 text-dabgreen border-dabgreen rounded-full text-center px-3 py-[6px] h-min text-sm">
-            {item.tags[0]}
+            {item.productCategory}
           </p>
           <button className="group rounded-full w-10 h-10 bg-gray-100 border-0 inline-flex items-center justify-center text-gray-900 ml-4 focus:text-red-600 hover:text-red-600">
             <Image width={20} height={20} src={empty__heart} alt="empty__heart" className="block group-hover:hidden group-focus-within:hidden " />
@@ -97,17 +97,14 @@ const Card = ({ item }) => {
         </div>
 
         <div className="flex justify-between mx-3 my-4">
-          {
-            cart.find((cart__item) => cart__item._id === item._id) !== undefined
-              ? <>
-                <button onClick={(e) => handleBuyNow(e, item)} className="text-xs hover:bg-dabgreen focus:bg-dabgreen hover:text-white focus:text-white md:text-sm border-dabgreen border text-dabgreen rounded-full px-4 py-[6px]">Buy now</button>
-                <button onClick={(e) => handleRemoveFromCart(e, item._id)} className="text-xs bg-red-600 focus:bg-red-500 text-white  md:text-sm border-red-500 border rounded-full px-4 py-[6px]">Remove</button>
-              </>
-              : <>
+          {/* { cart.find((cart__item) => cart__item._id === item._id) !== undefined ? <> */}
+                {/* <button onClick={(e) => handleBuyNow(e, item)} className="text-xs hover:bg-dabgreen focus:bg-dabgreen hover:text-white focus:text-white md:text-sm border-dabgreen border text-dabgreen rounded-full px-4 py-[6px]">Buy now</button>
+                <button onClick={(e) => handleRemoveFromCart(e, item._id)} className="text-xs bg-red-600 focus:bg-red-500 text-white  md:text-sm border-red-500 border rounded-full px-4 py-[6px]">Remove</button> */}
+              {/* </> */}
+              {/* : <> */}
                 <button onClick={(e) => handleBuyNow(e, item)} className="text-xs hover:bg-dabgreen focus:bg-dabgreen hover:text-white focus:text-white md:text-sm border-dabgreen border-2 text-dabgreen rounded-full px-4 py-[6px]">Buy now</button>
                 <button onClick={(e) => handleAddToCart(e, item)} className="text-xs bg-dabgreen text-white md:text-sm rounded-full px-4 py-[6px] hover:shadow-lg">Add to cart</button>
-              </>
-          }
+               {/* </> }  */}
         </div>
       </div>
 

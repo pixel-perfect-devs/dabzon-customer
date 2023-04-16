@@ -6,7 +6,11 @@ export default async function handler(req, res) {
       const client = await clientPromise;
       const db = await client.db("dabzon");
       const collection = await db.collection("product");
-      const response = await collection.find({ tags: { $elemMatch: { $eq: searchquery } } }).toArray()
+      // below code is for partial match of search query when enter hit in search bar
+      const response = await collection.find({ tags: { $regex: searchquery } }).toArray()
+
+      // below code is for exact match of search query when enter hit in search bar
+      // const response = await collection.find({ tags: { $elemMatch: { $eq: searchquery } } }).toArray()
       // console.log(response)
       return res.status(200).json({ msg: response });
     } catch (error) {
