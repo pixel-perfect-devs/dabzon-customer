@@ -48,7 +48,7 @@ export default function Home({ shopbycategoryData, showTopSellingProductsData })
       </Head>
       <main className="main__page bg-gray-100 ">
         <NavBar />
-        {/* <OfferCarousel/> */}
+        <OfferCarousel/>
         <OtherSupport />
         <ShopByCategory data={shopbycategoryData} />
         <TopOffers />

@@ -52,17 +52,17 @@ function NavBar({ searchQuery = "", setSearchQuery, searchResults = [], setSearc
     }, []);
 
     return (
-        <div className='Navbar sticky top-0 z-20 inline-block w-full bg-dabgreen md:bg-white'>
+        <div className='Navbar sticky top-0 z-30 inline-block w-full bg-dabgreen md:bg-white'>
             <nav className="backdrop-blur-md z-10 py-0 flex justify-between gap-3 max-w-7xl  items-center my-4 mx-auto px-[3vw] flex-wrap">
                 <Link href='/' className="logo inline-block bg-dabgreen text-white p-1 font-normal rounded-full">
                     <Image width={50} height={50} className="" src={logo} alt="logo" />
                 </Link>
-                <button onClick={() => { router.pathname !== '/user/search' && router.push('/user/search')}} className="group search__container md:flex flex-row gap-3 bg-[#f3f4f6] rounded-3xl px-4 py-2 hidden items-center relative">
+                <button onClick={() => { router.pathname !== '/user/search' && router.push('/user/search')}} className="group search__container md:flex flex-row gap-3 bg-[#f3f4f6] rounded-3xl px-4 !py-3 hidden items-center relative">
                     <svg className='sm:w-5' xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                     </svg>
-                    <input ref={search} onChange={(e) => handleSearchProduct(e)} className='border-0 outline-0 bg-transparent w-56' type="search" name="search" id="search" placeholder='Search...' value={searchQuery} />
-                    <div className="recent_search_and__search__results bg-white rounded-md shadow-md absolute top-[70px] left-0 hidden group-focus-within:block w-full z-20" autoComplete="off">
+                    <input ref={search} onChange={(e) => handleSearchProduct(e)} className='border-0 outline-none bg-transparent w-56' type="search" name="search" id="search" placeholder='Search...' value={searchQuery} />
+                    <div className="search__results bg-white rounded-md shadow-md absolute top-[70px] left-0 hidden group-focus-within:block w-full z-20" autoComplete="off">
                         {
                             searchQuery.length === 0
                                 ? null
