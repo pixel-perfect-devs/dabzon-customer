@@ -53,10 +53,10 @@ export default function Home({ shopbycategoryData, showTopSellingProductsData })
         <ShopByCategory data={shopbycategoryData} />
         <TopOffers />
         <ShopByBrand />
-        <TopSellingBatteries title="Top Selling Batteries" topSellingProducts={showTopSellingProductsData} />
+        <TopSellingBatteries title="Top Selling Batteries" topSellingProducts={showTopSellingProductsData} /> */}
         <BestFeedback />
-        <BlogComponents source="home" blogHeading="Blogs" /> */}
-        <FAQ />
+        {/* <BlogComponents source="home" blogHeading="Blogs" />
+        <FAQ /> */}
         <FooterComponents />
       </main>
     </>
