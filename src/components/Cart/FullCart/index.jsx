@@ -73,6 +73,13 @@ const Index = ({ paymentsuccess, setPaymentsuccess }) => {
       alert("Cart is empty");
       return;
     };
+    console.log(cartArray);
+    const selected_city = "Kanpur";
+    for(var i=0;i<cartArray.length;i++){
+      if(cartArray[i].productDeliveryCity !== selected_city){
+        alert(cartArray.productName+ " is not available on your city");
+      }
+    }
     // check if user is logged in and address is selected or not then only proceed to payment
     // handleCheckOut(e, paymentsuccess, setPaymentsuccess, amount, cartArray)
   }
