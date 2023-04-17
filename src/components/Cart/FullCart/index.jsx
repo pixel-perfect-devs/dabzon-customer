@@ -16,7 +16,7 @@ const Index = ({ paymentsuccess, setPaymentsuccess }) => {
 
   useEffect(() => {
     // checking if user is signed in
-    if(getCookie("userSession") === ''){
+    if (getCookie("userSession") === '') {
       router.replace("/auth/login?redirect=cart");
     }
     setCartArray(cart);
@@ -69,15 +69,22 @@ const Index = ({ paymentsuccess, setPaymentsuccess }) => {
 
   const handlePayment = (e) => {
     e.preventDefault();
-    if(cartArray.length === 0) {
+    if (cartArray.length === 0) {
       alert("Cart is empty");
       return;
     };
-    console.log(cartArray);
     const selected_city = "Kanpur";
-    for(var i=0;i<cartArray.length;i++){
-      if(cartArray[i].productDeliveryCity !== selected_city){
-        alert(cartArray.productName+ " is not available on your city");
+    for (var i = 0; i < cartArray.length; i++) {
+      var cityArray = cartArray[i].city;
+      var match = false;
+      for (let index = 0; index < cityArray.length; index++) {
+        var element = cityArray[index];
+        if (element.cityName === selected_city) {
+          match = true;
+        }
+      }
+      if(!match){
+        alert(cartArray[i].productName+ " is not available in "+element.cityName);
       }
     }
     // check if user is logged in and address is selected or not then only proceed to payment
@@ -184,7 +191,7 @@ const Index = ({ paymentsuccess, setPaymentsuccess }) => {
             <p className="text-xl">₹{amount}</p>
             <button onClick={(e) => handlePayment(e)} className="offer__apply bg-dabgreen py-2 px-4 rounded-full w-max text-gray-100 hover:text-white text-sm shadow-md">Pay Now</button>
           </div>
-          
+
         </div>
       </div>
     </div>
