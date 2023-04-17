@@ -14,6 +14,13 @@ import { useState, useEffect } from "react";
 
 export default function Home({ shopbycategoryData }) {
   const [city ,setCity] = useState("");
+
+  const incrementVisit = async () => {
+    const res = await fetch("/api/landingpage/incrementVisit");
+    const resJSON = await res.json();
+    console.log(resJSON);
+  }
+
   //get location
   useEffect(() => {
     const options = {
@@ -34,6 +41,13 @@ export default function Home({ shopbycategoryData }) {
     else{       // if location not allowed
       setCity("none");
     }
+
+    // save the number of visitor on home page using local storage into mongodb database
+    if(localStorage.getItem("homePageVisit") === null){
+      localStorage.setItem("homePageVisit",1);
+      incrementVisit();
+    }
+
 }, []);
   return (
     <>
@@ -47,37 +61,37 @@ export default function Home({ shopbycategoryData }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="main__page bg-gray-100 ">
-        <NavBar />
+        {/* <NavBar />
         <OfferCarousel/>
         <OtherSupport />
         <ShopByCategory data={shopbycategoryData} />
         <TopOffers />
         <ShopByBrand />
         <TopSellingBatteries title="Top Selling Batteries" />
-        {/* <BestFeedback /> */}
+        <BestFeedback /> */}
         <BlogComponents source="home" blogHeading="Blogs" />
-        <FAQ />
+        {/* <FAQ /> */}
         <FooterComponents />
       </main>
     </>
   );
 }
 
-export async function getServerSideProps(context) {
-  // this api is on dabzon-admin
-  //if any confusion just "!! console.log(resJSON) !!"
-  const value = await Promise.all([
-    fetch(`${process.env.CUSTOMER_HOST}/api/landingpage/shopbycategory`).then((res) =>
-      res.json()
-    ),
-  ])
+// export async function getServerSideProps(context) {
+//   // this api is on dabzon-admin
+//   //if any confusion just "!! console.log(resJSON) !!"
+//   const value = await Promise.all([
+//     fetch(`${process.env.CUSTOMER_HOST}/api/landingpage/shopbycategory`).then((res) =>
+//       res.json()
+//     ),
+//   ])
   
-  return {
-    props: {
-      shopbycategoryData: value[0].allData,
-     },
-  };
-}
+//   return {
+//     props: {
+//       shopbycategoryData: value[0].allData,
+//      },
+//   };
+// }
 
 // this code will check whether connection between frontend, backend, database is working fine
 // to use this just paste these three lines in getServer function

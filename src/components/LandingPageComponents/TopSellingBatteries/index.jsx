@@ -2,16 +2,16 @@ import Link from 'next/link'
 import React from 'react'
 import TopSellingBatteriesCard from './TopSellingBatteriesCard/index'
 
-const Index = ({title}) => {
-  
+const Index = ({ title }) => {
+
   const [topSellingProducts, setTopSellingProducts] = React.useState([])
-  React.useEffect(() => {    
+  React.useEffect(() => {
     fetch("/api/landingpage/showtopsellingproducts")
-    .then((res) => res.json())
+      .then((res) => res.json())
       .then(data => {
-      setTopSellingProducts(data.data)
-    })
-    .catch(err => console.log(err))
+        setTopSellingProducts(data.data)
+      })
+      .catch(err => console.log(err))
   }, [])
 
   return (
@@ -23,10 +23,13 @@ const Index = ({title}) => {
         </div>
         <div className='flex flex-wrap justify-center gap-6 my-4'>
           {
-            topSellingProducts.length > 0 ? 
-            topSellingProducts.map((item, idx) => <TopSellingBatteriesCard key={idx} item={item} />)
-            :
-            <p className="text-gray-500 text-sm">Loading...</p>
+            topSellingProducts.length > 0 ?
+              topSellingProducts.map((item, idx) => <TopSellingBatteriesCard key={idx} item={item} />)
+              :
+              <svg className="animate-spin h-24 w-24 mr-3 text-dabgreen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+              </svg>
           }
         </div>
       </div>

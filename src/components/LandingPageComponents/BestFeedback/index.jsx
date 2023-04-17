@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import ReviewCard from './ReviewCard'
 
 const Index = () => {
@@ -11,12 +11,12 @@ const Index = () => {
         const response = await fetch('/api/landingpage/feedback/get');
         const data = await response.json();
         // console.log(data);
-        setFeedbackData(data.allData);        
+        setFeedbackData(data.allData);
       } catch (error) {
         console.error(error);
-      } finally{
+      } finally {
         setIsLoading(false);
-        
+
       }
     }
 
@@ -33,21 +33,33 @@ const Index = () => {
       {/* first row of carousel */}
       <div className="relative flex overflow-x-hidden">
         <div className=" first__row__carousel animate-marquee flex items-center gap-4 ">
-          {[1, 2, 3, 4].map((item, index) => <ReviewCard key={index} item={feedbackData[0]} />)}
+          {feedbackData.map((item, index) => {
+            if (index < 4) return null;
+            return <ReviewCard key={index} item={item} />
+          })}
         </div>
 
         <div className="absolute top-0 px-2 animate-marquee2 flex items-center gap-4 ">
-          {[1, 2, 3, 4].map((item, index) => <ReviewCard key={index} item={feedbackData[0]} />)}
+          {feedbackData.map((item, index) => {
+            if (index < 4) return null;
+            return <ReviewCard key={index} item={item} />
+          })}
         </div>
       </div>
       {/* second row of carousel */}
       <div className="relative flex overflow-x-hidden">
         <div className=" first__row__carousel animate-marquee flex items-center gap-4 ">
-          {[1, 2, 3, 4].map((item, index) => <ReviewCard key={index} item={feedbackData[0]} />)}
+          {feedbackData.map((item, index) => {
+            if (index >= 4) return null;
+            return <ReviewCard key={index} item={item} />
+          })}
         </div>
 
         <div className="absolute top-0  px-2 animate-marquee2 flex items-center gap-4 ">
-          {[1, 2, 3, 4].map((item, index) => <ReviewCard key={index} item={feedbackData[0]} />)}
+          {feedbackData.map((item, index) => {
+            if (index >= 4) return null;
+            return <ReviewCard key={index} item={item} />
+          })}
         </div>
       </div>
     </div>

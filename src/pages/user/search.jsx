@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import NavBar from '../../components/NavBar/index'
 import FooterComponents from '../../components/FooterComponents/index'
 import SearchComponent from '../../components/SearchComponent/index'
-import image from '../../../public/shopByBrand/excide.png'
 
 const Search = () => {
 
