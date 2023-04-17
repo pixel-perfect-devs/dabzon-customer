@@ -179,7 +179,7 @@ const Productdetailsview = ({ productId }) => {
     return (
         <div className="ProductDetailsPage my-8 min-h-[70vh] flex justify-center items-center">
             {productDetails ?
-                <div className="ProductDetailsPage__container max-w-7xl mx-auto  ">
+                <div className="ProductDetailsPage__container max-w-7xl mx-auto mb-8 ">
                     <div className="ProductDetailsPage__breadcrumbs my-4 px-[4vw]">
                         <Link href="/" className="text-dabgreen">Home</Link>
                         <span className="mx-2 text-gray-400">/</span>
@@ -189,7 +189,7 @@ const Productdetailsview = ({ productId }) => {
                     </div>
 
                     <div className="Product__image__specification flex justify-center flex-wrap ">
-                        <div className="Product__image flex flex-col ">
+                        <div className="Product__image flex flex-col justify-center items-center ">
                             <div className="product__main__image bg-gray-200 rounded-xl m-2 w-[250px] h-[250px] md:w-[490px] md:h-[300px] relative">
                                 <div className="flex justify-between pt-4 px-4">
                                     <p className="border text-dabgreen border-dabgreen rounded-full text-xs px-4 py-[6px] text-center bg-gray-50">
@@ -339,11 +339,11 @@ const Productdetailsview = ({ productId }) => {
                             </div>
                                 : null} */}
 
-                            <div className="couponCode__container flex items-center justify-center sm:justify-start mx-2 !mb-4">
-                                <span className="p-2 rounded-full bg-[#6366f1]">
+                            <div className="couponCode__container flex flex-wrap items-center justify-center sm:justify-start mx-2 !mb-4 gap-3">
+                                <span className="p-2 rounded-full bg-[#6366f1] sm:block hidden">
                                     <Image className="" loading="lazy" src={bestprice} alt="Image is loading..." width={20} height={20} />
                                 </span>
-                                <div className="flex items-center w-40 mx-3">
+                                <div className="flex items-center justify-center flex-wrap gap-3 mx-3">
                                     <div className="inputcontianer relative">
                                         <input onChange={(e) => setCouponCode(prev => prev = { ...prev, couponCode: e.target.value })} type="text" name="searchCoupon" id="searchCoupon" className="bg-gray-50 border border-dabgreen rounded-full py-1 px-3 outline-none" value={couponCode.couponCode} placeholder="Apply Coupon here..." />
                                         {
@@ -398,7 +398,7 @@ const Productdetailsview = ({ productId }) => {
                                     <CheckDeliveryAvaibility cityArray={productDetails.city} productState={productState} setProductState={setProductState} setCouponCode={setCouponCode} />
                                 </div>
 
-                                <div className="share__products space-y-2 my-3 sm:mx-8 mx-2">
+                                <div className="share__products flex gap-3 items-center justify-center sm:block space-y-2 my-3 sm:mx-8 mx-2">
                                     <p className="text-gray-900 sm:text-xl text-lg">Copy link</p>
                                     <button type='button' onClick={() => navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_CUSTOMER_HOST}/product/${productDetails._id}`)} className="relative group bg-dabgreen p-2 rounded-full cursor-pointer w-min">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-link" viewBox="0 0 16 16">
@@ -445,7 +445,7 @@ const Productdetailsview = ({ productId }) => {
                             )
                         }
                     </div>
-                    <div className="Product__manual__buttons mx-4 sm:mx-16 my-8 ">
+                    <div className="Product__manual__buttons mx-4 sm:mx-16 my-8 flex sm:block flex-wrap gap-3 justify-center items-center ">
                         <button onClick={(e) => downloadManual(e)} className=" text-dabgreen  bg-gray-50 border border-dabgreen rounded-full mx-2 py-2 px-4">
                             Download Manual
                         </button>
