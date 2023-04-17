@@ -6,9 +6,9 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function Example() {
+export default function Example({setSort}) {
 
-    let sortByData = ["Low to high", "High to low", "Relevant", "Popularity"]
+    let sortByData = ["Low to high", "High to low", "Popularity"]
 
     return (
         <Menu as="div" className="relative inline-block text-left">
@@ -31,10 +31,10 @@ export default function Example() {
                 <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="py-1">
                         {
-                            sortByData.map((item, index) => <Menu.Item key={index}>
+                            sortByData.map((item, index) => <Menu.Item key={index} onClick={() => setSort(prev => prev = item) } >
                                 {({ active }) => (
                                     <p className={classNames(
-                                            active ? 'cursor-pointer text-green-500' : 'text-gray-800',
+                                            active ? 'cursor-pointer text-dabgreen' : 'text-gray-800',
                                             'block px-4 py-2 text-base'
                                         )}
                                     >

@@ -2,27 +2,23 @@ import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon, AdjustmentsHorizontalIcon } from '@heroicons/react/20/solid'
 import Genral_Dropdown from './Dropdown'
+import React from 'react'
+import { useEffect } from 'react'
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function index() {
+export default function index({filteredItems, setFilters, resetFilters, applyFilters}) {
 
-    const data = [
-        {
-            content: 'option 1',
-            link: ""
-        },
-        {
-            content: 'option 1',
-            link: ""
-        },
-        {
-            content: 'option 1',
-            link: ""
-        }
-    ]
+    const [brandData, setBrandData] = React.useState([]);
+    const [categoryData, setCategoryData ] = React.useState([]);
+    // const warrantyData = ['0-1year', '1-2years', '2-3years'];
+
+    useEffect(() => {
+        setBrandData(filteredItems.map((item) => item.productBrand).filter((value, index, self) => self.indexOf(value) === index));
+        setCategoryData(filteredItems.map((item, idx) => item.productCategory).filter((value, index, self) => self.indexOf(value) === index));
+    }, [filteredItems]);
 
     return (
         <Menu as="div" className="relative inline-block text-left mr-4">
@@ -46,24 +42,18 @@ export default function index() {
                     <div className="p-3">
 
                         <Menu.Items>
-                            <Genral_Dropdown optionArray={data} heading='Brand' />
+                            <Genral_Dropdown setFilters={setFilters} optionArray={brandData} heading='Brand' />
                         </Menu.Items>
+                        {/* <Menu.Items>
+                            <Genral_Dropdown setFilters={setFilters} optionArray={warrantyData} heading='Warranty' />
+                        </Menu.Items> */}
                         <Menu.Items>
-                            <Genral_Dropdown optionArray={data} heading='Type' />
-                        </Menu.Items>
-                        <Menu.Items>
-                            <Genral_Dropdown optionArray={data} heading='Capacity' />
-                        </Menu.Items>
-                        <Menu.Items>
-                            <Genral_Dropdown optionArray={data} heading='Prices' />
-                        </Menu.Items>
-                        <Menu.Items>
-                            <Genral_Dropdown optionArray={data} heading='Warranty' />
+                            <Genral_Dropdown setFilters={setFilters} optionArray={categoryData} heading='Category' />
                         </Menu.Items>
                         <Menu.Items>
                             <div className='flex justify-between'>
-                                <button className="reset border border-red-500 -500 font-semibold text-red-500 hover:bg-red-500 hover:text-white focus:bg-red-500 focus:text-white px-6 py-2 my-4 rounded-full">Reset</button>
-                                <button  className="apply border border-green-500 text-green-500 hover:bg-green-500 hover:text-white focus:bg-green-500 focus:text-white font-semibold bg-white px-6 py-2 my-4 rounded-full">Apply</button>
+                                <button onClick={() => resetFilters()} className="reset border border-red-500 -500 font-semibold text-red-500 hover:bg-red-500 hover:text-white focus:bg-red-500 focus:text-white px-6 py-2 my-4 rounded-full">Reset</button>
+                                <button onClick={() => applyFilters()} className="apply border border-dabgreen text-dabgreen hover:bg-dabgreen hover:text-white focus:bg-dabgreen focus:text-white font-semibold bg-white px-6 py-2 my-4 rounded-full">Apply</button>
                             </div>
                         </Menu.Items>
                     </div>

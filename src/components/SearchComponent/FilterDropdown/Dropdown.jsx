@@ -6,7 +6,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function Example({ optionArray, heading }) {
+export default function Example({ optionArray, heading, setFilters }) {
     return (
         <Menu as="div" className="relative w-full inline-block text-left">
             <div className='w-full'>
@@ -30,18 +30,18 @@ export default function Example({ optionArray, heading }) {
 
                         {
                             optionArray.map((item, index) => {
+
                                 return (
-                                    <Menu.Item key={index}>
+                                    <Menu.Item key={index} onClick={() => setFilters(prev => { if (!prev.includes(item)) { return [...prev, item] } else { return prev } })}>
                                         {({ active }) => (
-                                            <a
-                                                href={item.link}
+                                            <p
                                                 className={classNames(
                                                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                                    'block px-4 py-2 text-sm'
+                                                    'block px-4 py-2 text-sm hover:text-dabgreen cursor-pointer'
                                                 )}
                                             >
-                                                {item.content}
-                                            </a>
+                                                {item}
+                                            </p>
                                         )}
                                     </Menu.Item>
 

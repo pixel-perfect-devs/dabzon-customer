@@ -1,9 +1,9 @@
 import React from "react";
 import NavBar from "../../components/NavBar/index";
 import FooterComponents from "../../components/FooterComponents/index";
-import contactUs from "../../../public/contactUs.Png";
+import contactUs from "../../../public/contactUs.png";
 import Image from "next/image";
-import Link from "next/link";
+
 const contact = () => {
   return (
     <div className="contact bg-gray-100 ">
@@ -53,7 +53,7 @@ const contact = () => {
             </div>
             <div className="buttons__container flex flex-col items-center w-[295px]">
               <button
-                className="bg-[#10B981] text-white w-56 rounded-full h-9 mt-5 shadow-2xl"
+                className="bg-dabgreen text-white w-56 rounded-full h-9 mt-5 shadow-2xl"
                 type="button">
                 Create
               </button>
