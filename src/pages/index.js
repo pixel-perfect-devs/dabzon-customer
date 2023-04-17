@@ -18,7 +18,6 @@ export default function Home({ shopbycategoryData }) {
   const incrementVisit = async () => {
     const res = await fetch("/api/landingpage/incrementVisit");
     const resJSON = await res.json();
-    console.log(resJSON);
   }
 
   //get location
