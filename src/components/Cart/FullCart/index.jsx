@@ -7,12 +7,17 @@ import CartItemCard from './CartItemCard'
 import { handleCheckOut } from '@/helperFunction/checkout/cartcheckout'
 import { getCookie } from '@/cookie'
 import { useRouter } from 'next/router'
+import AddressDropwdown from "./AddressDropdown"
+import AddressModal from "../../Modals/AddressModal/AddressModal"
 
 const Index = ({ paymentsuccess, setPaymentsuccess }) => {
   const router = useRouter();
   const { cart } = useSelector((state) => state.cart);
   const [cartArray, setCartArray] = useState([]);
   const [amount, setAmount] = useState(100);
+  // state to show or hide model
+  const [Modal, setMddal] = useState(false);
+
 
   useEffect(() => {
     // checking if user is signed in
@@ -83,8 +88,8 @@ const Index = ({ paymentsuccess, setPaymentsuccess }) => {
           match = true;
         }
       }
-      if(!match){
-        alert(cartArray[i].productName+ " is not available in "+element.cityName);
+      if (!match) {
+        alert(cartArray[i].productName + " is not available in " + element.cityName);
       }
     }
     // check if user is logged in and address is selected or not then only proceed to payment
@@ -110,22 +115,11 @@ const Index = ({ paymentsuccess, setPaymentsuccess }) => {
         <div className="choose__address space-y-2 flex flex-col ">
           <p className="offers__heading font-semibold text-xl mb-3">Choose Address</p>
           <div className="flex flex-col space-y-3">
-
-            <button className="hover:border-dabgreen focus:border-green-400 border px-3 py-2 flex gap-3 bg-white rounded-xl items-start">
-              <span className="address__icon p-3 rounded-full bg-[#6366f1]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-truck" viewBox="0 0 16 16">
-                  <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                </svg>
-              </span>
-              <div className="address__text w-44 text-left">
-                <p className="name">sumit kumar</p>
-                <p className="address text-gray-500 text-sm">Lorem ipsum dolor sit amet, consectetur </p>
-                <p className="phone text-gray-500 text-sm">8494986495</p>
-              </div>
-            </button>
-
+          {/* address dropdown for choose addhress section  */}
+            <AddressDropwdown className='Address--Dropdown' />
           </div>
-          <button className="offer__apply border-dabgreen border py-2 px-6 rounded-full w-min text-dabgreen flex gap-2 font-semibold items-center">
+          <button className="offer__apply border-dabgreen border py-2 px-6 rounded-full w-min text-dabgreen flex gap-2 font-semibold items-center"
+            onClick={() => setMddal(true)}>
             <span className="icon text-xl">+</span>
             <span className="icon">ADD</span>
           </button>
@@ -192,7 +186,16 @@ const Index = ({ paymentsuccess, setPaymentsuccess }) => {
             <button onClick={(e) => handlePayment(e)} className="offer__apply bg-dabgreen py-2 px-4 rounded-full w-max text-gray-100 hover:text-white text-sm shadow-md">Pay Now</button>
           </div>
 
+
+
         </div>
+
+        {/* Address Modal  */}
+        {Modal ? (
+
+          <AddressModal setMddal={setMddal} />
+
+        ) : null}
       </div>
     </div>
   )
