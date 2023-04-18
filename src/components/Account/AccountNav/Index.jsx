@@ -3,14 +3,17 @@ import profile from '../../../../public/avatar.png'
 import order from '../../../../public/account/order.svg'
 import address from '../../../../public/account/address.svg'
 import Image from 'next/image'
+import { signOut } from 'next-auth/react'
+import { deleteCookie } from '@/cookie'
 const Index = ({setRight}) => {
+  const handleSignOut = () => {
+    signOut();
+    deleteCookie("userSession");
+  }
   return (
     <div className='flex flex-col items-center sm:items-start'>
-
-    
         <div onClick={()=>setRight(1)} className="box-border  border-gray-200 bg-green-100  border h-16 lg:w-72 w-56 flex items-center   rounded-lg m-2">
-          <div className='w-10 h-10  mx-4'>
-            
+          <div className='w-10 h-10  mx-4'> 
           <Image
             className=" w-10 h-10 "
             loading="lazy"
@@ -85,7 +88,7 @@ const Index = ({setRight}) => {
             <p className="  text-xs text-green-800">2+ Address Saved</p>
           </div>
         </div>
-        <button className='bg-red-200 lg:w-72 w-56 h-10  my-2 rounded-[100px] mx-2'>Log Out</button>
+        <button onClick={()=> handleSignOut()} className='bg-red-200 lg:w-72 w-56 h-10  my-2 rounded-[100px] mx-2'>Log Out</button>
       
             </div>
   )
