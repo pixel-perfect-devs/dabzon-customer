@@ -2,28 +2,50 @@ import Image from 'next/image'
 import React from 'react'
 import date from "../../../../public/icons/date.svg"
 import account_circle from "../../../../public/icons/account_circle.svg"
+import PortableText from 'react-portable-text'
+import imageUrlBuilder from '@sanity/image-url'
+import { createClient } from 'next-sanity'
 
-const Index = ({item, redirectToBlogDetailPage}) => {
+const Index = ({ item, redirectToBlogDetailPage }) => {
+
+    const client = createClient({
+        projectId: "q21v17fe",
+        dataset: "production",
+        useCdn: false
+    });
+
+    const builder = imageUrlBuilder(client);
+
+    const [content, setContent] = React.useState([]);
+    React.useEffect(() => {
+        setContent(item?.content?.slice(0, 2));
+    }, []);
 
     return (
-        <div className="blogSectionCard rounded-md overflow-hidden shadow-sm cursor-pointer" onClick={() => redirectToBlogDetailPage(item.id)} >
+        <div className="blogSectionCard rounded-md overflow-hidden shadow-sm cursor-pointer" onClick={() => redirectToBlogDetailPage(item._id)} >
             <div className='blogSectionCard__image__container w-full'>
-                <Image width={1000} height={1000} className="w-full" src={item.imgUrl} alt="img" />
+                <Image width={1000} height={1000} className="w-full" src={builder.image(item.image).width(1000).url()} alt="img" />
             </div>
             <div className='blogSectionCard__buttons '>
-                <span type="button" className="inline-block rounded-full bg-[#6366f1] sm:ml-4 px-6 mr-4 mt-4 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-white ">
-                    Trending
-                </span>
-                <span
-                    type="button"
-                    className="inline-block mr-4 mt-4 rounded-full bg-dabgreen px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-white ">
-                    {item.type}
-                </span>
+                {item.tags.map((tag, index) =>
+                    <span key={index} type="button" className="inline-block rounded-full bg-[#6366f1] sm:ml-4 px-6 mr-4 mt-4 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-white ">
+                        {tag}
+                    </span>
+                )}
             </div>
             <div className="blogSectionCard__text px-6 py-4">
                 <div className="font-bold text-base md:text-xl mb-2 truncate">{item.title}</div>
                 <p className="text-gray-700 text-xs md:text-sm">
-                    {item.content}
+                    <PortableText
+                        // Pass in block content straight from Sanity.io
+                        content={content}
+                        // Optionally override marks, decorators, blocks, etc. in a flat
+                        // structure without doing any gymnastics
+                        serializers={{
+                            h1: (props) => <h1 style={{ color: "red" }} {...props} />,
+                            li: ({ children }) => <li className="special-list-item">{children}</li>,
+                        }}
+                    />
                 </p>
             </div>
             <div className="blogSectionCard__date__author px-6 pt-4 pb-2 flex gap-3">
@@ -31,7 +53,7 @@ const Index = ({item, redirectToBlogDetailPage}) => {
                     <span className="icon">
                         <Image src={date} alt="data" width={16} height={16} />
                     </span>
-                    <span className="text">{item.date}</span>
+                    <span className="text">{item._createdAt.slice(0, 10)}</span>
                 </div>
                 <span className=" bg-black rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2 flex gap-2 items-center">
                     <span className="icon">

@@ -30,8 +30,6 @@ const Productdetailsview = ({ productId }) => {
         payingPriceAfterCoupon: 0,
     });
 
-    // productState naam galat hai... basically product ka state hai.... kripa krke shama kare
-    // productState, setProductState
     const [productState, setProductState] = React.useState({
         _id: '',
         productId: "",
@@ -73,7 +71,8 @@ const Productdetailsview = ({ productId }) => {
             productCategory: productData.productCategory,
             productWithExchange: productData.exchangeAmount,
             productWithTrolley: productData.trolleyPrice,
-            quantity: 1
+            quantity: 1,
+            city: productData.city
         })
         setCouponCode(prev => prev = { ...prev, prevPrice: productData.price })
     }
@@ -86,9 +85,6 @@ const Productdetailsview = ({ productId }) => {
         e.preventDefault();
         if (productState.productDeliveryCity === "") return alert("Please select your city");
         let copyproductState = { ...productState, productCouponCode: couponCode.couponCode, productCouponCodeDiscount: couponCode.couponDiscount, couponDiscountPrice: couponCode.payingPriceAfterCoupon };
-
-        // delete copyproductState.productCapacityArray;
-        // delete copyproductState.productCouponCodeArray;
 
         dispatch(setCart(copyproductState));
     }
@@ -174,7 +170,7 @@ const Productdetailsview = ({ productId }) => {
         fetchProductDetails(productId);
     }, [productId])
 
-    console.log(productState)
+    // console.log(productState)
 
     return (
         <div className="ProductDetailsPage my-8 min-h-[70vh] flex justify-center items-center">
