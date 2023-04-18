@@ -5,13 +5,12 @@ import OtherSupport from "../components/LandingPageComponents/OtherSupports/inde
 import ShopByBrand from "../components/LandingPageComponents/ShopByBrand/index";
 import FooterComponents from "../components/FooterComponents/index";
 import NavBar from "../components/NavBar/index";
-//import OfferCarousel from "../components/LandingPageComponents/OfferCarousel/index";
+import OfferCarousel from "../components/LandingPageComponents/OfferCarousel/index";
 import TopSellingBatteries from "../components/LandingPageComponents/TopSellingBatteries/index";
 import FAQ from "../components/LandingPageComponents/FAQ/index";
 import BestFeedback from "../components/LandingPageComponents/BestFeedback/index";
 import BlogComponents from "../components/BlogComponents/index";
 import { useState, useEffect } from "react";
-import { createClient } from "next-sanity";
 
 export default function Home({ shopbycategoryData }) {
   const [city, setCity] = useState("");
@@ -65,7 +64,7 @@ export default function Home({ shopbycategoryData }) {
       </Head>
       <main className="main__page bg-gray-100 ">
         <NavBar />
-        {/* <OfferCarousel/> */}
+        <OfferCarousel/>
         <OtherSupport />
         <ShopByCategory data={shopbycategoryData} />
         <TopOffers />
@@ -79,12 +78,6 @@ export default function Home({ shopbycategoryData }) {
     </>
   );
 }
-
-const client = createClient({
-  projectId: "q21v17fe",
-  dataset: "production",
-  useCdn: false,
-});
 
 export async function getServerSideProps(context) {
   // this api is on dabzon-admin

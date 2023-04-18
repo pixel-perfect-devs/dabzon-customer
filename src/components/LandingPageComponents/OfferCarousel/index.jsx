@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React, { useEffect } from "react";
+import carousel1 from '../../../../public/caraousel/caraousel1.png'
 
 const Index = () => {
   return (
