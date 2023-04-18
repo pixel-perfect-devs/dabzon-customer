@@ -170,7 +170,7 @@ const Productdetailsview = ({ productId }) => {
         fetchProductDetails(productId);
     }, [productId])
 
-    console.log(productState)
+    // console.log(productState)
 
     return (
         <div className="ProductDetailsPage my-8 min-h-[70vh] flex justify-center items-center">

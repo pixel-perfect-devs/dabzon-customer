@@ -16,7 +16,7 @@ const Index = () => {
         console.error(error);
       } finally {
         setIsLoading(false);
-        console.log(faqData[0]);
+        // console.log(faqData[0]);
       }
     }
 

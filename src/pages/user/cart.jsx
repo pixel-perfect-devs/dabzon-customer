@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import PaymentSuccess from '../../components/Cart/Payment/PaymentSuccess/index'
 import FullCart from '../../components/Cart/FullCart/index'
 import EmptyCart from '../../components/Cart/EmptyCart/index'
 import FooterComponents from '../../components/FooterComponents/index'
@@ -11,37 +10,29 @@ import { getCookie } from '@/cookie'
 
 const Cart = () => {
   const router = useRouter();
-  const [paymentsuccess, setPaymentsuccess] = React.useState(false);
-  const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.cart);
 
-  useEffect(()=>{
-    if(getCookie("userSession")===''){
+  useEffect(() => {
+    if (getCookie("userSession") === '') {
       router.replace("/auth/login?redirect=cart");
     }
-  },[])
-  
+  }, [])
+
   return (
     <div className='cart__page '>
       <NavBar />
-      {
-        paymentsuccess
-          ?
-          <PaymentSuccess />
-          :
-          <div className='cart__container max-w-7xl mx-auto px-[4vw] my-3'>
-            <p className="cart__heading text-xl font-semibold text-gray-900">Cart</p>
-            <div className="cart__container">
-              {
-                cart.length > 0
-                  ?
-                  <FullCart paymentsuccess={paymentsuccess} setPaymentsuccess={setPaymentsuccess} />
-                  :
-                  <EmptyCart />
-              }
-            </div>
-          </div>
-      }
+      <div className='cart__container max-w-7xl mx-auto px-[4vw] my-3'>
+        <p className="cart__heading text-xl font-semibold text-gray-900">Cart</p>
+        <div className="cart__container">
+          {
+            cart.length > 0
+              ?
+              <FullCart />
+              :
+              <EmptyCart />
+          }
+        </div>
+      </div>
       {/* recommend for you section */}
       {/* <TopSellingBatteries title="Recommeded for you" /> */}
       <div className="footer hidden sm:block">

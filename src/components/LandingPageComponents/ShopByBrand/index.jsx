@@ -14,7 +14,7 @@ const Index = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  console.log(brands);
+  // console.log(brands);
 
   return (
     <div className="shopbybrand my-8 ">
