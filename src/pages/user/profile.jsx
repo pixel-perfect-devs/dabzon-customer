@@ -4,12 +4,17 @@ import FooterComponents from "../../components/FooterComponents/index";
 import AccountNav from "../../components/Account/AccountNav/Index";
 import Hello from "../../components/Account/Hello/Index";
 import MyOrder from "../../components/Account/MyOrder/Index";
+import { getCookie } from "@/cookie";
+import { useRouter } from "next/router";
 
 const Profile = () => {
- 
+  const router = useRouter();
   const [right, setRight] = useState(1);
 
   useEffect(() => {
+    if(getCookie("userSession")===''){
+      router.replace("/auth/login?redirect=profile")
+    }
     if(window.innerWidth <= 768){
       setRight(9);
     }
