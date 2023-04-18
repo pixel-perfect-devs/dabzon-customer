@@ -11,44 +11,47 @@ import FAQ from "../components/LandingPageComponents/FAQ/index";
 import BestFeedback from "../components/LandingPageComponents/BestFeedback/index";
 import BlogComponents from "../components/BlogComponents/index";
 import { useState, useEffect } from "react";
+import { createClient } from "next-sanity";
 
 export default function Home({ shopbycategoryData }) {
-  const [city ,setCity] = useState("");
+  const [city, setCity] = useState("");
 
   const incrementVisit = async () => {
     const res = await fetch("/api/landingpage/incrementVisit");
     const resJSON = await res.json();
     console.log(resJSON);
-  }
+  };
 
   //get location
   useEffect(() => {
     const options = {
       enableHighAccuracy: true,
     };
-    if('geolocation' in navigator) {    // if location allowed
-        // Retrieve latitude & longitude coordinates from `navigator.geolocation` Web API
-        navigator.geolocation.getCurrentPosition( async({ coords }) => {
-            const { latitude, longitude } =  coords;
-            // this api gives location details from latitude and longitude
-            console.log(coords);
-            const res= await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`)
-            const data= await res.json();
-            console.log(data.city);
-            setCity(data.city);
-        })
-    }
-    else{       // if location not allowed
+    if ("geolocation" in navigator) {
+      // if location allowed
+      // Retrieve latitude & longitude coordinates from `navigator.geolocation` Web API
+      navigator.geolocation.getCurrentPosition(async ({ coords }) => {
+        const { latitude, longitude } = coords;
+        // this api gives location details from latitude and longitude
+        console.log(coords);
+        const res = await fetch(
+          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+        );
+        const data = await res.json();
+        console.log(data.city);
+        setCity(data.city);
+      });
+    } else {
+      // if location not allowed
       setCity("none");
     }
 
     // save the number of visitor on home page using local storage into mongodb database
-    if(localStorage.getItem("homePageVisit") === null){
-      localStorage.setItem("homePageVisit",1);
+    if (localStorage.getItem("homePageVisit") === null) {
+      localStorage.setItem("homePageVisit", 1);
       incrementVisit();
     }
-
-}, []);
+  }, []);
   return (
     <>
       <Head>
@@ -77,6 +80,12 @@ export default function Home({ shopbycategoryData }) {
   );
 }
 
+const client = createClient({
+  projectId: "q21v17fe",
+  dataset: "production",
+  useCdn: false,
+});
+
 export async function getServerSideProps(context) {
   // this api is on dabzon-admin
   //if any confusion just "!! console.log(resJSON) !!"
@@ -85,11 +94,11 @@ export async function getServerSideProps(context) {
       res.json()
     ),
   ])
-  
+
   return {
     props: {
       shopbycategoryData: value[0].allData,
-     },
+    },
   };
 }
 
