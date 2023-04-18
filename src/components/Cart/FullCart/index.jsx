@@ -5,11 +5,10 @@ import CartItemCard from './CartItemCard'
 import { handleCheckOut } from '@/helperFunction/checkout/cartcheckout'
 import { getCookie } from '@/cookie'
 import { useRouter } from 'next/router'
-import AddressDropwdown from "./AddressDropdown"
-import AddressModal from "../../Modals/AddressModal/AddressModal"
 import PaymentSucess from '../Payment/PaymentSuccess'
+import AddressModal from '../../Modals/Address'
 
-const Index = ({setModal}) => {
+const Index = () => {
   const router = useRouter();
   const { cart } = useSelector((state) => state.cart);
   const [paymentSuccess, setPaymentSuccess] = useState({
@@ -22,14 +21,17 @@ const Index = ({setModal}) => {
   });
   const [cartArray, setCartArray] = useState([]);
   const [amount, setAmount] = useState(null);
-  // state to show or hide model
-  const [Modal, setMddal] = useState(false);
   const [address, setAddress] = useState({
-    address: '2789, phase 2, near gurudwara, kanpur',
-    city: 'kanpur',
-    pincode: '208022',
-    name: 'saurabh',
-    phone: '845104771',
+    name: "",
+    number: "",
+    email: "",
+    pincode: "",
+    address: "",
+    city: "",
+  });
+  const [showAddressModal, setShowAddressModal] = useState({
+    showModal: false,
+    address: null,
   });
 
 
@@ -75,13 +77,15 @@ const Index = ({setModal}) => {
 
   const handlePayment = async (e) => {
     e.preventDefault();
-    if (cartArray.length === 0 && !address) {
+    if (cartArray.length === 0) {
       alert("Cart is empty");
       return;
     };
 
+    // ? deepak bhai neeche wala comment pd liyo
     // check if user is logged in and address is selected or not then only proceed to payment
-    const selected_city = "Kanpur";
+    
+    // const selected_city = "Kanpur";
     // for (var i = 0; i < cartArray.length; i++) {
     //   var cityArray = cartArray[i].city;
     //   var match = false;
@@ -104,8 +108,8 @@ const Index = ({setModal}) => {
         setPaymentSuccess({
           showModal: true,
           orderId: orderId,
-        });       
-        
+        });
+
       } else {
         alert("Something went wrong");
       }
@@ -125,6 +129,31 @@ const Index = ({setModal}) => {
     script.onerror = () => {
       console.log("razorpay script not loaded");
     }
+
+    // get address from db
+    if (getCookie("userSession") !== '') {
+      async function fetchData() {
+        try {
+          const response = await fetch('/api/address/get', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              userId: getCookie("userSession"),
+            }),
+          });
+          const data = await response.json();
+          if (response.status === 200) setAddress(data.allData);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      fetchData();
+    }
+    else {
+      router.replace("/auth/login?redirect=cart");
+    }
   }, []);
 
   const closePaymentSuccessModal = () => {
@@ -143,14 +172,13 @@ const Index = ({setModal}) => {
 
   return (
     <div className="cart__full flex items-start justify-center lg:justify-between flex-wrap">
-
       <div className="cart__item__container my-8 space-y-3 sm:space-y-6">
         {
           cartArray.length !== 0 ? cartArray?.map((i, ind, arr) => <CartItemCard item={i} key={ind} ind={ind} />) :
             null
         }
       </div>
-      <div className="cart__utility space-y-10 my-8 mb-20">
+      <div className="cart__utility flex flex-col gap-5 sm:gap-10 my-8 mb-20">
         {/* <div className="cart__offers space-y-2 flex flex-col">
           <p className="offers__heading font-semibold text-xl mb-3">Offers</p>
           <input type="search" className="offer__search bg-[#e5e7eb] px-5 py-2 rounded-full" placeholder='Enter coupon code' />
@@ -159,16 +187,42 @@ const Index = ({setModal}) => {
         </div> */}
         <div className="choose__address space-y-2 flex flex-col ">
           <p className="offers__heading font-semibold text-xl mb-3">Choose Address</p>
-          <div className="flex flex-col space-y-3">
-            {/* address dropdown for choose addhress section  */}
-            <AddressDropwdown className='Address--Dropdown' />
-          </div>
-          <button
-          onClick={()=>setModal(true)}
-           className="offer__apply border-dabgreen border py-2 px-6 rounded-full w-min text-dabgreen flex gap-2 font-semibold items-center">
-            <span className="icon text-xl">+</span>
-            <span className="icon">ADD</span>
-          </button>
+          {address.name
+            ? <div className="border-dabgreen border px-3 py-2 flex gap-3 bg-white rounded-xl items-start">
+              <span className="address__icon p-3 rounded-full bg-[#6366f1]">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-truck" viewBox="0 0 16 16">
+                  <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                </svg>
+              </span>
+              <div className="address__text w-44 text-left flex-1">
+                <p className="name">{address.name}</p>
+                <p className="address text-gray-500 text-sm">{address.address}</p>
+                <p className="phone text-gray-500 text-sm">{address.number}</p>
+              </div>
+            </div>
+            : <p>no address found</p>
+          }
+          {
+            address.name
+              ? <button
+                onClick={() => setShowAddressModal({
+                  showModal: true,
+                  address: address,
+                })}
+                className="offer__apply border-dabgreen border py-2 px-6 rounded-full w-min text-dabgreen flex gap-2 font-semibold items-center">
+                <span className="icon text-xl"></span>
+                <span className="icon">Edit</span>
+              </button>
+              : <button
+                onClick={() => setShowAddressModal({
+                  showModal: true,
+                  address: null,
+                })}
+                className="offer__apply border-dabgreen border py-2 px-6 rounded-full w-min text-dabgreen flex gap-2 font-semibold items-center">
+                <span className="icon text-xl">+</span>
+                <span className="icon">ADD</span>
+              </button>
+          }
         </div>
         <div className="total__amount space-y-4 flex flex-col ">
           <p className="offers__heading font-semibold text-xl ">Total Amount</p>
@@ -233,12 +287,16 @@ const Index = ({setModal}) => {
             <button onClick={(e) => setConfirmOrder(prev => prev = { showModal: true, paymentMode: 'cod' })} className="offer__apply bg-dabgreen py-2 px-4 rounded-full w-max text-gray-100 hover:text-white text-sm shadow-md">Cash on Delivery</button>
           </div>
         </div>
-        {/* Address Modal  */}
-        {Modal ? (
-
-          <AddressModal setMddal={setMddal} />
-
-        ) : null}
+      </div>
+      {/* address modal */}
+      {
+          showAddressModal.showModal
+            ?
+            <div className="fixed top-0 left-0 z-50 backdrop-blur-sm w-full h-full overflow-y-scroll px-[2vw] ">
+              <AddressModal address={address} setShowAddressModal={setShowAddressModal} />
+            </div>
+            : null
+        }
 
         {/* confirm order */}
         {
@@ -273,7 +331,6 @@ const Index = ({setModal}) => {
             </div>
           </div>
         }
-      </div>
     </div>
   )
 }
