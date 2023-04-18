@@ -18,7 +18,7 @@ export default function Home({ shopbycategoryData }) {
   const incrementVisit = async () => {
     const res = await fetch("/api/landingpage/incrementVisit");
     const resJSON = await res.json();
-    console.log(resJSON);
+    // console.log(resJSON);
   };
 
   //get location
@@ -32,12 +32,12 @@ export default function Home({ shopbycategoryData }) {
       navigator.geolocation.getCurrentPosition(async ({ coords }) => {
         const { latitude, longitude } = coords;
         // this api gives location details from latitude and longitude
-        console.log(coords);
+        // console.log(coords);
         const res = await fetch(
           `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
         );
         const data = await res.json();
-        console.log(data.city);
+        // console.log(data.city);
         setCity(data.city);
       });
     } else {

@@ -41,7 +41,7 @@ const Index = ({ source, blogHeading }) => {
         router.push(`/blogs/${id}`);
     }
 
-    console.log(blogData)
+    // console.log(blogData)
 
     return (
         <div className='blog my-8'>
