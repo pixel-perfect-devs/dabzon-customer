@@ -9,7 +9,7 @@ import AddressDropwdown from "./AddressDropdown"
 import AddressModal from "../../Modals/AddressModal/AddressModal"
 import PaymentSucess from '../Payment/PaymentSuccess'
 
-const Index = () => {
+const Index = ({setModal}) => {
   const router = useRouter();
   const { cart } = useSelector((state) => state.cart);
   const [paymentSuccess, setPaymentSuccess] = useState({
@@ -163,8 +163,9 @@ const Index = () => {
             {/* address dropdown for choose addhress section  */}
             <AddressDropwdown className='Address--Dropdown' />
           </div>
-          <button className="add__address border-dabgreen border py-2 px-6 rounded-full w-min text-dabgreen flex gap-2 font-semibold items-center"
-            onClick={() => setMddal(true)}>
+          <button
+          onClick={()=>setModal(true)}
+           className="offer__apply border-dabgreen border py-2 px-6 rounded-full w-min text-dabgreen flex gap-2 font-semibold items-center">
             <span className="icon text-xl">+</span>
             <span className="icon">ADD</span>
           </button>
