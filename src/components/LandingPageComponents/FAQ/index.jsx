@@ -10,7 +10,7 @@ const Index = () => {
       try {
         const response = await fetch('/api/landingpage/faq/get');
         const data = await response.json();
-        // console.log(data.allData[0]?.ques);
+        // console.log(data);
         setFaqData(data.allData);
       } catch (error) {
         console.error(error);

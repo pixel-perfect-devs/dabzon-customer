@@ -8,7 +8,7 @@ import { handleCheckOut } from '@/helperFunction/checkout/cartcheckout'
 import { getCookie } from '@/cookie'
 import { useRouter } from 'next/router'
 
-const Index = ({ paymentsuccess, setPaymentsuccess }) => {
+const Index = ({ paymentsuccess, setPaymentsuccess,setModal }) => {
   const router = useRouter();
   const { cart } = useSelector((state) => state.cart);
   const [cartArray, setCartArray] = useState([]);
@@ -118,7 +118,9 @@ const Index = ({ paymentsuccess, setPaymentsuccess }) => {
             </button>
 
           </div>
-          <button className="offer__apply border-dabgreen border py-2 px-6 rounded-full w-min text-dabgreen flex gap-2 font-semibold items-center">
+          <button
+          onClick={()=>setModal(true)}
+           className="offer__apply border-dabgreen border py-2 px-6 rounded-full w-min text-dabgreen flex gap-2 font-semibold items-center">
             <span className="icon text-xl">+</span>
             <span className="icon">ADD</span>
           </button>
