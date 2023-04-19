@@ -1,32 +1,35 @@
+import { getCookie } from "@/cookie";
 import React, { useState } from "react";
 
-const index = ({ address, setShowAddressModal }) => {
 
-  const [postData, setPostData] = useState({
-    name: "",
-    number: "",
-    email: "",
-    pincode: "",
-    address: "",
-    city: "",
-  })
+const index = ({ address, setAddress, setShowAddressModal }) => {
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    // console.log(postData)
-    if (postData.city === '' || postData.address === '' || postData.email === '' || postData.name === '' || postData.number === '' || postData.pincode === '') {
+    // console.log(address)
+    if (address.city === '' || address.address === '' || address.name === '' || address.number === '' || address.pincode === '') {
       alert('choose city');
       return;
+    }
+    let emailId = getCookie("userSession")
+    let obj = {
+      ...address,
+      email: emailId,
     }
     const res = await fetch(`/api/address/post`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(postData),
+      body: JSON.stringify(obj),
     });
     const data = await res.json();
     if (res.status === 200) {
-      alert("Product Created");
+      alert("added address");
+      setShowAddressModal(prev => prev = {
+        ...prev,
+        showModal: false,
+      })
     }
     console.log(data);
   }
@@ -48,7 +51,7 @@ const index = ({ address, setShowAddressModal }) => {
           </label>
           <input
             onChange={(e) =>
-              setPostData((prev) => (prev = { ...prev, name: e.target.value }))
+              setAddress((prev) => (prev = { ...prev, name: e.target.value }))
             }
             className="border-gray-300 border rounded-md p-2 outline-0 bg-transparent w-[300px] "
             type="text"
@@ -65,10 +68,10 @@ const index = ({ address, setShowAddressModal }) => {
           </label>
           <input
             onChange={(e) =>
-              setPostData((prev) => (prev = { ...prev, number: e.target.value }))
+              setAddress((prev) => (prev = { ...prev, number: e.target.value }))
             }
             className="border-gray-300 border rounded-md p-2 outline-0 bg-transparent w-[300px] "
-            type="number"
+            type="tel"
             id="mobile"
             name="mobile"
             placeholder="Enter your Mobile no."
@@ -76,13 +79,13 @@ const index = ({ address, setShowAddressModal }) => {
             value={address.number}
           />
         </div>
-        <div className=" customer__email flex flex-col ">
+        {/* <div className=" customer__email flex flex-col ">
           <label className="text-gray-900 " htmlFor="email">
             Your Email
           </label>
           <input
             onChange={(e) =>
-              setPostData((prev) => (prev = { ...prev, email: e.target.value }))
+              setAddress((prev) => (prev = { ...prev, email: e.target.value }))
             }
             className="border-gray-300 border rounded-md p-2 outline-0  bg-transparent w-[300px] "
             type="email"
@@ -92,7 +95,7 @@ const index = ({ address, setShowAddressModal }) => {
             required
             value={address.email}
           />
-        </div>
+        </div> */}
 
         <div className=" customer__pincode flex flex-col ">
           <label className="text-gray-900 " htmlFor="pincode">
@@ -100,7 +103,7 @@ const index = ({ address, setShowAddressModal }) => {
           </label>
           <input
             onChange={(e) =>
-              setPostData((prev) => (prev = { ...prev, pincode: e.target.value }))
+              setAddress((prev) => (prev = { ...prev, pincode: e.target.value }))
             }
             className="border-gray-300 border rounded-md p-2 outline-0  bg-transparent w-[300px] "
             type="number"
@@ -118,7 +121,7 @@ const index = ({ address, setShowAddressModal }) => {
           </label>
           <input
             onChange={(e) =>
-              setPostData((prev) => (prev = { ...prev, address: e.target.value }))
+              setAddress((prev) => (prev = { ...prev, address: e.target.value }))
             }
             className="border-gray-300 border rounded-md p-2 outline-0  bg-transparent w-[300px] "
             type="text"
@@ -134,7 +137,7 @@ const index = ({ address, setShowAddressModal }) => {
           <label className="text-gray-900 " htmlFor="city">City</label>
           <input
             onChange={(e) =>
-              setPostData((prev) => (prev = { ...prev, city: e.target.value }))
+              setAddress((prev) => (prev = { ...prev, city: e.target.value }))
             }
             className="border-gray-300 border rounded-md p-2 outline-0  bg-transparent w-[300px] "
             type="text"

@@ -24,7 +24,6 @@ const Index = () => {
   const [address, setAddress] = useState({
     name: "",
     number: "",
-    email: "",
     pincode: "",
     address: "",
     city: "",
@@ -33,6 +32,42 @@ const Index = () => {
     showModal: false,
     address: null,
   });
+
+  useEffect(() => {
+    const selected_city = address.city;
+    for (let i = 0; i < cartArray.length; i++) {
+      let cityArray = cartArray[i].city;
+      let match = false;
+      for (let index = 0; index < cityArray.length; index++) {
+        let element = cityArray[index];
+        if (element.cityName === selected_city) {
+          match = true;
+        }
+      }
+      if (!match) {
+        alert(cartArray[i].productName + " is not available in " + selected_city);
+        return;
+      }
+    }
+
+    let newCartArray = cartArray.map((item, idx) => {
+      let newItem = {...item}; // create a new object with spread operator
+      for(let i=0; i<item.city.length ; i++){
+        if(item.city[i].cityName === address.city){
+          newItem.productDeliveryCity= item.city[i].cityName; // modify the new object
+          newItem.productDeliveryCityPrice= item.city[i].cityValue; // modify the new object
+        }
+      }
+      return newItem;
+    })
+
+    console.log(newCartArray)
+
+    setAmount(newCartArray.reduce((acc, item) => acc + (item.productDeliveryCityPrice ? +item.productDeliveryCityPrice : +item.productPrice) - (item.exchange ? +item.productWithExchange : 0) + (item.trolley ? +item.productWithTrolley : 0) - (item.couponDiscountPrice ? +item.couponDiscountPrice : 0), 0))
+    
+    setCartArray(newCartArray);
+    // its working biro 😭
+  }, [address])
 
 
   useEffect(() => {
@@ -75,32 +110,8 @@ const Index = () => {
 
   // console.log(cartArray);
 
-  const handlePayment = async (e) => {
-    e.preventDefault();
-    if (cartArray.length === 0) {
-      alert("Cart is empty");
-      return;
-    };
-
-    // ? deepak bhai neeche wala comment pd liyo
-    // check if user is logged in and address is selected or not then only proceed to payment
-    
-    // const selected_city = "Kanpur";
-    // for (var i = 0; i < cartArray.length; i++) {
-    //   var cityArray = cartArray[i].city;
-    //   var match = false;
-    //   for (let index = 0; index < cityArray.length; index++) {
-    //     var element = cityArray[index];
-    //     if (element.cityName === selected_city) {
-    //       match = true;
-    //     }
-    //   }
-    //   if (!match) {
-    //     alert(cartArray[i].productName + " is not available in " + element.cityName);
-    //   }
-    // }
-
-    // payment function
+  // payment function
+  const handlePayment = async () => {
     const userId = getCookie("userSession");
     try {
       const { status, orderId } = await handleCheckOut(e, address, amount, cartArray, confirmOrder.paymentMode, userId);
@@ -170,12 +181,53 @@ const Index = () => {
     router.reload();
   }
 
+  const openConfirmOrder = (e, paymentMode) => {
+    e.preventDefault();
+    if (cartArray.length === 0) {
+      alert("Cart is empty");
+      return;
+    };
+
+    if(!address.city){
+      return alert('select your delivery city')
+    }
+    // ? deepak bhai neeche wala comment pd liyo
+    // check if user is logged in and address is selected or not then only proceed to payment
+
+    // console.log(cartArray);
+    const selected_city = address.city;
+    for (let i = 0; i < cartArray.length; i++) {
+      let cityArray = cartArray[i].city;
+      let match = false;
+      for (let index = 0; index < cityArray.length; index++) {
+        let element = cityArray[index];
+        if (element.cityName === selected_city) {
+          match = true;
+        }
+      }
+      if (!match) {
+        alert(cartArray[i].productName + " is not available in " + selected_city);
+        return;
+      }
+    }
+
+
+    if (paymentMode === 'online'){
+      setConfirmOrder(prev => prev = { showModal: true, paymentMode: 'online' })
+    } else {
+      setConfirmOrder(prev => prev = { showModal: true, paymentMode: 'cod' })
+    }
+
+    handlePayment();
+    
+  }
+
   return (
     <div className="cart__full flex items-start justify-center lg:justify-between flex-wrap">
       <div className="cart__item__container my-8 space-y-3 sm:space-y-6">
         {
-          cartArray.length !== 0 ? cartArray?.map((i, ind, arr) => <CartItemCard item={i} key={ind} ind={ind} />) :
-            null
+          cartArray.length !== 0 ? cartArray?.map((i, ind, arr) => <CartItemCard item={i} key={ind} ind={ind} />) 
+          : null
         }
       </div>
       <div className="cart__utility flex flex-col gap-5 sm:gap-10 my-8 mb-20">
@@ -197,7 +249,7 @@ const Index = () => {
               <div className="address__text w-44 text-left flex-1">
                 <p className="name">{address.name}</p>
                 <p className="address text-gray-500 text-sm">{address.address}</p>
-                <p className="phone text-gray-500 text-sm">{address.number}</p>
+                <p className="phone text-gray-500 text-sm">{address.number} : {address.city}</p>
               </div>
             </div>
             : <p>no address found</p>
@@ -283,54 +335,54 @@ const Index = () => {
           </div>
           <div className="paybutton flex gap-3 items-center flex-wrap justify-center">
             <p className="text-xl">₹{amount}</p>
-            <button onClick={(e) => setConfirmOrder(prev => prev = { showModal: true, paymentMode: 'online' })} className="offer__apply bg-dabgreen py-2 px-4 rounded-full w-max text-gray-100 hover:text-white text-sm shadow-md">Pay Online</button>
-            <button onClick={(e) => setConfirmOrder(prev => prev = { showModal: true, paymentMode: 'cod' })} className="offer__apply bg-dabgreen py-2 px-4 rounded-full w-max text-gray-100 hover:text-white text-sm shadow-md">Cash on Delivery</button>
+            <button onClick={(e) => openConfirmOrder(e, 'online')} className="offer__apply bg-dabgreen py-2 px-4 rounded-full w-max text-gray-100 hover:text-white text-sm shadow-md">Pay Online</button>
+            <button onClick={(e) => openConfirmOrder(e, 'cod')} className="offer__apply bg-dabgreen py-2 px-4 rounded-full w-max text-gray-100 hover:text-white text-sm shadow-md">Cash on Delivery</button>
           </div>
         </div>
       </div>
       {/* address modal */}
       {
-          showAddressModal.showModal
-            ?
-            <div className="fixed top-0 left-0 z-50 backdrop-blur-sm w-full h-full overflow-y-scroll px-[2vw] ">
-              <AddressModal address={address} setShowAddressModal={setShowAddressModal} />
-            </div>
-            : null
-        }
+        showAddressModal.showModal
+          ?
+          <div className="fixed top-0 left-0 z-50 backdrop-blur-sm w-full h-full overflow-y-scroll px-[2vw] ">
+            <AddressModal address={address} setAddress={setAddress} setShowAddressModal={setShowAddressModal} />
+          </div>
+          : null
+      }
 
-        {/* confirm order */}
-        {
-          confirmOrder.showModal
-            ?
-            <div className="fixed top-4 left-0 z-20 backdrop-blur-sm w-full h-full" >
-              <div className="relative rounded-lg shadow bg-gray-700 w-max h-max mx-auto mt-[30vh]">
-                <button onClick={(e) => setConfirmOrder(prev => prev = { ...prev, showModal: false, paymentMode: null })} type="button" className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="popup-modal">
-                  <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
-                  <span className="sr-only">Close modal</span>
+      {/* confirm order */}
+      {
+        confirmOrder.showModal
+          ?
+          <div className="fixed top-4 left-0 z-20 backdrop-blur-sm w-full h-full" >
+            <div className="relative rounded-lg shadow bg-gray-700 w-max h-max mx-auto mt-[30vh]">
+              <button onClick={(e) => setConfirmOrder(prev => prev = { ...prev, showModal: false, paymentMode: null })} type="button" className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-hide="popup-modal">
+                <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+                <span className="sr-only">Close modal</span>
+              </button>
+              <div className="p-3 md:p-6 text-center">
+                <svg aria-hidden="true" className="mx-auto mb-4 text-gray-400 w-7 h-7 md:w-14 md:h-14 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <h3 className="mb-5 text-sm md:text-lg font-normal text-gray-500 dark:text-gray-400">Do you want to pay through {confirmOrder.paymentMode === 'online' ? 'Online' : 'Cash On Delivery'}</h3>
+                <p className="mb-5 text-xs md:text-sm font-normal text-gray-500 dark:text-gray-400">Total amount to be paid ₹{amount}</p>
+                <button onClick={(e) => handlePayment(e)} data-modal-hide="popup-modal" type="button" className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-xs md:text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                  {confirmOrder.paymentMode === 'online' ? 'Yes, Pay Online' : 'Yes, Pay Cash On Delivery'}
                 </button>
-                <div className="p-3 md:p-6 text-center">
-                  <svg aria-hidden="true" className="mx-auto mb-4 text-gray-400 w-7 h-7 md:w-14 md:h-14 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                  <h3 className="mb-5 text-sm md:text-lg font-normal text-gray-500 dark:text-gray-400">Do you want to pay through {confirmOrder.paymentMode === 'online' ? 'Online' : 'Cash On Delivery'}</h3>
-                  <p className="mb-5 text-xs md:text-sm font-normal text-gray-500 dark:text-gray-400">Total amount to be paid ₹{amount}</p>
-                  <button onClick={(e) => handlePayment(e)} data-modal-hide="popup-modal" type="button" className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-xs md:text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
-                    {confirmOrder.paymentMode === 'online' ? 'Yes, Pay Online' : 'Yes, Pay Cash On Delivery'}
-                  </button>
-                  <button onClick={(e) => setConfirmOrder(prev => prev = { ...prev, showModal: false, paymentMode: null })} data-modal-hide="popup-modal" type="button" className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-xs md:text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">No, cancel</button>
-                </div>
+                <button onClick={(e) => setConfirmOrder(prev => prev = { ...prev, showModal: false, paymentMode: null })} data-modal-hide="popup-modal" type="button" className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-xs md:text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">No, cancel</button>
               </div>
             </div>
-            : null
-        }
-
-        {/* payment success modal */}
-        {
-          paymentSuccess.showModal
-          && <div className="fixed top-4 left-0 z-20 backdrop-blur-sm w-full h-full" >
-            <div className="relative rounded-lg shadow bg-gray-700 max-w-4xl h-max mx-auto mt-[5vh]">
-              <PaymentSucess orderId={paymentSuccess.orderId} closePaymentSuccessModal={closePaymentSuccessModal} />
-            </div>
           </div>
-        }
+          : null
+      }
+
+      {/* payment success modal */}
+      {
+        paymentSuccess.showModal
+        && <div className="fixed top-4 left-0 z-20 backdrop-blur-sm w-full h-full" >
+          <div className="relative rounded-lg shadow bg-gray-700 max-w-4xl h-max mx-auto mt-[5vh]">
+            <PaymentSucess orderId={paymentSuccess.orderId} closePaymentSuccessModal={closePaymentSuccessModal} />
+          </div>
+        </div>
+      }
     </div>
   )
 }
