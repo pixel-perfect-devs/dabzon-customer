@@ -6,7 +6,8 @@ import OtpModal from './OtpModal/index'
 
 const Index = () => {
 
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(false);
+  const [userData, setUserData] = useState({email: "", password: "", confirmPassword: ""})
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -28,12 +29,12 @@ const Index = () => {
             <div className="input_text text-base flex flex-col gap-3">
               <div className="email flex flex-col gap-2">
                 <label htmlFor="email" className=''>Your Email</label>
-                <input className='border border-gray-300 p-2 text-gray-700 outline-0 rounded-md outline focus:outline-gray-600' type="email" placeholder='Your Email Address...' />
+                <input onChange={(e) => setUserData((prev)=> prev = {...prev, email: e.target.value})} className='border border-gray-300 p-2 text-gray-700 outline-0 rounded-md outline focus:outline-gray-600' type="email" placeholder='Your Email Address...' />
               </div>
               <div className="password flex flex-col gap-2">
                 <label htmlFor="password">Password</label>
-                <input className='border border-gray-300 p-2 text-gray-700 outline-0 rounded-md' type="password" placeholder='Your Password...' />
-                <input className='border border-gray-300 p-2 text-gray-700 outline-0 rounded-md' type="password" placeholder='Confirm Your Password...' />
+                <input onChange={(e) => setUserData((prev)=> prev = {...prev, password: e.target.value})} className='border border-gray-300 p-2 text-gray-700 outline-0 rounded-md' type="password" placeholder='Your Password...' />
+                <input onChange={(e) => setUserData((prev)=> prev = {...prev, confirmPassword: e.target.value})} className='border border-gray-300 p-2 text-gray-700 outline-0 rounded-md' type="password" placeholder='Confirm Your Password...' />
               </div>
               <div className="sign_up text-sm text-[#6b707a] cursor-pointer">
                 <span><Link href="/auth/signup">Sign up </Link></span>
@@ -54,7 +55,7 @@ const Index = () => {
           <span> <Link href='/terms'>Terms of Service</Link> </span>
         </div>
       </div>
-      {showModal && <OtpModal setShowModal={setShowModal} />}
+      {showModal && <OtpModal setShowModal={setShowModal} email={userData.email}/>}
     </>
   )
 }

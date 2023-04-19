@@ -33,10 +33,11 @@ const Index = () => {
       {/* first row of carousel */}
       <div className="relative flex overflow-x-hidden">
         <div className=" first__row__carousel animate-marquee flex items-center gap-4 ">
-          {feedbackData.map((item, index) => {
+          { feedbackData ? feedbackData?.map((item, index) => {
             if (index < 4) return null;
             return <ReviewCard key={index} item={item} />
-          })}
+          })
+        :null}
         </div>
 
         <div className="absolute top-0 px-2 animate-marquee2 flex items-center gap-4 ">
