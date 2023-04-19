@@ -54,7 +54,7 @@ export default function OptModal({ userData, setShowModal, modelFor }) {
             email: userData.email,
             otp: temp
         }
-        const res = await fetch(`${process.env.NEXT_PUBLIC_CUSTOMER_HOST}/api/mail/sendotp`, {
+        const res = await fetch(`/api/mail/sendotp`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',

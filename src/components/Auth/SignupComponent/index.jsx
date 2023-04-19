@@ -60,7 +60,7 @@ export default function SignupComponent() {
   const saveUserData = async () => {
     // check the user exist already
     const obj = { email: session.user.email, name: session.user.name, googleAuth: true, password: "", active: true, customAuth: false };
-    const res = await fetch(`${process.env.NEXT_PUBLIC_CUSTOMER_HOST}/api/user/signup`, {
+    const res = await fetch(`/api/user/signup`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
