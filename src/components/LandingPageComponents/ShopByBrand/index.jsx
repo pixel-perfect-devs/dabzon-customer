@@ -26,7 +26,7 @@ const Index = () => {
         <div className=" customScroll flex overflow-x-scroll">
 
           {
-            brands.map((brand, index) => <BrandCard key={index} brand={brand} />)
+            brands.length!==0 ? brands.map((brand, index) => <BrandCard key={index} brand={brand} />): null
           }
 
         </div>

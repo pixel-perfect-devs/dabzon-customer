@@ -64,7 +64,6 @@ export default function Home({ shopbycategoryData }) {
       </Head>
       <main className="main__page bg-gray-100 ">
         <NavBar />
-        <OfferCarousel/>
         <OtherSupport />
         <ShopByCategory data={shopbycategoryData} />
         <TopOffers />
