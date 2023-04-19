@@ -78,7 +78,10 @@ const Productdetailsview = ({ productId }) => {
     }
     const buyNow = (e) => {
         e.preventDefault();
-        console.log("cart", cart);
+        if (productState.productDeliveryCity === "") return alert("Please select your city");
+        let copyproductState = { ...productState, productCouponCode: couponCode.couponCode, productCouponCodeDiscount: couponCode.couponDiscount, couponDiscountPrice: couponCode.payingPriceAfterCoupon };
+        dispatch(setCart(copyproductState));
+        router.replace('/user/cart');
     }
 
     const addToCart = (e) => {
@@ -89,10 +92,10 @@ const Productdetailsview = ({ productId }) => {
         dispatch(setCart(copyproductState));
     }
 
-    const handleRemoveFromCart = (e, id) => {
-        e.preventDefault();
-        dispatch(deleteFromCart(id))
-    }
+    // const handleRemoveFromCart = (e, id) => {
+    //     e.preventDefault();
+    //     dispatch(deleteFromCart(id))
+    // }
 
     const applyCoupon = (e) => {
         e.preventDefault();

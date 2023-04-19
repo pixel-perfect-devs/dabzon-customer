@@ -37,7 +37,29 @@ const Card = ({ item }) => {
   }
 
   const handleBuyNow = (e) => {
-    console.log(cart)
+    e.preventDefault();
+    let cartItem = {
+      productBrand: item.productBrand,
+      productShortDescription: item.productShortDescription,
+      productCapacity: item.productCapacity,
+      productCategory: item.productCategory,
+      productCouponCode: null,
+      productCouponCodeDiscount: null,
+      productDeliveryCity: null,
+      productDeliveryCityPrice: null,
+      productFakeDiscount: item.fakeDiscount,
+      productId: null,
+      productImage: item.image1,
+      productName: item.productName,
+      productPayingPriceAfterCoupon: null,
+      productPrice: item.price,
+      productWithExchange: null,
+      productWithTrolley: null,
+      _id: item._id,
+      quantity: 1,
+    }
+    dispatch(setCart(cartItem));
+    router.push('user/cart')
   }
 
   const handleRemoveFromCart = (e, id) => {

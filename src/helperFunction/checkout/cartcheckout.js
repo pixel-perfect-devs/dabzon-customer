@@ -19,6 +19,7 @@ const verifyPayment = async (
     razorpay_payment_id: razorpay_payment_id,
     razorpay_order_id: razorpay_order_id,
     razorpay_signature: razorpay_signature,
+    orderStatus: "pending",
   };
 
   const res = await fetch("/api/checkout/verifypayment", {
