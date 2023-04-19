@@ -36,7 +36,6 @@ const verifyPayment = async (
 };
 
 export const handleCheckOut = async (
-  e,
   address,
   amount,
   cartArray,
@@ -44,7 +43,6 @@ export const handleCheckOut = async (
   userId
 ) => {
   // save order in database and return document id for tracking with status
-  e.preventDefault();
 
   // cash on delivery
   if (paymentMode === "cod") {
@@ -60,6 +58,7 @@ export const handleCheckOut = async (
           cartArray: cartArray,
           paymentMode: paymentMode,
           userId: userId,
+          orderStatus: "pending",
         }),
       });
       const { status, orderId } = await res.json();

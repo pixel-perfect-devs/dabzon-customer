@@ -111,10 +111,11 @@ const Index = () => {
   // console.log(cartArray);
 
   // payment function
-  const handlePayment = async () => {
+  const handlePayment = async (e) => {
+    e.preventDefault();
     const userId = getCookie("userSession");
     try {
-      const { status, orderId } = await handleCheckOut(e, address, amount, cartArray, confirmOrder.paymentMode, userId);
+      const { status, orderId } = await handleCheckOut(address, amount, cartArray, confirmOrder.paymentMode, userId);
       if (status === 200) {
         setPaymentSuccess({
           showModal: true,
@@ -216,10 +217,7 @@ const Index = () => {
       setConfirmOrder(prev => prev = { showModal: true, paymentMode: 'online' })
     } else {
       setConfirmOrder(prev => prev = { showModal: true, paymentMode: 'cod' })
-    }
-
-    handlePayment();
-    
+    }    
   }
 
   return (
