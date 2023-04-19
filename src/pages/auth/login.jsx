@@ -3,6 +3,7 @@ import LoginComponent from '../../components/Auth/LoginComponent/index'
 import { redirect } from 'next/dist/server/api-utils';
 
 const Login = ({ redirect }) => {
+  console.log(redirect);
   return (
     <div className='Login'>
       <LoginComponent redirect={redirect} />
@@ -12,13 +13,14 @@ const Login = ({ redirect }) => {
 export default Login;
 
 export async function getServerSideProps(context) {
-  if (context.query.redirect !== null) {
+  // console.log(context.query.redirect)
+  if (context?.query?.redirect !== undefined) {
     return {
       props: { redirect: context.query.redirect }
     }
+  }else {
+    return {
+      props: { redirect: 'profile' }
+    }
   }
-  else {
-    return { props: { redirect: "" } }
-  }
-
 }

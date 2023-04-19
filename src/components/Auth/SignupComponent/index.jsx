@@ -13,7 +13,8 @@ export default function SignupComponent() {
     password: "",
     confirmPassword: "",
     active: true,
-    googleAuth: false
+    googleAuth: false,
+    customAuth: false
   })
   const [already, setAlready] = useState(false);
   const [message, setMessage] = useState("");
@@ -32,6 +33,7 @@ export default function SignupComponent() {
             // if entered data is correct
             setMessage("");
             setShowModal(true);
+            setUserData ((prev) => prev = {...prev, customAuth: true});
           }
           else {
             setMessage("password and confirm password should be same");
@@ -57,7 +59,7 @@ export default function SignupComponent() {
 
   const saveUserData = async () => {
     // check the user exist already
-    const obj = { email: session.user.email, name: session.user.name, googleAuth: true, password: "", active: true, verified: true };
+    const obj = { email: session.user.email, name: session.user.name, googleAuth: true, password: "", active: true, customAuth: false };
     const res = await fetch(`${process.env.NEXT_PUBLIC_CUSTOMER_HOST}/api/user/signup`, {
       method: "POST",
       headers: {
@@ -190,7 +192,7 @@ export default function SignupComponent() {
         </div>
       </div>
       {showModal
-        ? <OtpModal userData={userData} setShowModal= {setShowModal}/>
+        ? <OtpModal userData={userData} setShowModal= {setShowModal} modelFor="accountVerification"/>
         : null
       }
     </>

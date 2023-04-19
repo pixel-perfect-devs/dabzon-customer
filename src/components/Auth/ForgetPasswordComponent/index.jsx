@@ -55,7 +55,7 @@ const Index = () => {
           <span> <Link href='/terms'>Terms of Service</Link> </span>
         </div>
       </div>
-      {showModal && <OtpModal setShowModal={setShowModal} email={userData.email}/>}
+      {showModal && <OtpModal userData={userData} setShowModal={setShowModal} modelFor="forgetPassword" />}
     </>
   )
 }

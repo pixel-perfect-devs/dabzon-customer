@@ -1,26 +1,44 @@
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 
-export default function OptModal({ userData, setShowModal }) {
+export default function OptModal({ userData, setShowModal, modelFor }) {
+    const router = useRouter();
     const [otp, setOtp] = useState("yyyyyy");
     const [userOtp, setUserOtp] = useState("xxxxxx");
-    const handleOtpSubmit = async(e) => {
+    const handleOtpSubmit = async (e) => {
         e.preventDefault();
-        console.log(userOtp +" "+ otp);
         if (otp.toString() === userOtp.toString()) {
-            console.log(userOtp +" "+ otp+" in");
-            const res = await fetch(`/api/user/signup`, {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userData),
-            });
-            const data = await res.json();
-            if (data.msg === "user is already present") {
-                alert("you are already resgistered");
+            if (modelFor === "accountVerification") {
+                const res = await fetch(`/api/user/signup`, {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userData),
+                });
+                const data = await res.json();
+                if (data.msg === "user is already present") {
+                    alert("you are already resgistered");
+                }
+                else if (data.msg === "user is created") {
+                    alert("user is created");
+                }
             }
-            else if (data.msg === "user is created") {
-                alert("user is created");
+            else if(modelFor === "forgetPassword"){
+                const obj={
+                    email: userData.email,
+                    password: userData.password
+                }
+                const res = await fetch(`/api/user/changepassword`, {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(obj),
+                });
+                const data = await res.json();
+                alert(data.msg);
+                router.replace("/auth/login?redirect=profile");
             }
         }
         else alert("otp is wrong")
@@ -28,32 +46,32 @@ export default function OptModal({ userData, setShowModal }) {
         setShowModal(false)
     }
 
-    
-  const sendOtp = async () => {
-    var temp = Math.floor(100000 + Math.random() * 900000);
-    setOtp(temp);
-    const obj = {
-      email: userData.email,
-      otp: temp
+
+    const sendOtp = async () => {
+        var temp = Math.floor(100000 + Math.random() * 900000);
+        setOtp(temp);
+        const obj = {
+            email: userData.email,
+            otp: temp
+        }
+        const res = await fetch(`${process.env.NEXT_PUBLIC_CUSTOMER_HOST}/api/mail/sendotp`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(obj),
+        });
     }
-    const res = await fetch(`${process.env.NEXT_PUBLIC_CUSTOMER_HOST}/api/mail/sendotp`, {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(obj),
-    });
-  }
 
-  const handleResendOtp = (e) => {
-    e.preventDefault();
-    console.log("resend otp");
-    sendOtp();
-  }
+    const handleResendOtp = (e) => {
+        e.preventDefault();
+        console.log("resend otp");
+        sendOtp();
+    }
 
-  useEffect(() =>{
-    sendOtp();
-  },[])
+    useEffect(() => {
+        sendOtp();
+    }, [])
 
     return (
         <div className="fixed z-10 top-0 left-0 w-full flex min-h-screen flex-col justify-center overflow-hidden bg-gray-50 bg-opacity-80 backdrop-blur-sm py-12" >
