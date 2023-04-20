@@ -8,7 +8,7 @@ import logo from '../../../public/icons/logo.svg'
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from '../../reduxStore/Slices/Loader/LoaderSlice'
 import { signOut } from 'next-auth/react';
-import { deleteCookie } from '@/cookie';
+import { deleteCookie } from '../../cookie/index';
 
 
 function NavBar({ searchQuery = "", setSearchQuery, searchResults = [], setSearchResults }) {

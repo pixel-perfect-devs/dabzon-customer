@@ -2,7 +2,7 @@ import React from 'react'
 import NavBar from '../../components/NavBar/index'
 import FooterComponents from '../../components/FooterComponents/index'
 import { useRouter } from 'next/router';
-import Productdetailsview from '@/components/ProductComponents/index';
+import Productdetailsview from '../../components/ProductComponents/index';
 
 const ProductDetailsPage = () => {
 

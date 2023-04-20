@@ -11,7 +11,7 @@ import exchange from '../../../public/icons/exchange.svg'
 import Image from "next/image";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteFromCart, setCart } from "@/reduxStore/Slices/Cart/CartSlice";
+import { deleteFromCart, setCart } from "../../reduxStore/Slices/Cart/CartSlice";
 
 const Productdetailsview = ({ productId }) => {
 
@@ -78,7 +78,10 @@ const Productdetailsview = ({ productId }) => {
     }
     const buyNow = (e) => {
         e.preventDefault();
-        console.log("cart", cart);
+        if (productState.productDeliveryCity === "") return alert("Please select your city");
+        let copyproductState = { ...productState, productCouponCode: couponCode.couponCode, productCouponCodeDiscount: couponCode.couponDiscount, couponDiscountPrice: couponCode.payingPriceAfterCoupon };
+        dispatch(setCart(copyproductState));
+        router.replace('/user/cart');
     }
 
     const addToCart = (e) => {
@@ -89,10 +92,10 @@ const Productdetailsview = ({ productId }) => {
         dispatch(setCart(copyproductState));
     }
 
-    const handleRemoveFromCart = (e, id) => {
-        e.preventDefault();
-        dispatch(deleteFromCart(id))
-    }
+    // const handleRemoveFromCart = (e, id) => {
+    //     e.preventDefault();
+    //     dispatch(deleteFromCart(id))
+    // }
 
     const applyCoupon = (e) => {
         e.preventDefault();
@@ -170,7 +173,7 @@ const Productdetailsview = ({ productId }) => {
         fetchProductDetails(productId);
     }, [productId])
 
-    console.log(productState)
+    // console.log(productState)
 
     return (
         <div className="ProductDetailsPage my-8 min-h-[70vh] flex justify-center items-center">

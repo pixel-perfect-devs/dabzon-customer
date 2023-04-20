@@ -5,13 +5,16 @@ import filterBut from "../../../../public/account/button.svg";
 import without_exchange from "../../../../public/account/without_exchange.svg";
 import with_trolley from "../../../../public/account/with_trolley.svg";
 
-const Index = ({ setRight }) => {
+export default function MyOrder({ setRight }) {
   return (
     <div className="flex flex-col border-2 bg-white rounded-xl px-2 md:p-6 mb-20 sm:mb-0 w-full">
       {/* .................................search and filter start........................... */}
-      <div type="" className="" onClick={() => setRight(9)}>
-        back
-      </div>
+      <button className="block md:hidden" onClick={() => setRight(9)}>
+        {/* go back svg */}
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+      </button>
       <div className="flex justify-center md:justify-between flex-wrap gap-3">
         <button className="group search__container md:flex flex flex-row gap-3 bg-[#f3f4f6] rounded-3xl px-4 py-1 sm:py-2  items-center relative">
           <svg
@@ -58,7 +61,7 @@ const Index = ({ setRight }) => {
           />
 
           <div className="flex flex-col space-y-1 md:space-y-2 justify-center m-2">
-            <p className="truncate text-xs text-gray-900 font-medium w-40 break-words"> 
+            <p className="truncate text-xs text-gray-900 font-medium w-40 break-words">
               Lumiunus Solar set pannel with battery 200watt.......
             </p>
             <p className="text-dabgreen text-base md:text-xl font-semibold ">₹20.00</p>
@@ -105,5 +108,3 @@ const Index = ({ setRight }) => {
     </div>
   );
 };
-
-export default Index;

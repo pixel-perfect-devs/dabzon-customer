@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import Link from 'next/link'
 import login_bg from '../../../../public/auth/login_bg.svg'
 import { useState } from 'react'
-import { setCookie, getCookie } from '@/cookie'
+import { setCookie, getCookie } from '../../../cookie/index'
 import { useSession, signIn, signOut } from 'next-auth/react'
 import { useRouter } from 'next/router'
 
@@ -13,7 +13,7 @@ const Index = ({redirect}) => {
   const [userData, setUserData] = useState({ email: '', password: '' })
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch(`${process.env.NEXT_PUBLIC_CUSTOMER_HOST}/api/user/login`, {
+    const res = await fetch(`/api/user/login`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',

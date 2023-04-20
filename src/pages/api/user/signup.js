@@ -13,8 +13,9 @@ export default async function handler(req, res) {
             }
             else{
                 // if not present the create
+                delete userData.confirmPassword;
                 userData['active']=true;
-                const response2 = await collection.insertOne(userData);
+                const response2 = await collection.insertOne({...userData, 'image': null, 'number':null, gender:null});
                 if(response2.acknowledged){
                     return res.status(200).json({ msg: "user is created"});  
                 }

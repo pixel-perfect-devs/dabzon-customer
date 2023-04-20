@@ -10,13 +10,13 @@ const Index = () => {
       try {
         const response = await fetch('/api/landingpage/faq/get');
         const data = await response.json();
-        // console.log(data.allData[0]?.ques);
+        // console.log(data);
         setFaqData(data.allData);
       } catch (error) {
         console.error(error);
       } finally {
         setIsLoading(false);
-        console.log(faqData[0]);
+        // console.log(faqData[0]);
       }
     }
 
@@ -27,8 +27,8 @@ const Index = () => {
   return (
     <div className="faq__section my-8">
       <div className="faq__section__heading">
-        <p className="text-dabgreen font-semibold text-2xl sm:text-3xl text-center my-3">Frequently asked questions 🤔 </p>
-        <p className="text-dabgreen text-xl sm:text-lg text-center ">Get Answers to Your Most Pressing FAQs</p>
+        <p className="text-dabgreen font-semibold text-xl sm:text-2xl text-center my-3">Frequently asked questions 🤔 </p>
+        <p className="text-dabgreen text-lg sm:text-xl text-center ">Get Answers to Your Most Pressing FAQs</p>
       </div>
 
       <div className="flex justify-center md:justify-evenly flex-wrap m-4">
@@ -46,10 +46,10 @@ const Index = () => {
               alt="Image is loading..."
             />
             <div className="flex flex-col">
-              <p className="text-gray-900 text-xl font-bold">
+              <p className="text-gray-900 sm:text-base text-sm font-bold">
                 {faqData[0]?.ques}
               </p>
-              <p className="text-gray-700 text-base">
+              <p className="text-gray-700 sm:text-sm text-xs">
                 {faqData[0]?.ans}
               </p>
             </div>
@@ -65,10 +65,10 @@ const Index = () => {
               alt="Image is loading..."
             />
             <div className="flex flex-col">
-              <p className="text-gray-900 text-xl font-bold">
+              <p className="text-gray-900 sm:text-base text-sm font-bold">
                 {faqData[1]?.ques}
               </p>
-              <p className="text-gray-700 text-base">
+              <p className="text-gray-700 sm:text-sm text-xs">
                 {faqData[1]?.ans}
               </p>
             </div>
@@ -84,10 +84,10 @@ const Index = () => {
               alt="Image is loading..."
             />
             <div className="flex flex-col">
-              <p className="text-gray-900 text-xl font-bold">
+              <p className="text-gray-900 sm:text-base text-sm font-bold">
                 {faqData[2]?.ques}
               </p>
-              <p className="text-gray-700 text-base">
+              <p className="text-gray-700 sm:text-sm text-xs">
                 {faqData[2]?.ans}
               </p>
             </div>
@@ -107,10 +107,10 @@ const Index = () => {
               alt="Image is loading..."
             />
             <div className="flex flex-col">
-              <p className="text-gray-900 text-xl font-bold">
+              <p className="text-gray-900 sm:text-base text-sm font-bold">
                 {faqData[3]?.ques}
               </p>
-              <p className="text-gray-700 text-base">
+              <p className="text-gray-700 sm:text-sm text-xs">
                 {faqData[3]?.ans}
               </p>
             </div>
@@ -126,10 +126,10 @@ const Index = () => {
               alt="Image is loading..."
             />
             <div className="flex flex-col">
-              <p className="text-gray-900 text-xl font-bold">
+              <p className="text-gray-900 sm:text-base text-sm font-bold">
                 {faqData[4]?.ques}
               </p>
-              <p className="text-gray-700 text-base">
+              <p className="text-gray-700 sm:text-sm text-xs">
                 {faqData[4]?.ans}
               </p>
             </div>
@@ -145,10 +145,10 @@ const Index = () => {
               alt="Image is loading..."
             />
             <div className="flex flex-col">
-              <p className="text-gray-900 text-xl font-bold">
+              <p className="text-gray-900 sm:text-base text-sm font-bold">
                 {faqData[5]?.ques}
               </p>
-              <p className="text-gray-700 text-base">
+              <p className="text-gray-700 sm:text-sm text-xs">
                 {faqData[5]?.ans}
               </p>
             </div>
