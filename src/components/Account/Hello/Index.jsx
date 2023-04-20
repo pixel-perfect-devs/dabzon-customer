@@ -1,7 +1,8 @@
 import React from "react";
 import Image from "next/image";
 import profile from "../../../../public/avatar.png";
-const Index = ({ setRight, setProfileData, profileData }) => {
+
+export default function Index({ setRight, setProfileData, profileData }) {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -170,5 +171,3 @@ const Index = ({ setRight, setProfileData, profileData }) => {
     </div >
   );
 };
-
-export default Index;

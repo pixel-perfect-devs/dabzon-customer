@@ -5,7 +5,9 @@ import address from '../../../../public/account/address.svg'
 import Image from 'next/image'
 import { signOut } from 'next-auth/react'
 import { deleteCookie } from '@/cookie'
-const Index = ({ setRight, right, profileData }) => {
+
+// how to export default arrow functions in nextjs
+export default function Index({ setRight, right, profileData }){
   const handleSignOut = () => {
     signOut();
     deleteCookie("userSession");
@@ -92,5 +94,3 @@ const Index = ({ setRight, right, profileData }) => {
     </div>
   )
 }
-
-export default Index
