@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import NavBar from "../../components/NavBar/index";
-import FooterComponents from "../../components/FooterComponents";
-import AccountNav from "../../components/Account/AccountNav";
-import Hello from "../../components/Account/Hello";
-import MyOrder from "../../components/Account/MyOrder";
-import Address from "../../components/Account/Address";
-import WishList from "../../components/Account/WishList";
+import NavBar from "@/components/NavBar/index";
+import FooterComponents from "@/components/FooterComponents";
+import AccountNav from "@/components/Account/AccountNav";
+import Hello from "@/components/Account/Hello";
+import MyOrder from "@/components/Account/MyOrder";
+import Address from "@/components/Account/Address";
+import WishList from "@/components/Account/WishList";
 import { getCookie } from "@/cookie";
 import { useRouter } from "next/router";
 
