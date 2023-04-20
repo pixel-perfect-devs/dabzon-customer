@@ -1,4 +1,4 @@
-import { getCookie } from "@/cookie";
+import { getCookie } from "../../../cookie/index";
 import React, { useState } from "react";
 
 

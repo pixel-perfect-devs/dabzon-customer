@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { setCart, deleteFromCart } from "@/reduxStore/Slices/Cart/CartSlice";
+import { setCart, deleteFromCart } from "../../../../reduxStore/Slices/Cart/CartSlice";
 import empty__heart from '../../../../../public/icons/empty__heart.svg'
 import full__heart from '../../../../../public/icons/full__heart.svg'
 

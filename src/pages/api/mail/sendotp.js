@@ -1,4 +1,4 @@
-import { sendVerificationOtp } from "@/helperFunction/sendmail/verificationOtp";
+import { sendVerificationOtp } from "../../../helperFunction/sendmail/verificationOtp";
 
 export default async function handler(req, res) {
     if(req.method === 'POST'){

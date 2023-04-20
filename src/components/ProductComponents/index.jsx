@@ -11,7 +11,7 @@ import exchange from '../../../public/icons/exchange.svg'
 import Image from "next/image";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteFromCart, setCart } from "@/reduxStore/Slices/Cart/CartSlice";
+import { deleteFromCart, setCart } from "../../reduxStore/Slices/Cart/CartSlice";
 
 const Productdetailsview = ({ productId }) => {
 
