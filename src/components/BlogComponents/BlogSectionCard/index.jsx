@@ -10,6 +10,7 @@ const Index = ({ item, redirectToBlogDetailPage }) => {
 
     const client = createClient({
         projectId: "q21v17fe",
+        apiVersion: "2021-10-14",
         dataset: "production",
         useCdn: false
     });

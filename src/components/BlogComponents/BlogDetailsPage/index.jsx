@@ -13,7 +13,7 @@ const BlogDetailsPage = ({ item }) => {
     const client = createClient({
         projectId: "q21v17fe",
         dataset: "production",
-        apiVersion: '2021-10-21',
+        apiVersion: "2021-10-14",
         useCdn: false
     });
 
