@@ -1,6 +1,6 @@
 import React from 'react'
-import { createClient } from 'next-sanity';
-import { useRouter } from 'next/router';
+// import { createClient } from 'next-sanity';
+// import { useRouter } from 'next/router';
 import BlogDetailsPage from '../../components/BlogComponents/BlogDetailsPage/index'
 
 const BlogDetails = ({blog}) => {
