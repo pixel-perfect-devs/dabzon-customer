@@ -4,27 +4,27 @@ import date from "../../../../public/icons/date.svg"
 import account_circle from "../../../../public/icons/account_circle.svg"
 import PortableText from 'react-portable-text'
 import imageUrlBuilder from '@sanity/image-url'
-import { createClient } from 'next-sanity'
+// import { createClient } from 'next-sanity'
 
 const Index = ({ item, redirectToBlogDetailPage }) => {
 
-    const client = createClient({
-        projectId: "q21v17fe",
-        apiVersion: "2021-10-14",
-        dataset: "production",
-        useCdn: false
-    });
+    // const client = createClient({
+    //     projectId: "q21v17fe",
+    //     apiVersion: "2021-10-14",
+    //     dataset: "production",
+    //     useCdn: false
+    // });
 
-    const builder = imageUrlBuilder(client);
+    // const builder = imageUrlBuilder(client);
 
-    const [content, setContent] = React.useState([]);
-    React.useEffect(() => {
-        setContent(item?.content?.slice(0, 2));
-    }, []);
+    // const [content, setContent] = React.useState([]);
+    // React.useEffect(() => {
+    //     setContent(item?.content?.slice(0, 2));
+    // }, []);
 
     return (
         <div className="blogSectionCard rounded-md overflow-hidden shadow-sm cursor-pointer" onClick={() => redirectToBlogDetailPage(item._id)} >
-            <div className='blogSectionCard__image__container w-full'>
+            {/* <div className='blogSectionCard__image__container w-full'>
                 <Image width={1000} height={1000} className="w-full" src={builder.image(item.image).width(1000).url()} alt="img" />
             </div>
             <div className='blogSectionCard__buttons '>
@@ -63,7 +63,7 @@ const Index = ({ item, redirectToBlogDetailPage }) => {
                     <span className="text">{item.author}</span>
 
                 </span>
-            </div>
+            </div> */}
         </div>
     )
 }

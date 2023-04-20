@@ -3,50 +3,50 @@ import React from 'react'
 import BlogSectionCard from './BlogSectionCard/index'
 import blog1 from '../../../public/blog/blog1.jpg'
 import { useRouter } from 'next/router'
-import { createClient } from "next-sanity";
+// import { createClient } from "next-sanity";
 
-const client = createClient({
-    projectId: "q21v17fe",
-    dataset: "production",
-    apiVersion: "2021-10-14",
-    useCdn: false
-});
+// const client = createClient({
+//     projectId: "q21v17fe",
+//     dataset: "production",
+//     apiVersion: "2021-10-14",
+//     useCdn: false
+// });
 
 const Index = ({ source, blogHeading }) => {
 
-    const router = useRouter();
+    // const router = useRouter();
 
-    const [blogData, setBlogData] = React.useState([]);
-    const [page, setPage] = React.useState(1);
+    // const [blogData, setBlogData] = React.useState([]);
+    // const [page, setPage] = React.useState(1);
 
-    React.useEffect(() => {
-        if (source === 'home') {
-            const QUERY = encodeURIComponent(`*[_type == "blog"][0..1]`);
-            fetch(`https://${process.env.NEXT_PUBLIC_PROJECT_ID}.api.sanity.io/v2021-10-21/data/query/${process.env.NEXT_PUBLIC_DATASET}?query=${QUERY}`)
-                .then((res) => res.json())
-                .then((data) => setBlogData(data.result))
-        } else {
-            const QUERY = encodeURIComponent(`*[_type == "blog"] | order(_createdAt desc) [${(page - 1) * 2}...${page * 2}]`);
-            // ($pageNumber - $currentPage) * $pageSize - 1
-            // const { results, totalCount } = await client.fetch(
-            //     `*[_type == "myDocumentType"] 
-            //   );
+    // React.useEffect(() => {
+    //     if (source === 'home') {
+    //         const QUERY = encodeURIComponent(`*[_type == "blog"][0..1]`);
+    //         fetch(`https://${process.env.NEXT_PUBLIC_PROJECT_ID}.api.sanity.io/v2021-10-21/data/query/${process.env.NEXT_PUBLIC_DATASET}?query=${QUERY}`)
+    //             .then((res) => res.json())
+    //             .then((data) => setBlogData(data.result))
+    //     } else {
+    //         const QUERY = encodeURIComponent(`*[_type == "blog"] | order(_createdAt desc) [${(page - 1) * 2}...${page * 2}]`);
+    //         // ($pageNumber - $currentPage) * $pageSize - 1
+    //         // const { results, totalCount } = await client.fetch(
+    //         //     `*[_type == "myDocumentType"] 
+    //         //   );
 
-            fetch(`https://${process.env.NEXT_PUBLIC_PROJECT_ID}.api.sanity.io/v2021-10-21/data/query/${process.env.NEXT_PUBLIC_DATASET}?query=${QUERY}`)
-                .then((res) => res.json())
-                .then((data) => setBlogData(data.result))
-        }
-    }, [page]);
+    //         fetch(`https://${process.env.NEXT_PUBLIC_PROJECT_ID}.api.sanity.io/v2021-10-21/data/query/${process.env.NEXT_PUBLIC_DATASET}?query=${QUERY}`)
+    //             .then((res) => res.json())
+    //             .then((data) => setBlogData(data.result))
+    //     }
+    // }, [page]);
 
-    const redirectToBlogDetailPage = (id) => {
-        router.push(`/blogs/${id}`);
-    }
+    // const redirectToBlogDetailPage = (id) => {
+    //     router.push(`/blogs/${id}`);
+    // }
 
     // console.log(blogData)
 
     return (
         <div className='blog my-8'>
-            <div className="blog__container max-w-7xl mx-auto px-[3vw]">
+            {/* <div className="blog__container max-w-7xl mx-auto px-[3vw]">
 
                 <div className="blog__heading flex justify-between ">
                     <p className="text-gray-900 text-xl sm:text-2xl font-bold">{blogHeading}</p>
@@ -69,7 +69,7 @@ const Index = ({ source, blogHeading }) => {
                             : <span>no more blogs</span>
                     }
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }
