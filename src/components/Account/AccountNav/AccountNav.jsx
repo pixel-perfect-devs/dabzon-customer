@@ -4,7 +4,7 @@ import order from '../../../../public/account/order.svg'
 import address from '../../../../public/account/address.svg'
 import Image from 'next/image'
 import { signOut } from 'next-auth/react'
-import { deleteCookie } from '@/cookie'
+import { deleteCookie } from '../../../cookie/index'
 
 // how to export default arrow functions in nextjs
 export default function AccountNav({ setRight, right, profileData }){

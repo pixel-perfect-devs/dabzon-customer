@@ -1,6 +1,6 @@
 import React from 'react'
 import deleteCartItem from "../../../../../public/icons/deleteCartItem.svg"
-import { deleteFromCart } from '@/reduxStore/Slices/Cart/CartSlice'
+import { deleteFromCart } from '../../../../reduxStore/Slices/Cart/CartSlice'
 import { useDispatch } from 'react-redux'
 import { useRouter } from 'next/router'
 import Image from 'next/image'

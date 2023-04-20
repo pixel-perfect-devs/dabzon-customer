@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React, { useEffect } from 'react'
 import emptyCartBg from '../../../../public/empty_cart_bg.svg'
-import { getCookie, deleteCookie } from '@/cookie'
+// import { getCookie, deleteCookie } from '@/cookie'
 const Index = () => {
   // useEffect(()=>{
   //   console.log(getCookie("userSession"));

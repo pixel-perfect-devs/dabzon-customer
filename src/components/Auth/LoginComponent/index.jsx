@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import Link from 'next/link'
 import login_bg from '../../../../public/auth/login_bg.svg'
 import { useState } from 'react'
-import { setCookie, getCookie } from '@/cookie'
+import { setCookie, getCookie } from '../../../cookie/index'
 import { useSession, signIn, signOut } from 'next-auth/react'
 import { useRouter } from 'next/router'
 

@@ -6,7 +6,7 @@ import Hello from "../../components/Account/Hello/Hello";
 import MyOrder from "../../components/Account/MyOrder/MyOrder";
 import Address from "../../components/Account/Address/Address";
 import WishList from "../../components/Account/WishList/WishList";
-import { getCookie } from "@/cookie";
+import { getCookie } from "../../cookie/index";
 import { useRouter } from "next/router";
 
 const Profile = () => {

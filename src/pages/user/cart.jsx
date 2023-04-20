@@ -6,7 +6,7 @@ import NavBar from '../../components/NavBar/index'
 import TopSellingBatteries from '../../components/LandingPageComponents/TopSellingBatteries/index'
 import { useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
-import { getCookie } from '@/cookie'
+import { getCookie } from '../../cookie/index'
 
 const Cart = () => {
   const router = useRouter();

@@ -1,6 +1,5 @@
 import React from 'react'
 import LoginComponent from '../../components/Auth/LoginComponent/index'
-import { redirect } from 'next/dist/server/api-utils';
 
 const Login = ({ redirect }) => {
   console.log(redirect);
