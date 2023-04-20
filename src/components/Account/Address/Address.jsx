@@ -5,7 +5,7 @@ import filterBut from "../../../../public/account/button.svg";
 import without_exchange from "../../../../public/account/without_exchange.svg";
 import with_trolley from "../../../../public/account/with_trolley.svg";
 
-export default function Index({setRight}) {
+export default function Address({setRight}){
     return (
         <div className="flex flex-col border-2 bg-white rounded-xl px-2 md:p-6 mb-20 sm:mb-0 w-full">
             {/* .................................search and filter start........................... */}
@@ -62,7 +62,7 @@ export default function Index({setRight}) {
 
                     <div className="flex flex-col space-y-1 md:space-y-2 justify-center m-2">
                         <p className="truncate text-xs text-gray-900 font-medium w-40 break-words">
-                            WISHLIST GOES HERE
+                            ADDRESS WALA SECTION 
                         </p>
                         <p className="text-dabgreen text-base md:text-xl font-semibold ">₹20.00</p>
                         <div className="flex">

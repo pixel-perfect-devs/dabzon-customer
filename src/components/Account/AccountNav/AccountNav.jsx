@@ -7,7 +7,7 @@ import { signOut } from 'next-auth/react'
 import { deleteCookie } from '@/cookie'
 
 // how to export default arrow functions in nextjs
-export default function Index({ setRight, right, profileData }){
+export default function AccountNav({ setRight, right, profileData }){
   const handleSignOut = () => {
     signOut();
     deleteCookie("userSession");

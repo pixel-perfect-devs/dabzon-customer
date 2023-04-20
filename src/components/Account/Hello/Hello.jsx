@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import profile from "../../../../public/avatar.png";
 
-export default function Index({ setRight, setProfileData, profileData }) {
+export default function Hello({ setRight, setProfileData, profileData }) {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
