@@ -7,7 +7,7 @@ const blogs = () => {
   return (
     <div className='blogs__page'>
       <NavBar />
-      <BlogComponents source='blog' blogHeading="Blogs" />
+      {/* <BlogComponents source='blog' blogHeading="Blogs" /> */}
       <div className="footer hidden sm:block">
         <FooterComponents />
       </div>
