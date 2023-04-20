@@ -4,27 +4,30 @@ import date from "../../../../public/icons/date.svg"
 import account_circle from "../../../../public/icons/account_circle.svg"
 import PortableText from 'react-portable-text'
 import imageUrlBuilder from '@sanity/image-url'
-// import { createClient } from 'next-sanity'
+import { createClient } from 'next-sanity'
+import { useRouter } from 'next/router'
 
-const Index = ({ item, redirectToBlogDetailPage }) => {
+const Index = ({ item }) => {
 
-    // const client = createClient({
-    //     projectId: "q21v17fe",
-    //     apiVersion: "2021-10-14",
-    //     dataset: "production",
-    //     useCdn: false
-    // });
+    const router = useRouter();
 
-    // const builder = imageUrlBuilder(client);
+    const client = createClient({
+        projectId: "q21v17fe",
+        apiVersion: "2021-10-14",
+        dataset: "production",
+        useCdn: false
+    });
 
-    // const [content, setContent] = React.useState([]);
-    // React.useEffect(() => {
-    //     setContent(item?.content?.slice(0, 2));
-    // }, []);
+    const builder = imageUrlBuilder(client);
+
+    const [content, setContent] = React.useState([]);
+    React.useEffect(() => {
+        setContent(item?.content?.slice(0, 2));
+    }, []);
 
     return (
-        <div className="blogSectionCard rounded-md overflow-hidden shadow-sm cursor-pointer" onClick={() => redirectToBlogDetailPage(item._id)} >
-            {/* <div className='blogSectionCard__image__container w-full'>
+        <div className="blogSectionCard rounded-md overflow-hidden shadow-sm cursor-pointer" onClick={() => router.replace(`/blogs/${item._id}`)} >
+            <div className='blogSectionCard__image__container w-full'>
                 <Image width={1000} height={1000} className="w-full" src={builder.image(item.image).width(1000).url()} alt="img" />
             </div>
             <div className='blogSectionCard__buttons '>
@@ -37,16 +40,15 @@ const Index = ({ item, redirectToBlogDetailPage }) => {
             <div className="blogSectionCard__text px-6 py-4">
                 <div className="font-bold text-base md:text-xl mb-2 truncate">{item.title}</div>
                 <p className="text-gray-700 text-xs md:text-sm">
-                    <PortableText
-                        // Pass in block content straight from Sanity.io
-                        content={content}
-                        // Optionally override marks, decorators, blocks, etc. in a flat
-                        // structure without doing any gymnastics
-                        serializers={{
-                            h1: (props) => <h1 style={{ color: "red" }} {...props} />,
-                            li: ({ children }) => <li className="special-list-item">{children}</li>,
-                        }}
-                    />
+                    {
+                        content.length > 0
+                            ? <PortableText content={content} serializers={{
+                                span: (props) => <span {...props} />,
+                                span: ({ children }) => <span className="special-list-item">{children}</span>,
+                            }}
+                            />
+                            : null
+                    }
                 </p>
             </div>
             <div className="blogSectionCard__date__author px-6 pt-4 pb-2 flex gap-3">
@@ -63,7 +65,7 @@ const Index = ({ item, redirectToBlogDetailPage }) => {
                     <span className="text">{item.author}</span>
 
                 </span>
-            </div> */}
+            </div>
         </div>
     )
 }

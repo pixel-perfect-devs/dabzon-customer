@@ -65,7 +65,7 @@ export default function OptModal({ userData, setShowModal, modelFor }) {
 
     const handleResendOtp = (e) => {
         e.preventDefault();
-        console.log("resend otp");
+        // console.log("resend otp");
         sendOtp();
     }
 

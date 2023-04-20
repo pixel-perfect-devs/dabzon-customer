@@ -61,7 +61,7 @@ const Index = () => {
       return newItem;
     })
 
-    console.log(newCartArray)
+    // console.log(newCartArray)
 
     setAmount(newCartArray.reduce((acc, item) => acc + (item.productDeliveryCityPrice ? +item.productDeliveryCityPrice : +item.productPrice) - (item.exchange ? +item.productWithExchange : 0) + (item.trolley ? +item.productWithTrolley : 0) - (item.couponDiscountPrice ? +item.couponDiscountPrice : 0), 0))
     

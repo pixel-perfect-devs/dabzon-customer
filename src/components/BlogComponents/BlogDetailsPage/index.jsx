@@ -6,36 +6,36 @@ import Link from 'next/link'
 import Image from 'next/image'
 import PortableText from 'react-portable-text'
 import imageUrlBuilder from '@sanity/image-url'
-// import { createClient } from 'next-sanity'
+import { createClient } from 'next-sanity'
 
-const BlogDetailsPage = ({ item }) => {
+const BlogDetailsPage = ({ item, data }) => {
 
-    // const client = createClient({
-    //     projectId: "q21v17fe",
-    //     dataset: "production",
-    //     apiVersion: "2021-10-14",
-    //     useCdn: false
-    // });
+    const client = createClient({
+        projectId: "q21v17fe",
+        dataset: "production",
+        apiVersion: "2021-10-14",
+        useCdn: false
+    });
 
-    // const builder = imageUrlBuilder(client);
+    const builder = imageUrlBuilder(client);
     
-    // const shareBlog = (e) => {
-    //     const data = {
-    //         title : item?.title,
-    //         url : window.location.href,
-    //         text : item?.title,
-    //     }
-    //     if(navigator.canShare && navigator.canShare(data)){
-    //         navigator.share(data);
-    //     }else{
-    //         alert('Share not supported');
-    //     }
-    // }
+    const shareBlog = (e) => {
+        const data = {
+            title : item?.title,
+            url : window.location.href,
+            text : item?.title,
+        }
+        if(navigator.canShare && navigator.canShare(data)){
+            navigator.share(data);
+        }else{
+            alert('Share not supported');
+        }
+    }
 
     return (
         <div className='BlogDetailsPage' >
             <NavBar />
-            {/* {item?.title
+            {item?.title
                 ? <div className="BlogDetailsPage__container max-w-7xl mx-auto px-[3vw] my-8">
                     <div className="BlogDetailsPage__breadcrumbs">
                         <Link href="/" className="text-dabgreen">Home</Link>
@@ -108,7 +108,7 @@ const BlogDetailsPage = ({ item }) => {
                     </svg>
                 </div>
             }
-            <BlogComponents source='home' blogHeading="You may also like..." /> */}
+            <BlogComponents source='home' blogHeading="You may also like..." data={data} />
             <div className="footer hidden sm:block">
                 <FooterComponents />
             </div>

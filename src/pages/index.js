@@ -11,8 +11,9 @@ import FAQ from "../components/LandingPageComponents/FAQ/index";
 import BestFeedback from "../components/LandingPageComponents/BestFeedback/index";
 import BlogComponents from "../components/BlogComponents/index";
 import { useState, useEffect } from "react";
+import { createClient } from "next-sanity";
 
-export default function Home({ shopbycategoryData }) {
+export default function Home({ shopbycategoryData, blogData }) {
   const [city, setCity] = useState("");
 
   const incrementVisit = async () => {
@@ -64,19 +65,27 @@ export default function Home({ shopbycategoryData }) {
       </Head>
       <main className="main__page bg-gray-100 ">
         <NavBar />
+        <OfferCarousel />
         <OtherSupport />
         <ShopByCategory data={shopbycategoryData} />
         <TopOffers />
         <ShopByBrand />
         <TopSellingBatteries title="Top Selling Batteries" />
         <BestFeedback />
-        <BlogComponents source="home" blogHeading="Blogs" />
+        <BlogComponents source="home" blogHeading="Blogs" data={blogData} />
         <FAQ />
         <FooterComponents />
       </main>
     </>
   );
 }
+
+const client = createClient({
+  projectId: "q21v17fe",
+  dataset: "production",
+  apiVersion: "2021-10-14",
+  useCdn: false
+});
 
 export async function getServerSideProps(context) {
   // this api is on dabzon-admin
@@ -86,10 +95,14 @@ export async function getServerSideProps(context) {
       res.json()
     ),
   ])
-
+  
+  const query = `*[_type == "blog"][0..1]`;
+  const blog = await client.fetch(query);
+  
   return {
     props: {
       shopbycategoryData: value[0].allData,
+      blogData: blog,
     },
   };
 }

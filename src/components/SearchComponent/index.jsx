@@ -12,7 +12,7 @@ const index = ({ searchQuery, searchResults }) => {
 
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.loading);
-  console.log(filteredItems)
+  // console.log(filteredItems)
 
   const resetFilters = () => {
     setFilters([]);
