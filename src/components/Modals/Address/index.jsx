@@ -31,7 +31,7 @@ const index = ({ address, setAddress, setShowAddressModal }) => {
         showModal: false,
       })
     }
-    console.log(data);
+    // console.log(data);
   }
 
   const cancelEdit = (e) => {
